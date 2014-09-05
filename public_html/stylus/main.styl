@@ -1,0 +1,104 @@
+
+/* 
+    Created on  4/09/2014, 031849 PM
+    Author      Ricardo Alcantara <richpolis@gmail.com>
+*/
+
+@import 'nib'
+@import 'normalize' 
+
+box-sizing()
+	-webkit-box-sizing arguments
+	-moz-box-sizing arguments
+	box-sizing arguments
+	
+opacity(n)
+	opacity n
+	if support-for-ie
+		filter unquote('progid:DXImageTransform.Microsoft.Alpha(Opacity=' + round(n * 100) + ')')
+
+body
+	font-size 16px
+
+
+.barra-logo
+	height 2em
+	width 100%
+	background #C10BFD
+	box-shadow #080808
+	position relative
+	box-shadow 0 5px 10px 0 #080808
+	margin 4em 0 0
+	& .barra-interna-logo
+		position absolute
+		height 2em
+		width 50%
+		top 0px
+		right 0px
+		background #FD0B84
+
+
+.btn-ovalado
+	border-radius 25%
+	float right
+
+.sin-padding
+	padding none
+
+.relative 
+	position relative
+
+#logo
+	text-align center
+	width 100%
+	padding .5em
+	margin 0
+	position absolute
+	top 0px
+	left 0px
+	& img
+		height 3em
+
+#portada
+	text-align center
+	width 100%
+	padding 8em 0
+	margin 0
+	& img
+		height 300px
+
+/*
+    Login
+*/
+
+.form-signin 
+	max-width 330px
+	padding 3em 1em 1em
+	margin 0 auto
+
+.form-signin .checkbox 
+	margin-bottom .9px
+	font-weight normal
+
+
+.form-signin-heading 
+	text-align center
+	font-size 1.5em
+	& span
+		font-size .7em
+
+
+.form-signin .form-control 
+	position relative
+	height auto
+	box-sizing border-box
+	padding .6em
+	font-size 1em
+
+.form-signin .form-controlfocus 
+	z-index 2
+
+.form-signin input[type="email"]
+.form-signin input[type="password"] 
+	margin-bottom .4em
+	border 2px solid #080808
