@@ -17,6 +17,13 @@ opacity(n)
 	if support-for-ie
 		filter unquote('progid:DXImageTransform.Microsoft.Alpha(Opacity=' + round(n * 100) + ')')
 
+a
+	color #080808
+	text-decoration none
+	&:hover
+		color #080808
+		text-decoration none
+
 body
 	font-size 16px
 
@@ -42,11 +49,25 @@ body
 	border-radius 25%
 	float right
 
+.centrar-contenido
+	padding 80px 100px
+
+.logo-chico
+	text-align center
+	margin 0
+	& img
+		height 3em
+
 .sin-padding
 	padding none
 
 .relative 
 	position relative
+
+.remember-me
+	float right
+	
+
 
 #logo
 	text-align center
@@ -67,6 +88,41 @@ body
 	& img
 		height 300px
 
+
+/*
+	Recuperar
+*/
+
+.form-recuperar
+	position absolute 
+	top 200px
+	text-align center
+	height 200px
+	margin -100px 10% 0
+	border 2px solid black
+	width 80%
+	& .mensaje-form-recuperar
+		position absolute
+		top 50%
+		left 33%
+		z-index 3
+		color #080808
+		&.label
+			top 30%
+	&:after
+		content ''
+		border-top 10px solid #333
+		border-bottom 10px solid transparent
+		border-left 10px solid transparent
+		border-right 10px solid transparent
+		position absolute
+		bottom -20px
+		left 50%
+		margin-left -5px
+		z-index 3
+	& figure
+		padding 1em
+
 /*
     Login
 */
@@ -77,8 +133,9 @@ body
 	margin 0 auto
 
 .form-signin .checkbox 
-	margin-bottom .9px
+	margin-bottom .9em
 	font-weight normal
+	
 
 
 .form-signin-heading 
