@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Baby Story</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <header id="header">
+            <div class="sin-padding">
+                <figure id="logo">
+                    <a href="inicio.html">
+                        <img src="img/logo.png" alt="Baby Story"/>
+                    </a>
+                </figure>
+                <div class="barra-logo">
+                    <div class="barra-interna-logo">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                 <h2 class="form-registro-encabezado text-center">
+                        Registro 
+                </h2>   
+                <form class="form-registro" role="form" enctype="multipart/form-data">
+                    <figure id="imagen-usuario">
+                        <img src="img/sin-imagen-usuario.png"/>
+                        <figcaption>
+                            seleccionar imagen de perfil
+                        </figcaption>
+                    </figure>
+                    <span class="agregar">
+                        <input type="file" name="imagen" accept="image/*" capture="camera" style="display: none;"/>
+                    </span>
+                    <p>&nbsp;</p>
+                    <input type="text" name="usuario" class="form-control" placeholder="Usuario (requerido)" required autofocus>
+                    <input type="email" name="email" class="form-control" placeholder="Email (requerido)"  required>
+                    <input type="password" name="password" class="form-control" placeholder="Password (requerido)"  required>
+                    <input type="text" name="cuidad" class="form-control" placeholder="Cuidad o estado (opcional)">
+                    <textarea name="biografia" class="form-control" placeholder="Bio (opcional)"></textarea>
+                    <textarea name="ser_madre" class="form-control" placeholder="Ser madre es (requerido)" required></textarea>
+                    <p>&nbsp;</p>
+                    <h4>Tus hijos...</h4>
+                    <div class="agregarNinos row well">
+                        <div class="row">
+                            <div class="col-xs-3 col-sm-3 col-md-3">
+                                <div class="input-group">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-default restaNino" type="button" id="restaNino" data-input="ninos">-</button>
+                                  </span>
+                                  <input type="text" name="ninos" class="form-control" id="ninos" value="0" readonly="readonly">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-default sumaNino" type="button" id="sumaNino" data-input="ninos">+</button>
+                                  </span>
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3 col-md-3">
+                                <p>Niños</p>
+                            </div>
+                            <div class="col-xs-3 col-sm-3 col-md-3">
+                                <a href="registroNinos.html">
+                                    <img class="flecha" src="img/fecha.png"/>
+                                </a>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xs-3 col-sm-3 col-md-3">
+                                <div class="input-group">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-default restaNina" type="button" id="restaNina" data-input="ninas">-</button>
+                                  </span>
+                                  <input type="text" name="ninas" class="form-control" id="ninas" value="0"  readonly="readonly">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-default sumaNina" type="button" id="sumaNina" data-input="ninas">+</button>
+                                  </span>
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-3 col-md-3">
+                                <p>Niñas</p>
+                            </div>
+                            <div class="col-xs-3 col-sm-3 col-md-3">
+                                <a href="registroNinos.html">
+                                    <img class="flecha" src="img/fecha.png"/>
+                                </a>
+                            </div>
+                        </div>    
+                    </div>
+                    
+                    <button class="btn btn-block btn-lg btn-danger" type="submit">Registro</button>
+                </form>
+                </div>    
+            </div>    
+            
+            
+        </div> <!-- /container -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.js"><\/script>')</script>
+
+        <script src="js/vendor/bootstrap.min.js"></script>
+
+        <script type="text/javascript">
+            $(document).on("ready",function(){
+               $(".sumaNino, .sumaNina").on("click",function(){
+                   var input = $("#" + $(this).data('input'));
+                   input.val(parseInt(input.val())+1);
+               });
+               $(".restaNino, .restaNina").on("click",function(){
+                   var input = $("#" + $(this).data('input'));
+                   var valor = parseInt(input.val());
+                   if(valor>0){
+                    input.val(valor-1);   
+                   }
+               });
+            });
+        </script>
+        
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            (function(b, o, i, l, e, r) {
+                b.GoogleAnalyticsObject = l;
+                b[l] || (b[l] =
+                        function() {
+                            (b[l].q = b[l].q || []).push(arguments)
+                        });
+                b[l].l = +new Date;
+                e = o.createElement(i);
+                r = o.getElementsByTagName(i)[0];
+                e.src = '//www.google-analytics.com/analytics.js';
+                r.parentNode.insertBefore(e, r)
+            }(window, document, 'script', 'ga'));
+            ga('create', 'UA-XXXXX-X');
+            ga('send', 'pageview');
+        </script>
+        
+        
+        
+    </body>
+</html>

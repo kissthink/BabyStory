@@ -58,6 +58,9 @@ body
 	& img
 		height 3em
 
+.padding-izquierdo
+	padding-left 2em
+
 .sin-padding
 	padding none
 
@@ -66,8 +69,23 @@ body
 
 .remember-me
 	float right
-	
 
+.redes-sociales
+	background url('../img/redes-sociales.png')
+	display inline-block
+	vertical-align top
+	&.facebook
+		background-position -0px -0px 
+		width 64px 
+		height 62px
+	&.googleplus
+		background-position -0px -72px 
+		width 64px 
+		height 64px
+	&.twitter
+		background-position -0px -146px 
+		width 64px 
+		height 61px
 
 #logo
 	text-align center
@@ -104,11 +122,17 @@ body
 	& .mensaje-form-recuperar
 		position absolute
 		top 50%
-		left 33%
+		left 0px
 		z-index 3
 		color #080808
+		font-size 1em
+		font-weight normal
+		width 100%
+		text-align center
+		margin-top -1em
 		&.label
 			top 30%
+			margin-top 0px
 	&:after
 		content ''
 		border-top 10px solid #333
@@ -121,14 +145,61 @@ body
 		margin-left -5px
 		z-index 3
 	& figure
+		position absolute 
 		padding 1em
+		bottom -75px
+		width 100%
+		text-align center
+		left 5px
+
+/* form registro */
+
+.agregarNinos
+	background #CEDBDE
+	margin 0px .5em 1em 
+	padding 1em
+	& input[type="text"]
+		border none
+		background transparent
+		text-align center
+		padding .3em
+	& img.flecha
+		height 30px
+	
+		
+
+.form-registro
+	position relative
+	& figure
+		margin 0
+		padding 0
+	& #imagen-usuario
+		overflow hidden
+		& img
+		& figcaption
+			display inline-block
+			vertical-align middle
+		& figcaption
+			margin-left 2px
+	& input
+	& textarea
+		margin-bottom .2em
+		border 2px solid #080808
+	& .form-control 
+		position relative
+		height auto
+		box-sizing border-box
+		padding .6em
+		font-size 1em
+
+
 
 /*
     Login
 */
 
 .form-signin 
-	max-width 330px
+	width 100%
 	padding 3em 1em 1em
 	margin 0 auto
 

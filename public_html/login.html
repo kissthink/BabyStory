@@ -18,6 +18,7 @@
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
+        <div id="fb-root"></div>
         <header id="header">
             <div class="sin-padding">
                 <figure id="logo">
@@ -33,22 +34,42 @@
             </div>
         </header>
         <div class="container">
-            <form class="form-signin" role="form">
-                <h2 class="form-signin-heading">
-                    Login <br/>
-                    <span class="form-signin-subheading">Ya tienes cuenta?</span>
-                </h2>
-                <input type="email" class="form-control" placeholder="Usuario" required autofocus>
-                <input type="password" class="form-control" placeholder="Password" required>
-                <label class="checkbox remember-me">
-                    <input type="checkbox" value="remember-me"> Remember me
-                </label>
-                <button class="btn btn-block btn-lg btn-danger" type="submit">Login</button>
-            </form>
+            <div class="row">
+                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                <form class="form-signin" role="form">
+                    <h2 class="form-signin-heading">
+                        Login <br/>
+                        <span class="form-signin-subheading">Ya tienes cuenta?</span>
+                    </h2>
+                    <input type="email" class="form-control" placeholder="Usuario" required autofocus>
+                    <input type="password" class="form-control" placeholder="Password" required>
+                    <label class="checkbox remember-me">
+                        <input type="checkbox" value="remember-me"> Remember me
+                    </label>
+                    <button class="btn btn-block btn-lg btn-danger" type="submit">Login</button>
+                </form>
+                </div>    
+            </div>    
             <p>&nbsp;</p>
             <div class="row text-center ">
+                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 ">
                 <a href="recuperar.html" class="without-underline">No puede iniciar...haga click aqui &nbsp; <span class="glyphicon glyphicon-envelope"></span></a>
+                </div>
             </div>
+            <p>&nbsp;</p>
+            <div class="row text-center">
+                <p class="text-left padding-izquierdo col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 ">O puedes logearte con:</p>
+                <p class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                    <a href="registro.html" onclick="Login()"/><span class="redes-sociales facebook">&nbsp;</span></a>
+                    <a href="registro.html" ><span class="redes-sociales twitter">&nbsp;</span></a>
+                    <a href="registro.html" ><span class="redes-sociales googleplus">&nbsp;</span></a>
+                </p>
+                <br/>
+                <p class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 ">
+                    <a href="registro.html"> no tienes cuenta? Registro</a>
+                </p>
+            </div>
+            
         </div> <!-- /container -->
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.js"><\/script>')</script>
@@ -74,5 +95,99 @@
             ga('create', 'UA-XXXXX-X');
             ga('send', 'pageview');
         </script>
+        
+        <!-- login con facebook -->
+        <!-- cambiar los valores correctos para la aplicacion -->
+        <script>
+        window.fbAsyncInit = function() {
+          FB.init({
+            appId      : 'APP_ID', // App ID
+            channelUrl : 'http://richpolis.interactivevalley.com/babystory/registro.html', // Channel File
+            status     : true, // check login status
+            cookie     : true, // enable cookies to allow the server to access the session
+            xfbml      : true  // parse XFBML
+          });
+
+
+              FB.Event.subscribe('auth.authResponseChange', function(response) 
+              {
+               if (response.status === 'connected') 
+              {
+                      document.getElementById("message").innerHTML +=  "<br>Connected to Facebook";
+                      //SUCCESS
+
+              }	 
+              else if (response.status === 'not_authorized') 
+          {
+              document.getElementById("message").innerHTML +=  "<br>Failed to Connect";
+
+                      //FAILED
+          } else 
+          {
+              document.getElementById("message").innerHTML +=  "<br>Logged Out";
+
+              //UNKNOWN ERROR
+          }
+              });	
+
+          };
+
+              function Login()
+              {
+
+                      FB.login(function(response) {
+                         if (response.authResponse) 
+                         {
+                              getUserInfo();
+                              } else 
+                              {
+                       console.log('User cancelled login or did not fully authorize.');
+                              }
+                       },{scope: 'email,user_photos,user_videos'});
+
+
+              }
+
+        function getUserInfo() {
+                  FB.api('/me', function(response) {
+
+                var str="<b>Name</b> : "+response.name+"<br>";
+                        str +="<b>Link: </b>"+response.link+"<br>";
+                        str +="<b>Username:</b> "+response.username+"<br>";
+                        str +="<b>id: </b>"+response.id+"<br>";
+                        str +="<b>Email:</b> "+response.email+"<br>";
+                        str +="<input type='button' value='Get Photo' onclick='getPhoto();'/>";
+                        str +="<input type='button' value='Logout' onclick='Logout();'/>";
+                        document.getElementById("status").innerHTML=str;
+
+          });
+          }
+              function getPhoto()
+              {
+                FB.api('/me/picture?type=normal', function(response) {
+
+                        var str="<br/><b>Pic</b> : <img src='"+response.data.url+"'/>";
+                        document.getElementById("status").innerHTML+=str;
+
+          });
+
+              }
+              function Logout()
+              {
+                      FB.logout(function(){document.location.reload();});
+              }
+
+        // Load the SDK asynchronously
+        (function(d){
+           var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+           if (d.getElementById(id)) {return;}
+           js = d.createElement('script'); js.id = id; js.async = true;
+           js.src = "//connect.facebook.net/en_US/all.js";
+           ref.parentNode.insertBefore(js, ref);
+         }(document));
+
+        </script>
+
+        
     </body>
 </html>
