@@ -24,6 +24,9 @@ a
 		color #080808
 		text-decoration none
 
+audio
+	margin 1em 0px
+
 body
 	font-size 16px
 
@@ -70,6 +73,59 @@ body
 .remember-me
 	float right
 
+.usuario
+	position absolute
+	left 1em
+	top 1em
+	font-size 1.5em
+	z-index 1000
+
+.cerrarSession
+	position absolute
+	right 1em
+	top 1em
+	font-size 1.5em
+	z-index 1000
+
+
+.timeline
+	position relative;
+	width 100%
+	overflow hidden
+	margin 20px auto
+	& .bullet-redondo
+		height 10px
+		width 10px
+		border-radius 5px
+		display block
+		margin 5px auto 0px
+		&.sin-historia 
+			background white
+		&.con-historia
+			background #C10BFD
+	& ul.lista-timeline
+		position absolute
+		margin 0
+		padding 0
+		top 0px
+		left 0px
+		height 240px
+		font-size 0px
+		& li.item
+			display inline-block
+			vertical-align top
+			text-align center
+			& figure
+				margin 0
+				padding 0
+				& img
+					height 100px
+					width 100px
+				& figcaption
+					font-size 16px
+					text-align center
+					height 70px
+
 .redes-sociales
 	background url('../img/redes-sociales.png')
 	display inline-block
@@ -95,6 +151,7 @@ body
 	position absolute
 	top 0px
 	left 0px
+	z-index 500
 	& img
 		height 3em
 
@@ -104,8 +161,95 @@ body
 	padding 8em 0
 	margin 0
 	& img
-		height 300px
+		width 100%
 
+.historias
+	& button 
+		width 100%
+	& .historia
+		min-height 240px
+		margin-bottom 2em
+		padding 0px 2em
+		& .fecha
+			border-bottom 4px solid black
+			padding-left .5em
+			padding-bottom .2em
+		& .resumenHistoria
+			background #E5E5E5
+			border-radius 15px
+			position relative
+			box-shadow 1px 1px 0px #080808
+			&:after
+				content ''
+				border-top 10px solid transparent
+				border-bottom 10px solid transparent
+				border-left 10px solid transparent
+				border-right 10px solid #E5E5E5
+				position absolute
+				left -20px
+				top 100%
+				margin-top -40px
+				z-index 3
+			& p
+				padding-left 1em
+		& .comentarios
+			border 1px solid #E5E5E5
+			min-height 200px
+			border-radius 15px
+			& .comentario
+				border-bottom 1px solid #E5E5E5
+				margin 0px 10px
+				font-size .8em
+				& div
+					line-height 100px
+					&.contenido
+						line-height 1.5rem
+						padding-top 2rem
+		& .contenidos
+			& p
+				padding 0px .5em
+			& .dialogo-papa
+				text-align center
+				& figure
+					margin 0
+			& .comentarioPapa
+			& .comentarioNino
+				background #E5E5E5
+				border-radius 15px
+				position relative
+				min-height 100px
+				padding .5em
+			& .comentarioPapa
+				box-shadow 1px 1px 0px #080808
+			& .comentarioNino
+				box-shadow -1px 1px 0px #080808
+			& .comentarioPapa:after
+				content ''
+				border-top 10px solid transparent
+				border-bottom 10px solid transparent
+				border-left 10px solid transparent
+				border-right 10px solid #E5E5E5
+				position absolute
+				left -20px
+				top 100%
+				margin-top -40px
+				z-index 3
+			& .comentarioNino:after
+				content ''
+				border-top 10px solid transparent
+				border-bottom 10px solid transparent
+				border-left 10px solid #E5E5E5
+				border-right 10px solid transparent
+				position absolute
+				right -20px
+				top 100%
+				margin-top -40px
+				z-index 3
+		& .controles
+			font-size 2em
+							
+				
+		
 
 /*
 	Recuperar
@@ -151,6 +295,23 @@ body
 		width 100%
 		text-align center
 		left 5px
+	& input
+		width 100%
+
+/* form buscador */
+
+.form-buscador
+	width 100%
+	& input[type="text"]
+		position relative
+		height auto
+		box-sizing border-box
+		padding .4em
+		font-size 1em
+		font-weight normal
+		
+.well
+	margin-bottom 0px
 
 /* form registro */
 
