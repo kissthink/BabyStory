@@ -30,6 +30,8 @@ audio
 body
 	font-size 16px
 
+figure
+	margin 0
 
 .barra-logo
 	height 2em
@@ -55,11 +57,19 @@ body
 .centrar-contenido
 	padding 80px 100px
 
+.controles
+	font-size 1.5em
+
 .logo-chico
 	text-align center
 	margin 0
 	& img
 		height 3em
+
+.dialogo
+	margin-bottom .5em
+	& figure
+		margin 0
 
 .padding-izquierdo
 	padding-left 2em
@@ -163,6 +173,19 @@ body
 	& img
 		width 100%
 
+.imagen-nino
+	text-align center
+	& figure
+		display block
+		margin  0px auto.5em
+
+.dialogo-papa-imagen
+.dialogo-nino-imagen
+	& img
+		width 100%
+		max-width 100px
+	
+
 .historias
 	& button 
 		width 100%
@@ -214,7 +237,7 @@ body
 					margin 0
 			& .comentarioPapa
 			& .comentarioNino
-				background #E5E5E5
+				background #C10BFD
 				border-radius 15px
 				position relative
 				min-height 100px
@@ -223,12 +246,13 @@ body
 				box-shadow 1px 1px 0px #080808
 			& .comentarioNino
 				box-shadow -1px 1px 0px #080808
+				background #FD0B84
 			& .comentarioPapa:after
 				content ''
 				border-top 10px solid transparent
 				border-bottom 10px solid transparent
 				border-left 10px solid transparent
-				border-right 10px solid #E5E5E5
+				border-right 10px solid #C10BFD
 				position absolute
 				left -20px
 				top 100%
@@ -238,16 +262,13 @@ body
 				content ''
 				border-top 10px solid transparent
 				border-bottom 10px solid transparent
-				border-left 10px solid #E5E5E5
+				border-left 10px solid #FD0B84
 				border-right 10px solid transparent
 				position absolute
 				right -20px
 				top 100%
 				margin-top -40px
 				z-index 3
-		& .controles
-			font-size 2em
-							
 				
 		
 
@@ -271,12 +292,16 @@ body
 		color #080808
 		font-size 1em
 		font-weight normal
-		width 100%
+		/*width 100%*/
 		text-align center
 		margin-top -1em
 		&.label
 			top 30%
 			margin-top 0px
+	& .formulario-form-recuperar
+		position absolute
+		top 50%
+		left 0px
 	&:after
 		content ''
 		border-top 10px solid #333
@@ -391,3 +416,9 @@ body
 .form-signin input[type="password"] 
 	margin-bottom .4em
 	border 2px solid #080808
+
+
+@media screen and (max-width: 512px)
+	.imagen-nino
+		& img
+			width 100%
