@@ -1,0 +1,52 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Hijo</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ entity.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Apodo</th>
+                <td>{{ entity.apodo }}</td>
+            </tr>
+            <tr>
+                <th>Usarapodo</th>
+                <td>{{ entity.usarApodo }}</td>
+            </tr>
+            <tr>
+                <th>Fechanacimiento</th>
+                <td>{{ entity.fechaNacimiento|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Biografia</th>
+                <td>{{ entity.biografia }}</td>
+            </tr>
+            <tr>
+                <th>Imagen</th>
+                <td>{{ entity.imagen }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('hijos') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('hijos_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

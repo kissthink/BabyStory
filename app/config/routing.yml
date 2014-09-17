@@ -1,0 +1,19 @@
+backend:
+    resource: "@BackendBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+richpolis_frontend:
+    resource: "@RichpolisFrontendBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+historias:
+    resource: "@HistoriasBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+usuarios:
+    resource: "@UsuariosBundle/Controller/"
+    type:     annotation
+    prefix:   /

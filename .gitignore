@@ -2,3 +2,4 @@
 /vendor/
 /web/uploads/
 /app/logs/
+/app/cache/
