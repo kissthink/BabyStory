@@ -1,0 +1,87 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}
+    Baby Story
+{% endblock %}
+
+{% set urlAbsolutaFoto = 'http://'
+                             ~ app.request.server.get('SERVER_NAME')
+                             ~ asset('images/logo.png') %}
+
+{% block redes_sociales %}
+    <meta property="og:url" content="{{url('homepage')}}" />
+    <meta property="og:title" content="Baby Story" />
+    <meta property="og:image" content="{{urlAbsolutaFoto}}" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="babystory.com" />
+    <!--meta property="fb:admins" content="USER_ID1,USER_ID2"/-->
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@babystory">
+    <meta name="twitter:title" content="Baby Story">
+    <meta name="twitter:description" content="Cuenta tus historias increibles que tienes con tus pequeños y compartelas con el mundo.">
+    <meta name="twitter:creator" content="@richpolis">
+    <meta name="twitter:image:src" content="{{urlAbsolutaFoto}}">
+    <meta name="twitter:domain" content="{{url('homepage')}}">
+    <meta name="twitter:app:name:iphone" content="">
+    <meta name="twitter:app:name:ipad" content="">
+    <meta name="twitter:app:name:googleplay" content="">
+    <meta name="twitter:app:url:iphone" content="">
+    <meta name="twitter:app:url:ipad" content="">
+    <meta name="twitter:app:url:googleplay" content="">
+    <meta name="twitter:app:id:iphone" content="">
+    <meta name="twitter:app:id:ipad" content="">
+    <meta name="twitter:app:id:googleplay" content="">
+{% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+  
+  <link rel="stylesheet" href="css/main.css">
+  <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+{% endblock %}
+
+{% block body %}
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <header id="header">
+            <div class="sin-padding relative"  style="border: 1px solid transparent">
+                {% block usuario %}
+                    <div class="usuario">
+                        <a href="registro.html">
+                        <span class="glyphicon glyphicon-user"></span>
+                        </a>
+                    </div>
+                {% endblock %}    
+                {% block logo %}    
+                    <figure id="logo">
+                        <a href="inicio.html">
+                            <img src="img/logo.png" alt="Baby Story"/>
+                        </a>
+                    </figure>
+                {% endblock %}
+                {% block session %}
+                    <div class="cerrarSession">
+                        <a href="login.html">
+                        <span class="glyphicon glyphicon-remove"></span>
+                        </a>
+                    </div>
+                {% endblock %}
+                <div class="barra-logo">
+                    <div class="barra-interna-logo">
+                        &nbsp;
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="container">
+            {% block contenido %}  {% endblock %}    
+        </div> <!-- /container -->
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}  
+  <script src="js/main.js"></script>
+{% endblock %}    

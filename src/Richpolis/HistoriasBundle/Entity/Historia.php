@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="historias")
  * @ORM\Entity(repositoryClass="Richpolis\HistoriasBundle\Entity\HistoriaRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Historia
 {
@@ -41,9 +42,22 @@ class Historia
      * @ORM\OneToMany(targetEntity="Richpolis\HistoriasBundle\Entity\Historia", mappedBy="historia")
      */
     private $componentes;
-
     
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     */
+    private $createdAt;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     */
+    private $updatedAt;
+    
+    
     /**
      * Get id
      *
@@ -138,5 +152,32 @@ class Historia
     public function getComponentes()
     {
         return $this->componentes;
+    }
+    
+    /*
+     * Timestable
+     */
+    
+    /**
+     ** @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        if(!$this->getCreatedAt())
+        {
+          $this->createdAt = new \DateTime();
+        }
+        if(!$this->getUpdatedAt())
+        {
+          $this->updatedAt = new \DateTime();
+        }
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTime();
     }
 }

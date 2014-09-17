@@ -5,12 +5,14 @@ namespace Richpolis\UsuariosBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Usuario
  *
  * @ORM\Table(name="usuarios")
  * @ORM\Entity(repositoryClass="Richpolis\UsuariosBundle\Entity\UsuarioRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Usuario implements UserInterface, \Serializable 
 {
@@ -103,6 +105,20 @@ class Usuario implements UserInterface, \Serializable
      * @ORM\OneToMany(targetEntity="Richpolis\UsuariosBundle\Entity\Hijo", mappedBy="papa")
      */
     private $hijos;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     */
+    private $updatedAt;
     
     /**
      * Get id
@@ -403,4 +419,146 @@ class Usuario implements UserInterface, \Serializable
     {
         return $this->hijos;
     }
+    
+    /*
+     * Timestable
+     */
+    
+    /**
+     ** @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        if(!$this->getCreatedAt())
+        {
+          $this->createdAt = new \DateTime();
+        }
+        if(!$this->getUpdatedAt())
+        {
+          $this->updatedAt = new \DateTime();
+        }
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTime();
+    }
+    
+    /*** uploads ***/
+    
+    /**
+     * @Assert\File(maxSize="6000000")
+     */
+    private $file;
+
+    /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+        // check if we have an old image path
+        if (isset($this->imagen)) {
+            // store the old name to delete after the update
+            $this->temp = $this->imagen;
+            $this->imagen = null;
+        } else {
+            $this->imagen = 'initial';
+        }
+        $directorio=$this->getUploadRootDir();
+        if(!file_exists($directorio)){
+          mkdir($directorio, 0777);  
+        }
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+    
+    /**
+    * @ORM\PrePersist
+    * @ORM\PreUpdate
+    */
+    public function preUpload()
+    {
+      if (null !== $this->getFile()) {
+            // do whatever you want to generate a unique name
+            $filename = sha1(uniqid(mt_rand(), true));
+            $this->imagen = $filename.'.'.$this->getFile()->guessExtension();
+        }
+    }
+
+    /**
+    * @ORM\PostPersist
+    * @ORM\PostUpdate
+    */
+    public function upload()
+    {
+      if (null === $this->getFile()) {
+            return;
+        }
+
+        // if there is an error when moving the file, an exception will
+        // be automatically thrown by move(). This will properly prevent
+        // the entity from being persisted to the database on error
+        $this->getFile()->move($this->getUploadRootDir(), $this->imagen);
+
+        // check if we have an old image
+        if (isset($this->temp)) {
+            // delete the old image
+            unlink($this->getUploadRootDir().'/'.$this->temp);
+            // clear the temp image path
+            $this->temp = null;
+        }
+        $this->file = null;
+    }
+
+    /**
+    * @ORM\PostRemove
+    */
+    public function removeUpload()
+    {
+      if ($file = $this->getAbsolutePath()) {
+        if(file_exists($file)){
+            unlink($file);
+        }
+      }
+    }
+    
+    protected function getUploadDir()
+    {
+        return '/uploads/usuarios';
+    }
+
+    protected function getUploadRootDir()
+    {
+        return __DIR__.'/../../../../web'.$this->getUploadDir();
+    }
+    
+    
+    /**
+     * Rutas de archivos 
+     */
+    public function getWebPath()
+    {
+        return null === $this->imagen ? null : $this->getUploadDir().'/'.$this->imagen;
+    }
+    
+    public function getAbsolutePath()
+    {
+        return null === $this->imagen ? null : $this->getUploadRootDir().'/'.$this->imagen;
+    }
+    
+    
 }

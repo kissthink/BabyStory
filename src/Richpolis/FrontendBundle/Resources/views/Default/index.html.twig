@@ -1,1 +1,28 @@
-Hello {{ name }}!
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block usuario '' %}
+{% block logo '' %}
+{% block session '' %}    
+    
+{% block contenido %}
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+            <figure id="portada">
+                <a href="{{path('login')}}">
+                    <img src="{{asset('images/logo.png')}}" alt="Baby Story"/>
+                </a>
+            </figure>
+        </div>    
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function(){
+           setTimeout(function(){
+               location.href = '{{path('login')}}';
+           },3000); 
+        });
+    </script>   
+{% endblock %}    

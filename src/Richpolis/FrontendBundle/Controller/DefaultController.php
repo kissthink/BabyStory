@@ -5,20 +5,51 @@ namespace Richpolis\FrontendBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Security\Core\SecurityContext;
 
 class DefaultController extends Controller
 {
     /**
-     * @Route("/hello/{name}")
+     * @Route("/",name="portada")
      * @Template()
      */
-    public function indexAction($name)
+    public function portadaAction()
     {
-        return array('name' => $name);
+        return array();
     }
+    
+    /**
+     * @Route("/inicio",name="homepage")
+     * @Template()
+     */
+    public function inicioAction()
+    {
+        return array();
+    }
+    
+    /**
+     * @Route("/recuperar",name="recuperar")
+     * @Template()
+     */
+    public function recuperarAction()
+    {
+        return array();
+    }
+    
+    /**
+     * @Route("/registro",name="registro")
+     * @Template()
+     */
+    public function registroAction()
+    {
+        return array();
+    }
+    
+    
 	
 	/**
-     * @Route("/login", name="backend_login")
+     * @Route("/login", name="login")
      * @Template()
      */
     
@@ -48,7 +79,7 @@ class DefaultController extends Controller
     }
 	
 	/**
-     * @Route("/login_check", name="backend_check")
+     * @Route("/login_check", name="login_check")
      */
     public function securityCheckAction()
     {
@@ -56,7 +87,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/logout", name="backend_logout")
+     * @Route("/logout", name="logout")
      */
     public function logoutAction()
     {

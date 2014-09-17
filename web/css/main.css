@@ -68,7 +68,7 @@ figure{margin:0}
 .timeline ul.lista-timeline li.item figure{margin:0;padding:0;}
 .timeline ul.lista-timeline li.item figure img{height:100px;width:100px}
 .timeline ul.lista-timeline li.item figure figcaption{font-size:16px;text-align:center;height:70px}
-.redes-sociales{background:url("../img/redes-sociales.png");display:inline-block;vertical-align:top;}
+.redes-sociales{background:url("../images/redes-sociales.png");display:inline-block;vertical-align:top;}
 .redes-sociales.facebook{background-position:0 0;width:64px;height:62px}
 .redes-sociales.googleplus{background-position:0 -72px;width:64px;height:64px}
 .redes-sociales.twitter{background-position:0 -146px;width:64px;height:61px}
