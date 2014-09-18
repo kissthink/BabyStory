@@ -15,15 +15,36 @@ class UsuarioType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username')
-            ->add('password')
-            ->add('salt')
-            ->add('email')
+            ->add('username','text',array('label'=>'Usuario','attr'=>array(
+                'class'=>'validate[required] form-control placeholder',
+                'placeholder'=>'Usuario',
+                'data-bind'=>'value: alfaclave'
+             )))
+            ->add('password', 'repeated', array(
+                'type' => 'password',
+                'invalid_message' => 'Las dos contraseñas deben coincidir',
+                'first_options'   => array('label' => 'Contraseña'),
+                'second_options'  => array('label' => 'Repite Contraseña'),
+                'required'        => false,
+                'options' => array(
+                    'attr'=>array('class'=>'form-control placeholder')
+                )
+            ))    
+            ->add('email','email',array('label'=>'Email','attr'=>array(
+                'class'=>'validate[required] form-control placeholder',
+                'placeholder'=>'Email',
+                'data-bind'=>'value: email'
+             )))
+            ->add('file','file',array('label'=>'Imagen','attr'=>array(
+                'class'=>'form-control placeholder',
+                'placeholder'=>'Imagen usuario',
+                'data-bind'=>'value: imagen usuario'
+             )))    
             ->add('ciudad')
             ->add('biografia')
             ->add('serMadre')
-            ->add('imagen')
-            ->add('rol')
+            ->add('salt','hidden')
+            ->add('imagen','hidden')
         ;
     }
     

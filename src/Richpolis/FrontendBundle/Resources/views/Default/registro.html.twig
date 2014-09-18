@@ -1,67 +1,60 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Baby Story</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="css/main.css">
-        <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
-    </head>
-    <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        <div id="fb-root"></div>
-        <header id="header">
-            <div class="sin-padding">
-                <figure id="logo">
-                    <a href="inicio.html">
-                        <img src="img/logo.png" alt="Baby Story"/>
-                    </a>
-                </figure>
-                <div class="barra-logo">
-                    <div class="barra-interna-logo">
-                        &nbsp;
-                    </div>
-                </div>
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+   
+{% block contenido %}
+    <div id="fb-root"></div>
+    <div class="row">
+        {% if error %}
+            <div class="col-xs-4 col-xs-offset-2 col-md-6 col-md-offset-2">{{ error.message | trans }}</div>
+        {% endif %}
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+            <div class="col-xs-4 col-xs-offset-2 col-md-6 col-md-offset-2 flash-notice alert alert-success">
+              {{ flashMessage }}
             </div>
-        </header>
-        <div class="container">
-            
-            
-        </div> <!-- /container -->
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.js"><\/script>')</script>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <div class="col-xs-4 col-xs-offset-2 col-md-6 col-md-offset-2 flash-notice alert alert-danger">
+              {{ flashMessage }}
+            </div>
+        {% endfor %}
+        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+            <form action="{{ path('login_check') }}" method="post">
+                <h2 class="form-signin-heading">
+                    Login <br/>
+                    <span class="form-signin-subheading">Ya tienes cuenta?</span>
+                </h2>
+                <input id="username" type="text" name="_username" value="{{ last_username }}" class="form-control" placeholder="Usuario" required autofocus>
+                <input id="password" type="password" name="_password" class="form-control" placeholder="Password" required>
+                <label class="checkbox remember-me">
+                    <input type="checkbox" id="remember_me" name="_remember_me"> Recordar
+                </label>
+                <button class="btn btn-block btn-lg btn-danger" type="submit">Entrar</button>
+            </form>
+        </div>    
+    </div>    
+    <p>&nbsp;</p>
+    <div class="row text-center ">
+        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 ">
+            <a href="{{ path('recuperar')}}" class="without-underline">No puede iniciar...haga click aqui &nbsp; <span class="glyphicon glyphicon-envelope"></span></a>
+        </div>
+    </div>
+    <p>&nbsp;</p>
+    <div class="row text-center">
+        <p class="text-left padding-izquierdo col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 ">O puedes logearte con:</p>
+        <p class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+            <a href="registro.html" onclick="Login()"/><span class="redes-sociales facebook">&nbsp;</span></a>
+            <a href="registro.html" ><span class="redes-sociales twitter">&nbsp;</span></a>
+            <a href="registro.html" ><span class="redes-sociales googleplus">&nbsp;</span></a>
+        </p>
+        <br/>
+        <p class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 ">
+            <a href="{{path('registro')}}"> no tienes cuenta? Registro</a>
+        </p>
+    </div>
+{% endblock %}
 
-        <script src="js/vendor/bootstrap.min.js"></script>
-
-        <script src="js/main.js"></script>
-
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b, o, i, l, e, r) {
-                b.GoogleAnalyticsObject = l;
-                b[l] || (b[l] =
-                        function() {
-                            (b[l].q = b[l].q || []).push(arguments)
-                        });
-                b[l].l = +new Date;
-                e = o.createElement(i);
-                r = o.getElementsByTagName(i)[0];
-                e.src = '//www.google-analytics.com/analytics.js';
-                r.parentNode.insertBefore(e, r)
-            }(window, document, 'script', 'ga'));
-            ga('create', 'UA-XXXXX-X');
-            ga('send', 'pageview');
-        </script>
-        
+{% block javascripts %}
+    {{ parent() }}
         <!-- login con facebook -->
         <!-- cambiar los valores correctos para la aplicacion -->
         <script>
@@ -152,8 +145,12 @@
            ref.parentNode.insertBefore(js, ref);
          }(document));
 
-        </script>
-
-        
-    </body>
-</html>
+</script>    
+<script>
+    $(document).ready(function(){
+        setTimeout(function(){
+            $(".alert").fadeOut('slow');
+        },2000);
+    });
+</script>
+{% endblock %}    

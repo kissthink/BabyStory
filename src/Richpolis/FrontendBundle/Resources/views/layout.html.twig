@@ -48,20 +48,39 @@
         <![endif]-->
         <header id="header">
             <div class="sin-padding relative"  style="border: 1px solid transparent">
+                {% if app.user is not null %}
                 {% block usuario %}
-                    <div class="usuario">
-                        <a href="registro.html">
-                        <span class="glyphicon glyphicon-user"></span>
-                        </a>
+                    <div class="usuario dropdown">
+                        <button class="btn dropdown-toggle sr-only" type="button"
+                                id="dropdownMenu1" data-toggle="dropdown">
+                          <span class="glyphicon glyphicon-user"></span>
+                          <span class="caret"></span>
+                        </button>
+
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                          <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="#">Perfil</a>
+                          </li>
+                          <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="#">Hijos</a>
+                          </li>
+                          <li role="presentation" class="divider"></li>
+                          <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="#">Historias</a>
+                          </li>
+                        </ul>
                     </div>
-                {% endblock %}    
+                {% endblock %}
+                {% endif %}
                 {% block logo %}    
                     <figure id="logo">
-                        <a href="inicio.html">
-                            <img src="img/logo.png" alt="Baby Story"/>
+                        <a href="{{ path('homepage')}}">
+                            <img src="{{asset('/images/logo.png')}}" alt="Baby Story"/>
                         </a>
                     </figure>
                 {% endblock %}
+                
+                {% if app.user is not null %}
                 {% block session %}
                     <div class="cerrarSession">
                         <a href="login.html">
@@ -69,6 +88,7 @@
                         </a>
                     </div>
                 {% endblock %}
+                {% endif %}
                 <div class="barra-logo">
                     <div class="barra-interna-logo">
                         &nbsp;

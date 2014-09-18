@@ -1,0 +1,61 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block logo '' %}
+
+{% if error is not defined %}
+    {% set error = false %}
+{% endif %}    
+
+{% block contenido %}
+        {% if error %}
+            <div class="col-xs-4 col-xs-offset-2 col-md-6 col-md-offset-2">{{ error.message | trans }}</div>
+        {% endif %}
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+            <div class="col-xs-4 col-xs-offset-2 col-md-6 col-md-offset-2 flash-notice alert alert-success">
+              {{ flashMessage }}
+            </div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <div class="col-xs-4 col-xs-offset-2 col-md-6 col-md-offset-2 flash-notice alert alert-danger">
+              {{ flashMessage }}
+            </div>
+        {% endfor %}
+        <div class="container relative">
+            <div class="form-recuperar row">
+                {% if msg | length == 0 %}
+                    <p class="mensaje-form-recuperar label col-xs-10 col-xs-offset-1">Recuperar Datos de usuario</p>
+                    <div class="formulario-form-recuperar col-xs-10 col-xs-offset-1">
+                        <form action="{{path('recuperar')}}" method="POST" class="form-inline" role="form">
+                            <div class="input-group">
+                                <input type="email" class="form-control" id="email" placeholder="email">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-danger">></button>
+                                </span>
+                            </div>
+                        </form> 
+                    </div>
+                {% else %}
+                    <p class="mensaje-form-recuperar col-xs-10 col-xs-offset-1">
+                        {{msg}}
+                        <a href="{{ path('homepage') }}" class="btn btn-danger">></a>
+                    </p>   
+                {% endif %}    
+                <figure class="logo-chico">
+                    <img src="/images/logo.png" alt="Baby Story"/>
+                </figure>
+            </div>    
+        </div> <!-- /container -->
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    
+<script>
+    $(document).ready(function(){
+        setTimeout(function(){
+            $(".alert").fadeOut('slow');
+        },2000);
+    });
+</script>
+{% endblock %}    
