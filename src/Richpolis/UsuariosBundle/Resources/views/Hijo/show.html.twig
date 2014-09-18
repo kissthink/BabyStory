@@ -1,52 +1,69 @@
-{% extends '::base.html.twig' %}
+{% extends '::admin.html.twig' %}
 
 {% block body -%}
-    <h1>Hijo</h1>
-
-    <table class="record_properties">
+    <div class="container">
+    <h2>Hijo</h2>
+    <table class=" table table-striped"> 
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apodo</th>
+            <th>Biografia</th>
+            <th>Imagen</th>
+        </tr>
+     </thead>
+     <tbody>
+            <tr>
+                <td>{{entity.nombre}}</td>
+                <td>{{entity.apodo}}</td>
+                <td>{{entity.biografia}}</td>
+                <td><img src="{{ entity.webPath }}" style="max-width: 120px;" /></td>
+            </tr>
+     </tbody>   
+    </table>      
+    <h1>Papa/Mama</h1>
+    <table class="record_properties table table-striped">
         <tbody>
             <tr>
                 <th>Id</th>
-                <td>{{ entity.id }}</td>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Ciudad</th>
             </tr>
             <tr>
-                <th>Nombre</th>
-                <td>{{ entity.nombre }}</td>
-            </tr>
-            <tr>
-                <th>Apodo</th>
-                <td>{{ entity.apodo }}</td>
-            </tr>
-            <tr>
-                <th>Usarapodo</th>
-                <td>{{ entity.usarApodo }}</td>
-            </tr>
-            <tr>
-                <th>Fechanacimiento</th>
-                <td>{{ entity.fechaNacimiento|date('Y-m-d H:i:s') }}</td>
+                <td>{{ entity.papa.id }}</td>
+                <td>{{ entity.papa.username }}</td>
+                <td>{{ entity.papa.email }}</td>
+                <td>{{ entity.papa.ciudad }}</td>
             </tr>
             <tr>
                 <th>Biografia</th>
-                <td>{{ entity.biografia }}</td>
+                <th colspan="2">Sermadre</th>
+                <th>Imagen</th>
             </tr>
             <tr>
-                <th>Imagen</th>
-                <td>{{ entity.imagen }}</td>
+                <td>{{ entity.papa.biografia }}</td>
+                <td colspan="2">{{ entity.papa.serMadre }}</td>
+                <td><img src="{{ entity.papa.webPath }}" style="max-width: 120px;" /></td>
             </tr>
         </tbody>
     </table>
-
-        <ul class="record_actions">
+    
+</div>
+<p> &nbsp; </p>
+<div class="container text-center">            
+<ul class="record_actions list-inline">
     <li>
-        <a href="{{ path('hijos') }}">
-            Back to the list
+        <a href="{{ path('hijos') }}" class="btn btn-primary">
+            Regresar
         </a>
     </li>
     <li>
-        <a href="{{ path('hijos_edit', { 'id': entity.id }) }}">
-            Edit
+        <a href="{{ path('hijos_edit', { 'id': entity.id }) }}" class="btn btn-success">
+            Editar
         </a>
     </li>
     <li>{{ form(delete_form) }}</li>
 </ul>
+</div>    
 {% endblock %}

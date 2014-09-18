@@ -91,8 +91,15 @@ class ComponenteController extends Controller
     public function newAction()
     {
         $entity = new Componente();
+        
+        $max = $em->getRepository('HistoriasBundle:Componente')->getMaxPosicion();
+        if($max == null){
+            $max=0;
+        }
+        $entity->setPosition($max+1);
+        
         $form   = $this->createCreateForm($entity);
-
+        
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),

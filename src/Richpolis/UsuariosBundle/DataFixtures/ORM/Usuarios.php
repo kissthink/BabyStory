@@ -62,7 +62,7 @@ class Usuarios extends AbstractFixture implements OrderedFixtureInterface, Conta
         $usuarioAdmin = new Usuario();
         
         $usuarioAdmin->setUsername('Admin');
-        $usuarioAdmin->setEmail('admin@heraldodetoluca.com');
+        $usuarioAdmin->setEmail('admin@babystory.com');
         $usuarioAdmin->setSalt(base_convert(sha1(uniqid(mt_rand(), true)), 16, 36));
         $passwordEnClaro = 'admin';
         $encorder = $this->container->get('security.encoder_factory')->getEncoder($usuarioAdmin);
@@ -80,7 +80,7 @@ class Usuarios extends AbstractFixture implements OrderedFixtureInterface, Conta
         $usuarioNormal = new Usuario();
         
         $usuarioNormal->setUsername('Usuario1');
-        $usuarioNormal->setEmail('usuario1@heraldodetoluca.com');
+        $usuarioNormal->setEmail('usuario1@babystory.com');
         $usuarioNormal->setSalt(base_convert(sha1(uniqid(mt_rand(), true)), 16, 36));
         $passwordEnClaro = '12345678';
         $encorder = $this->container->get('security.encoder_factory')->getEncoder($usuarioNormal);

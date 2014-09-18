@@ -18,7 +18,7 @@ class UsuarioType extends AbstractType
             ->add('username','text',array('label'=>'Usuario','attr'=>array(
                 'class'=>'validate[required] form-control placeholder',
                 'placeholder'=>'Usuario',
-                'data-bind'=>'value: alfaclave'
+                'data-bind'=>'value: usuario'
              )))
             ->add('password', 'repeated', array(
                 'type' => 'password',
@@ -35,14 +35,29 @@ class UsuarioType extends AbstractType
                 'placeholder'=>'Email',
                 'data-bind'=>'value: email'
              )))
-            ->add('file','file',array('label'=>'Imagen','attr'=>array(
-                'class'=>'form-control placeholder',
-                'placeholder'=>'Imagen usuario',
-                'data-bind'=>'value: imagen usuario'
+            ->add('file','file',array('label'=>'Imagen',
+                'required'=>false,
+                'attr'=>array(
+                    'class'=>'form-control placeholder',
+                    'placeholder'=>'Imagen usuario',
+                    'data-bind'=>'value: imagen usuario'
              )))    
-            ->add('ciudad')
-            ->add('biografia')
-            ->add('serMadre')
+            ->add('ciudad','text',array('label'=>'Ciudad','attr'=>array(
+                'class'=>'validate[required] form-control placeholder',
+                'placeholder'=>'Ciudad',
+                'data-bind'=>'value: ciudad'
+             )))
+            ->add('biografia',null,array('label'=>'Biografia','attr'=>array(
+                'class'=>'validate[required] form-control placeholder',
+                'placeholder'=>'Biografia',
+                'data-bind'=>'value: biografia'
+             )))
+            ->add('serMadre',null,array('label'=>'Ser madre','attr'=>array(
+                'class'=>'validate[required] form-control placeholder',
+                'placeholder'=>'Ser madre',
+                'data-bind'=>'value: sermadre'
+             )))
+            ->add('rol')    
             ->add('salt','hidden')
             ->add('imagen','hidden')
         ;

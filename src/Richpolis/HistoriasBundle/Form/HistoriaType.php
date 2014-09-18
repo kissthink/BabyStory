@@ -15,8 +15,17 @@ class HistoriaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('historia')
-            ->add('fecha')
+            ->add('usuario',null,array('label'=>'Usuario','attr'=>array(
+                'class'=>'validate[required] form-control placeholder',
+                'placeholder'=>'Usuario',
+                'data-bind'=>'value: usuario'
+             )))    
+            ->add('historia',null,array('label'=>'Historia','attr'=>array(
+                'class'=>'validate[required] form-control placeholder',
+                'placeholder'=>'Historia',
+                'data-bind'=>'value: historia'
+             )))
+            ->add('fecha',null,array('label'=>'Fecha historia'))
         ;
     }
     

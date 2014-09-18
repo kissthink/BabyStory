@@ -1,0 +1,60 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Username
+            </th>
+            <th>
+                Ciudad
+            </th>
+            <th>
+                Email
+            </th>
+             <th>
+                Biografia
+            </th>
+             <th>
+                Ser madre
+            </th>
+            <th>
+                Alta
+            </th>
+             <th>
+                Actualizacion
+            </th>
+            <th>
+                Permiso
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for usuario in usuarios %}
+            <tr>
+                <td>
+                    {{ usuario.username }}
+                </td>
+                <td>
+                    {{ usuario.ciudad }}
+                </td>
+                <td>
+                    {{ usuario.email }}
+                </td>
+                <td>
+                    {{ usuario.biografia }}
+                </td>
+                <td>
+                    {{ usuario.serMadre }}
+                </td>
+                <td>
+                    {{ usuario.createdAt | date('d-m-Y') }}
+                </td>
+                <td>
+                    {{ usuario.updatedAt | date('d-m-Y') }}
+                </td>
+                <td>
+                    {{ usuario.rol[0]}}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody> 
+</table>

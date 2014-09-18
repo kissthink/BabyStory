@@ -1,36 +1,67 @@
-{% extends '::base.html.twig' %}
+{% extends '::admin.html.twig' %}
 
 {% block body -%}
-    <h1>Historia</h1>
-
-    <table class="record_properties">
+    <div class="container">
+    <h2>Historia</h2>
+    <table class=" table table-striped"> 
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Usuario</th>
+            <th>Fecha</th>
+            <th>Historia</th>
+        </tr>
+     </thead>
+     <tbody>
+            <tr>
+                <td>{{entity.id }}</td>
+                <td>{{entity.usuario }}</td>
+                <td>{{entity.fecha | date('d-m-Y')}}</td>
+                <td>{{entity.historia}}</td>
+            </tr>
+     </tbody>   
+    </table>
+    {% if entity.componentes | length > 0%}        
+    <h1>Elementos de la historia</h1>
+    <table class="record_properties table table-striped">
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Mama/Hijo</th>
+                <th>Elemento</th>
+            </tr>
+            
+        </thead>
         <tbody>
+            {% for componente in entity.componentes %}
             <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
+                <td>{{componente.tipo}}</td>
+                <td>
+                    {{componente.tipoUsuario }}
+                </td>
+                <td>
+                    {{componente.componente}}
+                </td>
             </tr>
-            <tr>
-                <th>Historia</th>
-                <td>{{ entity.historia }}</td>
-            </tr>
-            <tr>
-                <th>Fecha</th>
-                <td>{{ entity.fecha|date('Y-m-d H:i:s') }}</td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
-
-        <ul class="record_actions">
+    {% endif %}
+</div>
+<p> &nbsp; </p>
+<div class="container text-center">            
+<ul class="record_actions list-inline">
     <li>
-        <a href="{{ path('historias') }}">
-            Back to the list
+        <a href="{{ path('historias') }}" class="btn btn-primary">
+            Regresar
         </a>
     </li>
     <li>
-        <a href="{{ path('historias_edit', { 'id': entity.id }) }}">
-            Edit
+        <a href="{{ path('historias_edit', { 'id': entity.id }) }}" class="btn btn-success">
+            Editar
         </a>
     </li>
     <li>{{ form(delete_form) }}</li>
 </ul>
+</div>    
 {% endblock %}

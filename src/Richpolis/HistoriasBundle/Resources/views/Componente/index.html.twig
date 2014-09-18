@@ -1,47 +1,86 @@
-{% extends '::base.html.twig' %}
+{% extends '::admin.html.twig' %}
 
 {% block body -%}
-    <h1>Componente list</h1>
+    {% include 'FrontendBundle:Default:navegador.html.twig' with {'tabActive': 'hijos' } %}
+    <div class="tab-content">
+        <div id="hijos" class="tab-pane active">
+            <div class="container text-left">
+                <form action="{{path('hijos')}}" class="navbar-form navbar-left pull-center" role="search">
+                    <div class="form-group">
+                        <input class="form-control" placeholder="Buscar Hijo" type="text" name="buscar">
+                    </div>
+                    <button type="submit" class="btn btn-default">
+                        Buscar
+                    </button>
+                </form>
+            </div>
+            <div class="container text-center">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">
+                        Hijos
+                    </div>
+                    <!-- Table -->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th class="text-center">
+                                Papa/Mama
+                            </th>
+                            <th class="text-center">
+                                Nombre
+                            </th>
+                            <th class="text-center">
+                                Apodo
+                            </th>
+                            <th class="text-center">
+                                Imagen
+                            </th>
+                            <th class="text-center">
+                                Accion
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for hijo in pagination %}
+                        <tr>
+                            <td>
+                                {{ hijo.papa }}
+                            </td>
+                            <td>
+                                {{ hijo.nombre }}
+                            </td>
+                            <td>
+                                {{ hijo.apodo }}
+                            </td>
+                            <td>
+                                <img src="{{ hijo.webPath }}" style="max-width: 120px;" />
+                            </td>
+                            <td>
+                                <a href="{{ url('hijos_show', { 'id' : hijo.id }) }}" class="btn btn-success">Ver</a>
+                                <a href="{{ url('hijos_edit', { 'id' : hijo.id }) }}" class="btn btn-info">Editar</a>
+                                <!--a href="javascript: if (confirm('Desea elminar el hijo seleccionado?')) { location.href='{{ url('hijos_delete', { 'id' : hijo.id }) }}';}" class="btn btn-danger">Eliminar</a-->
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="container">
+                    <a href="{{ path('hijos_new') }}" class="btn btn-primary pull-left">Nuevo Hijo</a>
+                    <a href="{{ path('hijos_export') }}" class="btn btn-default pull-right">Exportar</a>
+                </div>
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="container text-center">
+        <h5>
+            Baby Story
+        </h5>
+    </div>
+{% endblock %}
 
-    <table class="records_list">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Tipo</th>
-                <th>Componente</th>
-                <th>Tipousuario</th>
-                <th>Position</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('componentes_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.tipo }}</td>
-                <td>{{ entity.componente }}</td>
-                <td>{{ entity.tipoUsuario }}</td>
-                <td>{{ entity.position }}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('componentes_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('componentes_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-        <ul>
-        <li>
-            <a href="{{ path('componentes_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endblock %}

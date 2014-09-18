@@ -1,0 +1,48 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Usuario
+            </th>
+            <th>
+                Fecha historia
+            </th>
+            <th>
+                Historia
+            </th>
+            <th>
+                Alta
+            </th>
+             <th>
+                Actualizacion
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for historia in historias %}
+            <tr>
+                <td>
+                    {{ historia.id }}
+                </td>
+                <td>
+                    {{ historia.usuario }}
+                </td>
+                <td>
+                    {{ historia.fecha | date('d-m-Y') }}
+                </td>
+                <td>
+                    {{ historia.historia }}
+                </td>
+                <td>
+                    {{ historia.createdAt | date('d-m-Y') }}
+                </td>
+                <td>
+                    {{ historia.updatedAt | date('d-m-Y') }}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody> 
+</table>

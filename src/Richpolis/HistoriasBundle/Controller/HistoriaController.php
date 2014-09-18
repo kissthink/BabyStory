@@ -25,15 +25,22 @@ class HistoriaController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('HistoriasBundle:Historia')->findAll();
-
-        return array(
-            'entities' => $entities,
+        $buscar = $request->get('buscar','');
+        if(strlen($buscar)>0){
+                $options = array('filterParam'=>'buscar','filterValue'=>$buscar);
+        }else{
+                $options = array();
+        }
+        $query = $em->getRepository('HistoriasBundle:Historia')->queryFindHistorias($buscar);
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+                $query, $this->get('request')->query->get('page', 1),10, $options 
         );
+
+        return compact('pagination');
     }
     /**
      * Creates a new Historia entity.
@@ -76,7 +83,7 @@ class HistoriaController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        //$form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
@@ -102,7 +109,7 @@ class HistoriaController extends Controller
     /**
      * Finds and displays a Historia entity.
      *
-     * @Route("/{id}", name="historias_show")
+     * @Route("/{id}", name="historias_show", requirements={"id": "\d+"})
      * @Method("GET")
      * @Template()
      */
@@ -146,7 +153,7 @@ class HistoriaController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -165,7 +172,7 @@ class HistoriaController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        //$form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
@@ -198,7 +205,7 @@ class HistoriaController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -240,8 +247,27 @@ class HistoriaController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('historias_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array('label' => 'Delete','attr'=>array('class'=>'btn btn-danger')))
             ->getForm()
         ;
+    }
+    
+    /**
+     * Exporta la lista completa de usuarios.
+     *
+     * @Route("/exportar", name="historias_export")
+     * @Method("GET")
+     */
+    public function exportarAction() {
+        $historias = $this->getDoctrine()
+                ->getRepository('HistoriasBundle:Historia')
+                ->findHistorias();
+
+        $response = $this->render(
+                'HistoriasBundle:Historia:list.xls.twig', array('historias' => $historias)
+        );
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename="export-historias.xls"');
+        return $response;
     }
 }

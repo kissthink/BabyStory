@@ -3,14 +3,17 @@
 namespace Richpolis\UsuariosBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 
 /**
  * Usuario
  *
  * @ORM\Table(name="usuarios")
+ * @UniqueEntity("email")
  * @ORM\Entity(repositoryClass="Richpolis\UsuariosBundle\Entity\UsuarioRepository")
  * @ORM\HasLifecycleCallbacks()
  */
@@ -99,7 +102,7 @@ class Usuario implements UserInterface, \Serializable
      */
     private $rol;
 	
-	/**
+    /**
      * Hijos del Usuario
      *
      * @ORM\OneToMany(targetEntity="Richpolis\UsuariosBundle\Entity\Hijo", mappedBy="papa")
@@ -119,6 +122,20 @@ class Usuario implements UserInterface, \Serializable
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
      */
     private $updatedAt;
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->rol = new \Doctrine\Common\Collections\ArrayCollection();
+        // may not be needed, see section on salt below
+        $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+    }
+    
+    public function __toString() {
+        return $this->username;
+    }
     
     /**
      * Get id
@@ -336,7 +353,7 @@ class Usuario implements UserInterface, \Serializable
      */
     public function serialize() {
         return \json_encode(
-                array($this->usuario, $this->password, $this->rol->toArray(), $this->salt, $this->id)
+                array($this->username, $this->password, $this->rol->toArray(), $this->salt, $this->id)
         );
     }
 
@@ -344,15 +361,9 @@ class Usuario implements UserInterface, \Serializable
      * @param $serialized
      */
     public function unserialize($serialized) {
-        list($this->usuario, $this->password, $this->rol, $this->salt, $this->id) = \json_decode($serialized);
+        list($this->username, $this->password, $this->rol, $this->salt, $this->id) = \json_decode($serialized);
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->rol = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+    
 
     /**
      * Add rol

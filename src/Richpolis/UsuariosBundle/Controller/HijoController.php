@@ -25,15 +25,22 @@ class HijoController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('UsuariosBundle:Hijo')->findAll();
-
-        return array(
-            'entities' => $entities,
+        $buscar = $request->get('buscar','');
+        if(strlen($buscar)>0){
+                $options = array('filterParam'=>'buscar','filterValue'=>$buscar);
+        }else{
+                $options = array();
+        }
+        $query = $em->getRepository('UsuariosBundle:Hijo')->queryFindHijos($buscar);
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+                $query, $this->get('request')->query->get('page', 1),10, $options 
         );
+
+        return compact('pagination');
     }
     /**
      * Creates a new Hijo entity.
@@ -76,7 +83,7 @@ class HijoController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        //$form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
@@ -102,7 +109,7 @@ class HijoController extends Controller
     /**
      * Finds and displays a Hijo entity.
      *
-     * @Route("/{id}", name="hijos_show")
+     * @Route("/{id}", name="hijos_show", requirements={"id": "\d+"})
      * @Method("GET")
      * @Template()
      */
@@ -146,7 +153,7 @@ class HijoController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -165,7 +172,7 @@ class HijoController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        //$form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
@@ -198,7 +205,7 @@ class HijoController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -240,8 +247,27 @@ class HijoController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('hijos_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array('label' => 'Eliminar','attr'=>array('class'=>'btn btn-danger')))
             ->getForm()
         ;
+    }
+    
+    /**
+     * Exporta la lista completa de hijos.
+     *
+     * @Route("/exportar", name="hijos_export")
+     * @Method("GET")
+     */
+    public function exportarAction() {
+        $hijos = $this->getDoctrine()
+                ->getRepository('UsuariosBundle:Hijo')
+                ->findHijos();
+
+        $response = $this->render(
+                'UsuariosBundle:Hijo:list.xls.twig', array('hijos' => $hijos)
+        );
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename="export-hijos.xls"');
+        return $response;
     }
 }

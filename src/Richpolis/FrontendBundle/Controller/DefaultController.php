@@ -40,11 +40,40 @@ class DefaultController extends Controller
      */
     public function recuperarAction(Request $request)
     {   
+        $sPassword = "";
+        $sUsuario = "";
         $msg = "";
         if($request->isMethod('POST')){
-            $msg = "Te llegara un mail con detalle de tu cuenta";
-			
+            $email = $request->get('email');
+            $usuario = $this->getDoctrine()->getRepository('UsuariosBundle:Usuario')
+                            ->findOneBy(array('email'=>$email));
+            if(!$usuario){
+                $this->get('session')->getFlashBag()->add(
+                    'error',
+                    'El email no esta registrado.'
+                );
+                return $this->redirect($this->generateUrl('recuperar'));
+            }else{
+                $sPassword = substr(md5(time()), 0, 7);
+                $sUsuario = $usuario->getUsuario();
+                $encoder = $this->get('security.encoder_factory')
+                            ->getEncoder($usuario);
+                $passwordCodificado = $encoder->encodePassword(
+                            $sPassword, $usuario->getSalt()
+                );
+                $usuario->setPassword($passwordCodificado);
+                $this->getDoctrine()->getManager()->flush();
+                
+                $this->get('session')->getFlashBag()->add(
+                    'notice',
+                    'Se ha enviado un correo con la nueva contraseña.'
+                );
+                
+                $this->enviarRecuperar($sUsuario, $sPassword, $usuario);
+                $msg = "Te llegara un mail con detalle de tu cuenta";   
+            }
         }
+
         return array('msg'=>$msg);
     }
     
@@ -65,29 +94,12 @@ class DefaultController extends Controller
                 $this->setSecurePassword($usuario);
                 $em->persist($usuario);
                 $em->flush();
-                
-                $ninos = $request->get('ninos',0);
-                $ninas += $request->get('ninas',0);
-                $cont = ($ninos + $ninas);
-                $arreglo = array();
-                for($i = 0; $i<$cont;$i++  ){
-                    if(($ninos-1)>0){
-                      $nino = new Hijo();
-                      $nino->setPapa($usuario);
-                      $nino->setApodo("Niño " + $i);
-                      $em->persist($nino);
-                      $em->flush();
-                      $ninos -= 1;
-                    }else if(($ninas-1)>0){
-                      $nino = new Hijo();
-                      $nino->setPapa($usuario);
-                      $nino->setApodo("Niña " + ($ninas - $i));
-                      $em->persist($nino);
-                      $em->flush();
-                      $ninas -= 1;  
-                    }
+                $cont = $this->crearHijos($usuario, $request->get('ninos',0), $request->get('ninas',0));
+                if($cont > 0 ){
+                    return $this->redirect($this->generateUrl('registroHijos'));
+                }else{
+                    return $this->redirect($this->generateUrl('login'));
                 }
-                
             }
         }
         return array(
@@ -98,7 +110,7 @@ class DefaultController extends Controller
     
     /**
      * @Route("/editar",name="editar")
-     * @Template('FrontendBundle:Default:registro.html.twig')
+     * @Template("FrontendBundle:Default:registro.html.twig")
      * @Method({"GET","PUT"})
      */
     public function editarAction(Request $request)
@@ -129,9 +141,40 @@ class DefaultController extends Controller
         );
     }
     
+    /**
+     * @Route("/registro/hijos",name="registro_hijos")
+     * @Template()
+     * @Method({"GET","POST"})
+     */
+    public function registroHijosAction(Request $request)
+    {
+        $usuario = new Hijo();
+        $form = $this->createForm( new UsuarioType(), $usuario);
+        $isNew = true;
+        if($request->isMethod('POST')){
+            $form->handleRequest();
+            if($form->isValid()){
+                $em = $this->getDoctrine()->getManager();
+                $this->setSecurePassword($usuario);
+                $em->persist($usuario);
+                $em->flush();
+                $cont = $this->crearHijos($usuario, $request->get('ninos',0), $request->get('ninas',0));
+                 
+                if($cont > 0 ){
+                    return $this->redirect($this->generateUrl('registroHijos'));
+                }else{
+                    return $this->redirect($this->generateUrl('login'));
+                }
+            }
+        }
+        return array(
+            'form'  =>  $form->createView(),
+            'isNew' =>  true,
+        );
+    }
     
 	
-	/**
+    /**
      * @Route("/login", name="login")
      * @Template()
      */
@@ -161,7 +204,7 @@ class DefaultController extends Controller
         );
     }
 	
-	/**
+    /**
      * @Route("/login_check", name="login_check")
      */
     public function securityCheckAction()
@@ -184,5 +227,42 @@ class DefaultController extends Controller
                     $entity->getSalt()
         );
         $entity->setPassword($passwordCodificado);
+    }
+    
+    private function enviarRecuperar($sUsuario, $sPassword, Usuario $usuario, $isNew = false) {
+        $asunto = 'Se ha reestablecido su contraseña';
+        $message = \Swift_Message::newInstance()
+                ->setSubject($asunto)
+                ->setFrom('noreply@babystory.com')
+                ->setTo($usuario->getEmail())
+                ->setBody(
+                        $this->renderView('FrontendBundle:Default:enviarRegistro.html.twig', 
+                                compact('usuario','sUsuario','sPassword','isNew','asunto')), 
+                                'text/html'
+                        );
+        $this->get('mailer')->send($message);
+    }
+    
+    private function crearHijos(Usuario $usuario, $ninos, $ninas){
+        $cont = ($ninos + $ninas);
+        $arreglo = array();
+        for ($i = 0; $i < $cont; $i++) {
+            if (($ninos - 1) > 0) {
+                $nino = new Hijo();
+                $nino->setPapa($usuario);
+                $nino->setApodo("Niño " + $i);
+                $em->persist($nino);
+                $em->flush();
+                $ninos -= 1;
+            } else if (($ninas - 1) > 0) {
+                $nino = new Hijo();
+                $nino->setPapa($usuario);
+                $nino->setApodo("Niña " + ($ninas - $i));
+                $em->persist($nino);
+                $em->flush();
+                $ninas -= 1;
+            }
+        }
+        return $cont;
     }
 }

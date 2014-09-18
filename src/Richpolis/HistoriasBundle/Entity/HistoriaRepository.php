@@ -12,4 +12,26 @@ use Doctrine\ORM\EntityRepository;
  */
 class HistoriaRepository extends EntityRepository
 {
+    public function queryFindHistorias($buscar = "")
+    {
+        $em = $this->getEntityManager();
+        if(strlen($buscar)==0){
+            $consulta = $em->createQuery('SELECT a '
+                . 'FROM HistoriasBundle:Historia a '
+                . 'ORDER BY a.fecha ASC');
+        }else{
+            $consulta = $em->createQuery("SELECT a "
+                . "FROM HistoriasBundle:Historia a "
+                . "WHERE a.historia LIKE :historia  "
+                . "ORDER BY a.historia ASC");
+            $consulta->setParameters(array(
+                'historia' => "%".$buscar."%",
+            ));
+        }
+        return $consulta;
+    }
+    
+    public function findHistorias($buscar = ""){
+        return $this->queryFindHistorias($buscar)->getResult();
+    }
 }

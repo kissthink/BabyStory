@@ -12,5 +12,30 @@ use Doctrine\ORM\EntityRepository;
  */
 class HijoRepository extends EntityRepository
 {
+    public function queryFindHijos($buscar = "")
+    {
+        $em = $this->getEntityManager();
+        if(strlen($buscar)==0){
+            $consulta = $em->createQuery('SELECT a,p '
+                . 'FROM UsuariosBundle:Hijo a '
+                . 'JOIN a.papa p '    
+                . 'ORDER BY a.nombre ASC, p.username ASC');
+        }else{
+            $consulta = $em->createQuery("SELECT a,p "
+                . "FROM UsuariosBundle:Hijo a "
+                . "JOIN a.papa p "
+                . "WHERE a.nombre LIKE :nombre OR a.apodo LIKE :apodo OR p.username LIKE :username  "
+                . "ORDER BY a.nombre ASC, p.username ASC");
+            $consulta->setParameters(array(
+                'nombre' => "%".$buscar."%",
+                'apodo' => "%".$buscar."%",
+                'username' => "%".$buscar."%"
+            ));
+        }
+        return $consulta;
+    }
     
+    public function findHijos($buscar = ""){
+        return $this->queryFindHijos($buscar)->getResult();
+    }
 }

@@ -90,6 +90,14 @@ class Hijo
      */
     private $updatedAt;
 
+    public function __toString() {
+        if($this->usarApodo){
+            return $this->getApodo();
+        }else{
+            return $this->getNombre();
+        }
+    }
+    
     /**
      * Get id
      *

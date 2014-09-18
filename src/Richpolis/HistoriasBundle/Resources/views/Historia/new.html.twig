@@ -1,15 +1,30 @@
-{% extends '::base.html.twig' %}
+{% extends '::admin.html.twig' %}
 
-{% block body -%}
-    <h1>Historia creation</h1>
-
-    {{ form(form) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('historias') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+{% block body %}
+<div class="container">
+    <h1>Editar historia</h1>
+    <form action="{{ path('historias_create') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_errors(form) }}
+         <fieldset>
+            <div class="form-group">
+                 {{ form_row(form.usuario) }}
+            </div>
+            <legend>Historia</legend>
+             <div class="form-group">
+                 {{ form_row(form.historia) }}
+             </div>
+             <div class="form-group">
+                 {{ form_row(form.fecha) }}
+             </div>
+        </fieldset>
+        <hr/>
+        
+        <div class="container">
+        <a href="{{path('historias')}}" class="btn btn-success">Regresar</a>
+        <input type="submit" class="btn btn-primary" name="botonGuardar" id="botonGuardar" value="Guardar"/>
+        </div>
+        {{ form_rest(form) }}
+    </form>
+</div>
 {% endblock %}
+

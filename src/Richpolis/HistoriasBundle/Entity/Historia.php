@@ -36,11 +36,22 @@ class Historia
      * @ORM\Column(name="fecha", type="date")
      */
     private $fecha;
+    
+    
+    /**
+     * @var \Richpolis\UsuariosBundle\Entity\Usuario
+     *
+     * @ORM\ManyToOne(targetEntity="Richpolis\UsuariosBundle\Entity\Usuario", inversedBy="historias")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
+     * })
+     */
+    private $usuario;
 
-	/**
+    /**
      * Componentes de la historia
      *
-     * @ORM\OneToMany(targetEntity="Richpolis\HistoriasBundle\Entity\Historia", mappedBy="historia")
+     * @ORM\OneToMany(targetEntity="Richpolis\HistoriasBundle\Entity\Componente", mappedBy="historia")
      */
     private $componentes;
     
@@ -58,6 +69,10 @@ class Historia
      */
     private $updatedAt;
     
+    
+    public function __toString() {
+        return "Historia " . $this->id;
+    }
     
     /**
      * Get id
@@ -128,7 +143,7 @@ class Historia
      * @param \Richpolis\HistoriasBundle\Entity\Historia $componentes
      * @return Historia
      */
-    public function addComponente(\Richpolis\HistoriasBundle\Entity\Historia $componentes)
+    public function addComponente(\Richpolis\HistoriasBundle\Entity\Componente $componentes)
     {
         $this->componentes[] = $componentes;
 
@@ -140,7 +155,7 @@ class Historia
      *
      * @param \Richpolis\HistoriasBundle\Entity\Historia $componentes
      */
-    public function removeComponente(\Richpolis\HistoriasBundle\Entity\Historia $componentes)
+    public function removeComponente(\Richpolis\HistoriasBundle\Entity\Componente $componentes)
     {
         $this->componentes->removeElement($componentes);
     }
@@ -226,5 +241,28 @@ class Historia
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param \Richpolis\UsuariosBundle\Entity\Usuario $usuario
+     * @return Historia
+     */
+    public function setUsuario(\Richpolis\UsuariosBundle\Entity\Usuario $usuario = null)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return \Richpolis\UsuariosBundle\Entity\Usuario 
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
     }
 }
