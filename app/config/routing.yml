@@ -3,8 +3,8 @@ backend:
     type:     annotation
     prefix:   /
 
-richpolis_frontend:
-    resource: "@RichpolisFrontendBundle/Controller/"
+frontend:
+    resource: "@FrontendBundle/Controller/"
     type:     annotation
     prefix:   /
 

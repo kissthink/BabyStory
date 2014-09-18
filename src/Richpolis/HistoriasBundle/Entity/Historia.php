@@ -4,6 +4,7 @@ namespace Richpolis\HistoriasBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * Historia
  *

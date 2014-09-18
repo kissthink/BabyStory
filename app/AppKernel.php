@@ -22,7 +22,7 @@ class AppKernel extends Kernel
 
             new Richpolis\UsuariosBundle\UsuariosBundle(),
             new Richpolis\HistoriasBundle\HistoriasBundle(),
-            new Richpolis\FrontendBundle\RichpolisFrontendBundle(),
+            new Richpolis\FrontendBundle\FrontendBundle(),
             new Richpolis\BackendBundle\BackendBundle(),
         );
 
