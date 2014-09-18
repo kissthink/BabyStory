@@ -33,7 +33,7 @@ class Componente
     /**
      * @var string
      *
-     * @ORM\Column(name="componente", type="text")
+     * @ORM\Column(name="componente", type="text", nullable=true)
      */
     private $componente;
 

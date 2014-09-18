@@ -14,12 +14,11 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Richpolis\BackendBundle\Entity\Usuario;
+use Richpolis\UsuariosBundle\Entity\Usuario;
 use Richpolis\UsuariosBundle\Entity\Roles;
 
 /**
  * Fixtures de la entidad Usuario.
- * Crea 500 usuarios de prueba con información muy realista.
  */
 class Usuarios extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
@@ -38,10 +37,10 @@ class Usuarios extends AbstractFixture implements OrderedFixtureInterface, Conta
     public function load(ObjectManager $manager)
     {
         // Obtener todas las ciudades de la base de datos
-        $rolAdmin = new Roles();
-        
-        $rolAdmin->setNombre('ROLE_ADMIN');
-        
+        $rolAdmin = $manager->getRepository("UsuariosBundle:Roles")->findOneBy(array("nombre"=>'ROLE_ADMIN'));
+		$rolUsuario = $manager->getRepository("UsuariosBundle:Roles")->findOneBy(array("nombre"=>'ROLE_USUARIO'));
+		
+		
         // usuario Richpolis 
         $richpolis = new Usuario();
         
@@ -52,8 +51,10 @@ class Usuarios extends AbstractFixture implements OrderedFixtureInterface, Conta
         $encoder = $this->container->get('security.encoder_factory')->getEncoder($richpolis);
         $passwordCodificado = $encoder->encodePassword($passwordEnClaro, $richpolis->getSalt());
         $richpolis->setPassword($passwordCodificado);
+		$richpolis->setCiudad("Ciudad de Mexico");
+		$richpolis->setBiografia("Sin datos");
+		$richpolis->setSerMadre("Sin datos");
         $richpolis->addRol($rolAdmin);
-        $manager->persist($rolAdmin);
         $manager->persist($richpolis);
         
             
@@ -68,11 +69,14 @@ class Usuarios extends AbstractFixture implements OrderedFixtureInterface, Conta
         $passwordCodificado = $encoder->encodePassword($passwordEnClaro, $usuarioAdmin->getSalt());
         $usuarioAdmin->setPassword($passwordCodificado);
         $usuarioAdmin->addRol($rolAdmin);
+		$usuarioAdmin->setCiudad("Ciudad de Mexico");
+		$usuarioAdmin->setBiografia("Sin datos");
+		$usuarioAdmin->setSerMadre("Sin datos");
         $manager->persist($usuarioAdmin);
-        
-        $rolUsuario = new Roles();
-        
-        // usuario Normal
+		$manager->flush();
+		
+
+		// usuario Normal
         $usuarioNormal = new Usuario();
         
         $usuarioNormal->setUsername('Usuario1');
@@ -83,7 +87,9 @@ class Usuarios extends AbstractFixture implements OrderedFixtureInterface, Conta
         $passwordCodificado = $encoder->encodePassword($passwordEnClaro, $usuarioNormal->getSalt());
         $usuarioNormal->setPassword($passwordCodificado);
         $usuarioNormal->addRol($rolUsuario);
-        $manager->persist($rolUsuiario);
+		$usuarioNormal->setCiudad("Ciudad de Mexico");
+		$usuarioNormal->setBiografia("Sin datos");
+		$usuarioNormal->setSerMadre("Sin datos");
         $manager->persist($usuarioNormal);
         $manager->flush();
     }

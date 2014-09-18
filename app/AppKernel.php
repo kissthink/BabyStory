@@ -24,7 +24,6 @@ class AppKernel extends Kernel
             new Richpolis\UsuariosBundle\UsuariosBundle(),
             new Richpolis\HistoriasBundle\HistoriasBundle(),
             new Richpolis\FrontendBundle\FrontendBundle(),
-            new Richpolis\BackendBundle\BackendBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

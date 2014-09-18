@@ -43,6 +43,7 @@ class DefaultController extends Controller
         $msg = "";
         if($request->isMethod('POST')){
             $msg = "Te llegara un mail con detalle de tu cuenta";
+			
         }
         return array('msg'=>$msg);
     }
