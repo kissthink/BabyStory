@@ -1,7 +1,7 @@
-Vía Pública on line Madero
+Vía Pública on line Baby Story
 ========================
 
-Bienvenidos a la aplicacion de Via Publica online Madero.
+Bienvenidos a la aplicacion Baby Story.
 
 1) Installing the Standard Edition
 ----------------------------------
@@ -30,25 +30,4 @@ O accesar a la siguiente direccion de su proyecto.
 
     http://localhost/path/to/symfony/app/web/config.php
 
-3) Configuraciones adicionales.
 
-### Configuracion de editor tinyMCE
-
-Ir a la siguiente ruta dentro de la carpeta del proyecto. 
-
-    app/config/config_prod.yml
-
-Cambiar la propiedad base_url por la direccion correcta: 
-
-    stfalcon_tinymce:
-            ...
-            base_url: "http://www.viamadero.com/" 
-
-4) Configurar las rutuas
-
-Hacer el cambio de las rutas de amazon "/apps/madero/web" por las de produccion.
-
-5) Crear carpeta de carga de imagenes con permisos de 777. 
-
-    /web/upload
-    /web/upload/galerias

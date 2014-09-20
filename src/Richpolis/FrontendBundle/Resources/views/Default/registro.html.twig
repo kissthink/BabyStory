@@ -1,56 +1,81 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
-   
 {% block contenido %}
-    <div id="fb-root"></div>
     <div class="row">
-        {% if error %}
-            <div class="col-xs-4 col-xs-offset-2 col-md-6 col-md-offset-2">{{ error.message | trans }}</div>
-        {% endif %}
-        {% for flashMessage in app.session.flashbag.get('notice') %}
-            <div class="col-xs-4 col-xs-offset-2 col-md-6 col-md-offset-2 flash-notice alert alert-success">
-              {{ flashMessage }}
-            </div>
-        {% endfor %}
-        {% for flashMessage in app.session.flashbag.get('error') %}
-            <div class="col-xs-4 col-xs-offset-2 col-md-6 col-md-offset-2 flash-notice alert alert-danger">
-              {{ flashMessage }}
-            </div>
-        {% endfor %}
         <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-            <form action="{{ path('login_check') }}" method="post">
-                <h2 class="form-signin-heading">
-                    Login <br/>
-                    <span class="form-signin-subheading">Ya tienes cuenta?</span>
-                </h2>
-                <input id="username" type="text" name="_username" value="{{ last_username }}" class="form-control" placeholder="Usuario" required autofocus>
-                <input id="password" type="password" name="_password" class="form-control" placeholder="Password" required>
-                <label class="checkbox remember-me">
-                    <input type="checkbox" id="remember_me" name="_remember_me"> Recordar
-                </label>
-                <button class="btn btn-block btn-lg btn-danger" type="submit">Entrar</button>
-            </form>
-        </div>    
+                 <h2 class="form-registro-encabezado text-center">
+                        Registro 
+                </h2>   
+                <form class="form-registro" role="form" action="{{path('registro')}}" method="post" enctype="multipart/form-data">
+                    <figure id="imagen-usuario">
+                        <img src="/images/sin-imagen-usuario.png"/>
+                        <figcaption>
+                            seleccionar imagen de perfil
+                        </figcaption>
+                    </figure>
+                    <span class="agregar">
+                        <input type="file" name="imagen" accept="image/*" capture="camera" style="display: none;"/>
+                    </span>
+                    <p>&nbsp;</p>
+                    <input type="text" name="usuario" class="form-control" placeholder="Usuario (requerido)" required autofocus>
+                    <input type="password" name="password" class="form-control" placeholder="Password (requerido)"  required>
+                    <input type="email" name="email" class="form-control" placeholder="Email (requerido)"  required>
+                    <input type="text" name="cuidad" class="form-control" placeholder="Cuidad o estado (opcional)">
+                    <textarea name="biografia" class="form-control" placeholder="Bio (opcional)"></textarea>
+                    <textarea name="ser_madre" class="form-control" placeholder="Ser madre es (requerido)" required></textarea>
+                    <p>&nbsp;</p>
+                    <h4>Tus hijos...</h4>
+                    <div class="agregarNinos row well">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-5 col-md-6">
+                                <div class="input-group">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-default restaNino" type="button" id="restaNino" data-input="ninos">-</button>
+                                  </span>
+                                  <input type="text" name="ninos" class="form-control" id="ninos" value="0" readonly="readonly">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-default sumaNino" type="button" id="sumaNino" data-input="ninos">+</button>
+                                  </span>
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-2 col-md-2">
+                                <p>Niños</p>
+                            </div>
+                            <div class="col-xs-3 col-sm-2 col-md-1">
+                                <a href="registroNinos.html">
+                                    <img class="flecha" src="img/fecha.png"/>
+                                </a>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-5 col-md-6">
+                                <div class="input-group">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-default restaNina" type="button" id="restaNina" data-input="ninas">-</button>
+                                  </span>
+                                  <input type="text" name="ninas" class="form-control" id="ninas" value="0"  readonly="readonly">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-default sumaNina" type="button" id="sumaNina" data-input="ninas">+</button>
+                                  </span>
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-sm-2 col-md-2">
+                                <p>Niñas</p>
+                            </div>
+                            <div class="col-xs-3 col-sm-2 col-md-1">
+                                <a href="registroNinos.html">
+                                    <img class="flecha" src="img/fecha.png"/>
+                                </a>
+                            </div>
+                        </div>    
+                    </div>
+                    
+                    <button class="btn btn-block btn-lg btn-danger" type="submit">Registro</button>
+                </form>
+         </div>
     </div>    
-    <p>&nbsp;</p>
-    <div class="row text-center ">
-        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 ">
-            <a href="{{ path('recuperar')}}" class="without-underline">No puede iniciar...haga click aqui &nbsp; <span class="glyphicon glyphicon-envelope"></span></a>
-        </div>
-    </div>
-    <p>&nbsp;</p>
-    <div class="row text-center">
-        <p class="text-left padding-izquierdo col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 ">O puedes logearte con:</p>
-        <p class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-            <a href="registro.html" onclick="Login()"/><span class="redes-sociales facebook">&nbsp;</span></a>
-            <a href="registro.html" ><span class="redes-sociales twitter">&nbsp;</span></a>
-            <a href="registro.html" ><span class="redes-sociales googleplus">&nbsp;</span></a>
-        </p>
-        <br/>
-        <p class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 ">
-            <a href="{{path('registro')}}"> no tienes cuenta? Registro</a>
-        </p>
-    </div>
+    
 {% endblock %}
 
 {% block javascripts %}

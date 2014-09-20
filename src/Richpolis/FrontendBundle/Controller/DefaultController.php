@@ -94,12 +94,12 @@ class DefaultController extends Controller
                 $this->setSecurePassword($usuario);
                 $em->persist($usuario);
                 $em->flush();
-                $cont = $this->crearHijos($usuario, $request->get('ninos',0), $request->get('ninas',0));
+                /*$cont = $this->crearHijos($usuario, $request->get('ninos',0), $request->get('ninas',0));
                 if($cont > 0 ){
                     return $this->redirect($this->generateUrl('registroHijos'));
-                }else{
+                }else{*/
                     return $this->redirect($this->generateUrl('login'));
-                }
+                //}
             }
         }
         return array(
