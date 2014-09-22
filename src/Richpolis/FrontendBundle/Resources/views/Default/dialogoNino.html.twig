@@ -1,0 +1,19 @@
+<div class="row dialogo dialogo-nino">
+    <div class="col-xs-9 col-xs-offset-1 col-sm-9 col-sm-offset-1 col-md-9">
+        <div class="comentarioNino row">
+            <p>
+                {{ componente.componente }}
+            </p>
+        </div>
+    </div>
+    <div class="col-xs-2 col-sm-2 col-md-2 text-center">
+        <span>{{ componente.hijo }}</span>
+        <figure class="dialogo-nino-imagen">
+            {% if componente.hijo.imagen | length > 0 %}
+                <img src="{{componente.hijo.webPath}}" width="100" height="100"/>    
+            {% else %}    
+                <img src="/images/sin-imagen-usuario.png"/>
+            {% endif %}
+        </figure>
+    </div>
+</div>

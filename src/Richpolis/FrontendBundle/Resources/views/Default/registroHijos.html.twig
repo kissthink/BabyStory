@@ -1,0 +1,86 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block contenido %}
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+            <h2 class="form-registro-encabezado text-center">
+                {{titulo}}
+            </h2>
+            {{form_errors(form)}}
+            <form id="formRegistroHijos" class="form-registro"  role="form" action="{% if isNew == true %} {{path('registro_hijos')}} {% else %} {{path('editar_hijos',{'id': hijo.id })}} {% endif %}" method="post" enctype="multipart/form-data">
+                <figure id="imagen-usuario">
+                    {% if hijo.imagen | length > 0 %}
+                    <img src="{{hijo.webPath}}" width="81" height="81"/>    
+                    {% else %}    
+                    <img src="/images/sin-imagen-usuario.png"/>
+                    {% endif %}
+                    <figcaption>
+                        seleccionar imagen de perfil
+                    </figcaption>
+                </figure>
+                </div>
+                <div class="form-group">
+                {{ form_row(form.file)}}
+                {{ form_row(form.file)}}
+                </div>    
+                <p>&nbsp;</p>
+                <div class="form-group">
+                {{ form_errors(form.nombre)}}
+                {{ form_row(form.nombre)}}
+                </div>
+                <div class="form-group">
+                {{ form_errors(form.apodo)}}
+                {{ form_row(form.apodo)}}
+                </div>
+                <div class="form-group">
+                {{ form_errors(form.usarApodo)}}
+                {{ form_row(form.usarApodo)}}
+                </div>
+                <br/>
+                <div class="form-group">
+                {{ form_errors(form.fechaNacimiento)}}
+                {{ form_row(form.fechaNacimiento)}}
+                </div>
+                <div class="form-group">
+                {{ form_errors(form.biografia)}}
+                {{ form_row(form.biografia)}}
+                </div>
+               <p>&nbsp;</p>
+                {{form_rest(form)}}                
+                <button class="btn btn-block btn-lg btn-danger" type="submit">Registro</button>
+            </form>
+                <div class="row controles">
+                    <div class="col-xs-2 col-sm-2 col-md-2"></div>
+                    <div class="col-xs-6 col-sm-6 col-md-6 text-center">
+                        <a href="#" onclick="javascript:saveChild();">
+                            <span class="glyphicon glyphicon-floppy-disk"></span>
+                        </a>
+                        {% if isNew == true %}
+                        <span class="glyphicon glyphicon-trash" style="color:gray;"></span>
+                        {% else %}
+                        <a href="#" onclick="javascript:deleteChild()">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>    
+                        {% endif %}
+                    </div>
+                    <div class="col-xs-2 col-sm-2 col-md-2"></div>
+                </div>
+                <p>&nbsp;</p>    
+        </div>
+    </div>    
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        function saveChild(){
+            $("#formRegistroHijos").submit();
+        }
+        function deleteChild(){
+            if(confirm("Desea eliminar el niño?")){
+                alert("eliminando al niño");
+            }
+        }
+    </script>
+{% endblock %}    

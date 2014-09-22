@@ -6,8 +6,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Richpolis\UsuariosBundle\Entity\Hijo;
+use Richpolis\UsuariosBundle\Form\DataTransformer\UsuarioToNumberTransformer;
 
-class HijoType extends AbstractType
+class HijoFrontendType extends AbstractType
 {
         /**
      * @param FormBuilderInterface $builder
@@ -15,6 +16,9 @@ class HijoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $em = $options['em'];
+        $usuarioTransformer = new UsuarioToNumberTransformer($em);
+        
         $builder
             ->add('nombre','text',array('label'=>'Nombre','attr'=>array(
                 'class'=>'validate[required] form-control placeholder',
@@ -26,18 +30,12 @@ class HijoType extends AbstractType
                 'placeholder'=>'Apodo',
                 'data-bind'=>'value: apodo'
              )))
-            ->add('usarApodo')
-            ->add('sexo','choice',array(
-                'label'=>'Es',
-                'empty_value'=>false,
-                'read_only'=> true,
-                'choices'=>  Hijo::getArraySexo(),
-                'preferred_choices'=>  Hijo::getPreferedSexo(),
-                'attr'=>array(
-                    'class'=>'validate[required] form-control placeholder',
-                    'placeholder'=>'Es',
-                    'data-bind'=>'value: es'
-                )))       
+            ->add('usarApodo',null,array('label'=>'Usar apodo?','attr'=>array(
+                'class'=>'checkbox-inline',
+                'placeholder'=>'Usar apodo',
+                'data-bind'=>'value: usarApodo'
+             )))
+            ->add('sexo','hidden')       
             ->add('fechaNacimiento',null,array('label'=>'Fecha nacimiento'))
             ->add('biografia',null,array('label'=>'Biografia','attr'=>array(
                 'class'=>'validate[required] form-control placeholder',
@@ -52,11 +50,7 @@ class HijoType extends AbstractType
                     'data-bind'=>'value: imagen usuario'
              )))  
             ->add('imagen','hidden')
-            ->add('papa',null,array('label'=>'Usuario','attr'=>array(
-                'class'=>'form-control',
-                'placeholder'=>'Usuario',
-                'data-bind'=>'value: usuario'
-             )))
+            ->add($builder->create('papa','hidden')->addModelTransformer($usuarioTransformer))
         ;
     }
     

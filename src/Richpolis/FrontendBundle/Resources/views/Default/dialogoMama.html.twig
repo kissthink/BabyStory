@@ -1,0 +1,19 @@
+<div class="row dialogo diagolo-papa">
+    <div class="col-xs-2 col-sm-2 col-md-2 text-center">
+        <span>Mama</span>
+        <figure class="dialogo-papa-imagen">
+            {% if app.user.imagen | length > 0 %}
+                <img src="{{app.user.webPath}}" width="100" height="100"/>    
+            {% else %}    
+                <img src="/images/sin-imagen-usuario.png"/>
+            {% endif %}
+        </figure>
+    </div>
+    <div class="col-xs-9 col-sm-9 col-md-9">
+        <div class="comentarioPapa row">
+            <p>
+                {{componente.componente}}
+            </p>
+        </div>
+    </div>
+</div>

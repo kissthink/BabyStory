@@ -123,6 +123,10 @@ class Usuario implements UserInterface, \Serializable
      */
     private $updatedAt;
     
+    public $ninos;
+    
+    public $ninas;
+    
     /**
      * Constructor
      */
@@ -131,6 +135,8 @@ class Usuario implements UserInterface, \Serializable
         $this->rol = new \Doctrine\Common\Collections\ArrayCollection();
         // may not be needed, see section on salt below
         $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+        $this->ninos = 0;
+        $this->ninas = 0;
     }
     
     public function __toString() {
@@ -431,6 +437,21 @@ class Usuario implements UserInterface, \Serializable
         return $this->hijos;
     }
     
+    public function setNinos($ninos){
+        $this->ninos=$ninos;
+    }
+    
+    public function setNinas($ninas){
+        $this->ninas = $ninas;
+    }
+    
+    public function getNinos(){
+        return $this->ninos;
+    }
+    
+    public function getNinas(){
+        return $this->ninas;
+    }
     
     /**
      * Set createdAt
@@ -528,7 +549,7 @@ class Usuario implements UserInterface, \Serializable
         } else {
             $this->imagen = 'initial';
         }
-        $directorio=$this->getUploadRootDir();
+        $directorio=$this->getUploadRootDir().'/';
         if(!file_exists($directorio)){
           mkdir($directorio, 0777);  
         }

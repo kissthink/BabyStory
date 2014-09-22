@@ -30,7 +30,7 @@ security:
             remember_me: true
             # login success redirecting options (read further below)
             always_use_default_target_path: true
-            default_target_path: /admin/usuarios
+            default_target_path: /inicio
             target_path_parameter: _target_path
             use_referer: false
         logout:
@@ -46,8 +46,9 @@ security:
         anonymous: true
 
     access_control:
-        - { path: ^/admin, roles: [ROLE_ADMIN] }
+        - { path: ^/h, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/registro, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/recuperar, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/*, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/*, roles: [ROLE_USUARIO] }
+        - { path: ^/admin, roles: [ROLE_ADMIN] }        

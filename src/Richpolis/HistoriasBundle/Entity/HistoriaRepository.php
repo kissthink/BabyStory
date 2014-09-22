@@ -3,6 +3,7 @@
 namespace Richpolis\HistoriasBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Richpolis\UsuariosBundle\Entity\Usuario;
 
 /**
  * HistoriaRepository
@@ -16,14 +17,14 @@ class HistoriaRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         if(strlen($buscar)==0){
-            $consulta = $em->createQuery('SELECT a '
-                . 'FROM HistoriasBundle:Historia a '
-                . 'ORDER BY a.fecha ASC');
+            $consulta = $em->createQuery('SELECT h '
+                . 'FROM HistoriasBundle:Historia h '
+                . 'ORDER BY h.fecha ASC');
         }else{
-            $consulta = $em->createQuery("SELECT a "
-                . "FROM HistoriasBundle:Historia a "
-                . "WHERE a.historia LIKE :historia  "
-                . "ORDER BY a.historia ASC");
+            $consulta = $em->createQuery("SELECT h "
+                . "FROM HistoriasBundle:Historia h "
+                . "WHERE h.historia LIKE :historia  "
+                . "ORDER BY h.historia ASC");
             $consulta->setParameters(array(
                 'historia' => "%".$buscar."%",
             ));
@@ -33,5 +34,51 @@ class HistoriaRepository extends EntityRepository
     
     public function findHistorias($buscar = ""){
         return $this->queryFindHistorias($buscar)->getResult();
+    }
+    
+    public function getCountHistoriasEnYears($year, Usuario $usuario)
+    {
+        $em = $this->getEntityManager();
+        $emConfig = $em->getConfiguration();
+        $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
+        $emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
+        $emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
+            $consulta = $em->createQuery(
+                "SELECT DISTINCT MONTH(h.fecha) as mes, COUNT(h.id) as cuantas "
+                . "FROM HistoriasBundle:Historia h "
+                . "JOIN h.usuario u "    
+                . "WHERE YEAR(h.fecha) =:year "
+                . "AND u.id=:usuario "    
+                . "ORDER BY mes ASC");
+            $consulta->setParameters(array(
+                'year'      =>  $year,
+                'usuario'   =>  $usuario->getId(),
+            ));
+        return $consulta->getResult();
+    }
+    
+    public function getHistoriasDelMes($year,$mes, Usuario $usuario)
+    {
+        $em = $this->getEntityManager();
+        $emConfig = $em->getConfiguration();
+        $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
+        $emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
+        $emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
+            $consulta = $em->createQuery(
+                "SELECT h, c, u, uh "
+                . "FROM HistoriasBundle:Historia h "
+                . "JOIN h.componentes c "
+                . "JOIN h.usuario u "
+                . "JOIN u.hijos uh "
+                . "WHERE YEAR(h.fecha) =:year "
+                . "AND MONTH(h.fecha)=:mes "
+                . "AND u.id=:usuario "    
+                . "ORDER BY h.fecha ASC");
+            $consulta->setParameters(array(
+                'year'  =>  $year,
+                'mes'   =>  $mes,
+                'usuario'   =>  $usuario->getId(),
+            ));
+        return $consulta->getResult();
     }
 }

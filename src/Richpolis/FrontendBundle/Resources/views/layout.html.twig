@@ -49,28 +49,23 @@
         <header id="header">
             <div class="sin-padding relative"  style="border: 1px solid transparent">
                 {% if app.user is not null %}
-                {% block usuario %}
-                    <div class="usuario dropdown">
-                        <button class="btn dropdown-toggle sr-only" type="button"
-                                id="dropdownMenu1" data-toggle="dropdown">
-                          <span class="glyphicon glyphicon-user"></span>
-                          <span class="caret"></span>
-                        </button>
-
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                          <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="#">Perfil</a>
-                          </li>
-                          <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="#">Hijos</a>
-                          </li>
-                          <li role="presentation" class="divider"></li>
-                          <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="#">Historias</a>
-                          </li>
-                        </ul>
-                    </div>
-                {% endblock %}
+                    {% block usuario %}
+                        <div class="usuario btn-group">
+                            <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+                              <span class="glyphicon glyphicon-user"></span>
+                              <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                              <li><a href="{{path('editar_usuario')}}">Perfil</a></li>
+                              <li class="divider"></li>
+                              {% for hijo in app.user.hijos %}
+                              <li><a href="{{path('editar_hijos',{'id': hijo.id})}}">{{hijo}}</a></li>
+                              {% endfor %}
+                              <li class="divider"></li>
+                              <li><a href="#">Historias</a></li>
+                            </ul>
+                        </div>
+                    {% endblock %}
                 {% endif %}
                 {% block logo %}    
                     <figure id="logo">
@@ -83,7 +78,7 @@
                 {% if app.user is not null %}
                 {% block session %}
                     <div class="cerrarSession">
-                        <a href="login.html">
+                        <a href="{{ path('logout') }}">
                         <span class="glyphicon glyphicon-remove"></span>
                         </a>
                     </div>

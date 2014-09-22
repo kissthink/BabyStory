@@ -37,6 +37,13 @@ class Historia
      */
     private $fecha;
     
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="clave", type="string",length=150, nullable=true)
+     */
+    private $clave;
+    
     
     /**
      * @var \Richpolis\UsuariosBundle\Entity\Usuario
@@ -69,6 +76,14 @@ class Historia
      */
     private $updatedAt;
     
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->componentes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->fecha = new \DateTime();
+    }
     
     public function __toString() {
         return "Historia " . $this->id;
@@ -129,13 +144,7 @@ class Historia
     {
         return $this->fecha;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->componentes = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+
 
     /**
      * Add componentes
@@ -264,5 +273,9 @@ class Historia
     public function getUsuario()
     {
         return $this->usuario;
+    }
+    
+    public function getWebLink(){
+        return "/h/".$this->getClave();
     }
 }
