@@ -99,11 +99,7 @@ class DefaultController extends Controller
                     ));
                     return $response;
                 }else{
-                    $form = $this->createForm(new HistoriaFrontendType(), new Historia(),array(
-                        'action' => $this->generateUrl('crear_historia'),
-                        'method' => 'POST',
-                        'attr'=>array('id'=>'formCrearHistoria'),
-                    ));
+                    return $this->redirect($this->generateUrl('editar_historia',array('id'=>$historia->getId())));
                 }
             }
         }
@@ -118,6 +114,24 @@ class DefaultController extends Controller
             'form'      =>  $form->createView(),
             'historia'  =>  $historia,
             'isNew'     =>  true,
+        );
+    }
+	
+	/**
+     * @Route("/editar/historia/{id}",name="editar_historia")
+     * @Template()
+     * @Method({"GET","POST"})
+     */
+    public function editarHistoriaAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+		$historia = $em->getRepository('HistoriasBundle:Historia')->find($id);
+		if(!$historia){
+			return $this->redirect($this->generateUrl('homepage'));
+		}
+        
+        return array(
+            'historia'  =>  $historia,
         );
     }
     

@@ -82,9 +82,39 @@ class Componente
     private $position;
 
 	
+    const TIPO_IMAGEN=1;
+    const TIPO_VIDEO=2;
+    const TIPO_LINK=3;
+    const TIPO_MUSICA=4;
+    const TIPO_FLASH=5;
+	const TIPO_DIALOGO=5;
+        
+    static public $sTipo=array(
+        self::TIPO_IMAGEN=>'Imagen',
+        self::TIPO_VIDEO=>'Video',
+        self::TIPO_LINK=>'Link',
+        self::TIPO_MUSICA=>'Musica',
+        self::TIPO_FLASH=>'Flash',
+		sefl::TIPO_DIALOGO=>'Dialogo',
+    );
     
-    
+	public function getStringTipoCategoria(){
+        return self::$sTipoCategoria[$this->getTipoCategoria()];
+    }
 
+    static function getArrayTipo(){
+        return self::$sTipo;
+    }
+
+    static function getPreferedTipo(){
+        return array(self::TIPO_DIALOGO);
+    }
+	
+	public function __construct(){
+		$this->tipo = self::TIPO_DIALOGO;
+	}
+	
+	
     /**
      * Get id
      *
