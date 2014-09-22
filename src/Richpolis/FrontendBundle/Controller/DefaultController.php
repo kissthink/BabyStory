@@ -143,7 +143,7 @@ class DefaultController extends Controller
                 return $this->redirect($this->generateUrl('recuperar'));
             }else{
                 $sPassword = substr(md5(time()), 0, 7);
-                $sUsuario = $usuario->getUsuario();
+                $sUsuario = $usuario->getUsername();
                 $encoder = $this->get('security.encoder_factory')
                             ->getEncoder($usuario);
                 $passwordCodificado = $encoder->encodePassword(
@@ -176,7 +176,7 @@ class DefaultController extends Controller
         $form = $this->createForm( new UsuarioFrontendType(), $usuario);
         $isNew = true;
         if($request->isMethod('POST')){
-            $parametros = $request->all();
+            $parametros = $request->request->all();
             $form->handleRequest($request);
             if($form->isValid()){
                 $em = $this->getDoctrine()->getManager();
@@ -228,9 +228,11 @@ class DefaultController extends Controller
         $form = $this->createForm( new UsuarioFrontendType(), $usuario);
         $isNew = false;
         if($request->isMethod('PUT')){
-            $form->handleRequest();
             //obtiene la contraseña
             $current_pass = $usuario->getPassword();
+			
+			$form->handleRequest($request);
+			
             if($form->isValid()){
                 
                 if (null == $usuario->getPassword()) {
@@ -276,8 +278,8 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('login'));
         }
         
-        $form = $this->createForm( new HijoFrontendType(), $hijo,array(
-            'action' => $this->generateUrl('registro_hijos'),
+        $form = $this->createForm( new HijoFrontendType(), $hijo, array(
+            'action' => $this->generateUrl('registro_hijos', array('id' => $hijo->getId())),
             'method' => 'POST',
             'em'=>$this->getDoctrine()->getManager(),
         ));
@@ -286,6 +288,7 @@ class DefaultController extends Controller
             $form->handleRequest($request);
             if($form->isValid()){
                 $em = $this->getDoctrine()->getManager();
+				$hijo->setPapa($this->getUser());
                 if($isNew){
                     $em->persist($hijo);
                 }
@@ -293,7 +296,7 @@ class DefaultController extends Controller
                 if($isNew){
                     return $this->redirect($this->generateUrl('editar_usuario'));
                 }else{
-                    return $this->redirect($this->generateUrl('editar_hijo',array('id'=>$hijo->getId())));
+                    return $this->redirect($this->generateUrl('editar_hijos',array('id'=>$hijo->getId())));
                 }
                 
             }
@@ -302,14 +305,14 @@ class DefaultController extends Controller
         if($isNew){
             $titulo = ($es <= Hijo::NINO?'Registro niño':'Reistro niña');
         }else{
-            $titulo = ($es <= Hijo::NINO?'Editar registro niño':'Editar registro niña');
+            $titulo = ($hijo->getSexo() <= Hijo::NINO?'Editar registro niño':'Editar registro niña');
         }
         
         return array(
             'form'  =>  $form->createView(),
             'titulo' => $titulo,
             'hijo'  =>  $hijo,
-            'isNew' =>  true,
+            'isNew' =>  $isNew,
         );
     }
     

@@ -1,4 +1,4 @@
-Vía Pública on line Baby Story
+Aplicación Baby Story
 ========================
 
 Bienvenidos a la aplicacion Baby Story.

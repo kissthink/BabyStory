@@ -60,8 +60,14 @@ class HijoFrontendType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Richpolis\UsuariosBundle\Entity\Hijo'
-        ));
+            'data_class' => 'Richpolis\UsuariosBundle\Entity\Hijo',
+            ))
+            ->setRequired(array(
+                'em',
+            ))
+            ->setAllowedTypes(array(
+                'em' => 'Doctrine\Common\Persistence\ObjectManager',
+            ));
     }
 
     /**
