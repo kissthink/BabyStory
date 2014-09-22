@@ -87,7 +87,10 @@ class Componente
     const TIPO_LINK=3;
     const TIPO_MUSICA=4;
     const TIPO_FLASH=5;
-	const TIPO_DIALOGO=5;
+    const TIPO_DIALOGO=6;
+    
+    const TIPO_USUARIO_PAPA=1;
+    const TIPO_USUARIO_HIJO=2;
         
     static public $sTipo=array(
         self::TIPO_IMAGEN=>'Imagen',
@@ -95,7 +98,7 @@ class Componente
         self::TIPO_LINK=>'Link',
         self::TIPO_MUSICA=>'Musica',
         self::TIPO_FLASH=>'Flash',
-		sefl::TIPO_DIALOGO=>'Dialogo',
+        self::TIPO_DIALOGO=>'Dialogo',
     );
     
 	public function getStringTipoCategoria(){
@@ -110,9 +113,9 @@ class Componente
         return array(self::TIPO_DIALOGO);
     }
 	
-	public function __construct(){
-		$this->tipo = self::TIPO_DIALOGO;
-	}
+    public function __construct(){
+	$this->tipo = self::TIPO_DIALOGO;
+    }
 	
 	
     /**
@@ -302,12 +305,12 @@ class Componente
     {
         $this->file = $file;
         // check if we have an old image path
-        if (isset($this->imagen)) {
+        if (isset($this->componente)) {
             // store the old name to delete after the update
-            $this->temp = $this->imagen;
-            $this->imagen = null;
+            $this->temp = $this->componente;
+            $this->componente = null;
         } else {
-            $this->imagen = 'initial';
+            $this->componente = 'initial';
         }
         $directorio=$this->getUploadRootDir();
         if(!file_exists($directorio)){
@@ -334,7 +337,7 @@ class Componente
       if (null !== $this->getFile()) {
             // do whatever you want to generate a unique name
             $filename = sha1(uniqid(mt_rand(), true));
-            $this->imagen = $filename.'.'.$this->getFile()->guessExtension();
+            $this->componente = $filename.'.'.$this->getFile()->guessExtension();
         }
     }
 
@@ -351,7 +354,7 @@ class Componente
         // if there is an error when moving the file, an exception will
         // be automatically thrown by move(). This will properly prevent
         // the entity from being persisted to the database on error
-        $this->getFile()->move($this->getUploadRootDir(), $this->imagen);
+        $this->getFile()->move($this->getUploadRootDir(), $this->componente);
 
         // check if we have an old image
         if (isset($this->temp)) {
@@ -391,13 +394,30 @@ class Componente
      */
     public function getWebPath()
     {
-        return null === $this->imagen ? null : $this->getUploadDir().'/'.$this->imagen;
+        return null === $this->componente ? null : $this->getUploadDir().'/'.$this->componente;
     }
     
     public function getAbsolutePath()
     {
-        return null === $this->imagen ? null : $this->getUploadRootDir().'/'.$this->imagen;
+        return null === $this->componente ? null : $this->getUploadRootDir().'/'.$this->componente;
     }
     
-    
+    public function getTemplate(){
+        switch($this->getTipo()){
+            case self::TIPO_DIALOGO:
+                if($this->getTipoUsuario() == self::TIPO_USUARIO_PAPA){
+                    return 'FrontendBundle:Default:dialogoPapa.html.twig';
+                }else{
+                    return 'FrontendBundle:Default:dialogoNino.html.twig';
+                }
+            case self::TIPO_IMAGEN:
+                return 'FrontendBundle:Default:imagenNino.html.twig';
+            case self::TIPO_LINK:
+                return 'FrontendBundle:Default:videoNino.html.twig';
+            case self::TIPO_MUSICA:
+                return 'FrontendBundle:Default:musicaNino.html.twig';
+            default:
+                return 'FrontendBundle:Default:dialogoPapa.html.twig';
+        } 
+    }
 }

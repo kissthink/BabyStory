@@ -54,6 +54,16 @@ class Historia
      * })
      */
     private $usuario;
+    
+    /**
+     * @var \Richpolis\UsuariosBundle\Entity\Hijo
+     *
+     * @ORM\ManyToOne(targetEntity="Richpolis\UsuariosBundle\Entity\Hijo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="hijo_id", referencedColumnName="id")
+     * })
+     */
+    private $hijo;
 
     /**
      * Componentes de la historia
@@ -61,7 +71,6 @@ class Historia
      * @ORM\OneToMany(targetEntity="Richpolis\HistoriasBundle\Entity\Componente", mappedBy="historia")
      */
     private $componentes;
-
     
     
     /**
@@ -303,4 +312,5 @@ class Historia
     {
         return $this->clave;
     }
+    
 }

@@ -15,6 +15,8 @@ use Richpolis\UsuariosBundle\Form\HijoFrontendType;
 use Richpolis\HistoriasBundle\Form\HistoriaFrontendType;
 use Richpolis\HistoriasBundle\Entity\Historia;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Richpolis\HistoriasBundle\Entity\Componente;
+
 
 class DefaultController extends Controller
 {
@@ -447,5 +449,208 @@ class DefaultController extends Controller
         }
         
         return $meses;
+    }
+    
+    /**
+     * @Route("/dialogo/papa/{id}",name="dialogo_papa")
+     * @Method({"GET","POST"})
+     */
+    public function getDialogoPapa(Request $request, $id){
+        $em = $this->getDoctrine()->getManager();
+        $historia = $em->getRepository('HistoriasBundle:Historia')->find($id);
+        $componente = new Componente();
+        
+        $componente->setTipo(Componente::TIPO_DIALOGO);
+        $componente->setTipoUsuario(Componente::TIPO_USUARIO_PAPA);
+        $componente->setHistoria($historia);
+        $componente->setPapa($this->getUser());
+        
+        $form = $this->createFormBuilder($componente)
+            ->add('componente', 'text',array('label'=>'Dialogo','attr'=>array('class'=>'form-control')))
+            ->getForm();
+        
+        if($request->isMethod('POST')){
+            $form->handleRequest($request);
+            if($form->isValid()){
+                $em->persist($componente);
+                $em->flush();
+                $response = new JsonResponse(json_encode(array(
+                    'html'=>$this->renderView('FrontendBundle:Default:dialogoPapa.html.twig', array('componente'=>$componente)),
+                    'respuesta'=>'creado',
+                )));
+                return $response;
+            }
+        }
+        
+        $response = new JsonResponse(json_encode(array(
+            'form' => $this->renderView('FrontendBundle:Default:formComponente.html.twig', array(
+                'rutaAction' => $this->generateUrl('dialogo_papa',array('id'=>$historia->getId())),
+                'form'=>$form->createView(),
+             )),
+            'respuesta' => 'nuevo',
+        )));
+    }
+    
+    /**
+     * @Route("/dialogo/nino/{id}",name="dialogo_nino")
+     * @Method({"GET","POST"})
+     */
+    public function getDialogoNino(Request $request, $id){
+        $em = $this->getDoctrine()->getManager();
+        $historia = $em->getRepository('HistoriasBundle:Historia')->find($id);
+        $componente = new Componente();
+        
+        $componente->setTipo(Componente::TIPO_DIALOGO);
+        $componente->setTipoUsuario(Componente::TIPO_USUARIO_HIJO);
+        $componente->setHistoria($historia);
+        $componente->setPapa($this->getUser());
+        
+        $form = $this->createFormBuilder($componente)
+            ->add('hijo', null,array('label'=>'Niño(a)','attr'=>array('class'=>'form-control')))
+            ->add('componente', 'text',array('label'=>'Dialogo','attr'=>array('class'=>'form-control')))
+            ->getForm();
+        
+        if($request->isMethod('POST')){
+            $form->handleRequest($request);
+            if($form->isValid()){
+                $em->persist($componente);
+                $em->flush();
+                $response = new JsonResponse(json_encode(array(
+                    'html'=>$this->renderView('FrontendBundle:Default:dialogoNino.html.twig', array('componente'=>$componente)),
+                    'respuesta'=>'creado',
+                )));
+                return $response;
+            }
+        }
+        
+        $response = new JsonResponse(json_encode(array(
+            'form' => $this->renderView('FrontendBundle:Default:formComponente.html.twig', array(
+                'rutaAction' => $this->generateUrl('dialogo_nino',array('id'=>$historia->getId())),
+                'form'=>$form->createView(),
+             )),
+            'respuesta' => 'nuevo',
+        )));
+    }
+    
+    /**
+     * @Route("/imagen/nino/{id}",name="imagen_nino")
+     * @Method({"GET","POST"})
+     */
+    public function getImagenNino(Request $request, $id){
+        $em = $this->getDoctrine()->getManager();
+        $historia = $em->getRepository('HistoriasBundle:Historia')->find($id);
+        $componente = new Componente();
+        
+        $componente->setTipo(Componente::TIPO_IMAGEN);
+        $componente->setTipoUsuario(Componente::TIPO_USUARIO_PAPA);
+        $componente->setHistoria($historia);
+        $componente->setPapa($this->getUser());
+        
+        $form = $this->createFormBuilder($componente)
+            ->add('file', 'file',array('label'=>'Imagen','attr'=>array('class'=>'form-control')))
+            ->add('componente', 'hidden')
+            ->getForm();
+        
+        if($request->isMethod('POST')){
+            $form->handleRequest($request);
+            if($form->isValid()){
+                $em->persist($componente);
+                $em->flush();
+                $response = new JsonResponse(json_encode(array(
+                    'html'=>$this->renderView('FrontendBundle:Default:imagenNino.html.twig', array('componente'=>$componente)),
+                    'respuesta'=>'creado',
+                )));
+                return $response;
+            }
+        }
+        
+        $response = new JsonResponse(json_encode(array(
+            'form' => $this->renderView('FrontendBundle:Default:formComponente.html.twig', array(
+                'rutaAction' => $this->generateUrl('imagen_nino',array('id'=>$historia->getId())),
+                'form'=>$form->createView(),
+             )),
+            'respuesta' => 'nuevo',
+        )));
+    }
+    
+    /**
+     * @Route("/sonido/nino/{id}",name="sonido_nino")
+     * @Method({"GET","POST"})
+     */
+    public function getSonidoNino(Request $request, $id){
+        $em = $this->getDoctrine()->getManager();
+        $historia = $em->getRepository('HistoriasBundle:Historia')->find($id);
+        $componente = new Componente();
+        
+        $componente->setTipo(Componente::TIPO_MUSICA);
+        $componente->setTipoUsuario(Componente::TIPO_USUARIO_PAPA);
+        $componente->setHistoria($historia);
+        $componente->setPapa($this->getUser());
+        
+        $form = $this->createFormBuilder($componente)
+            ->add('file', 'file',array('label'=>'Sonido (mp3)','attr'=>array('class'=>'form-control')))
+            ->add('componente', 'hidden')
+            ->getForm();
+        
+        if($request->isMethod('POST')){
+            $form->handleRequest($request);
+            if($form->isValid()){
+                $em->persist($componente);
+                $em->flush();
+                $response = new JsonResponse(json_encode(array(
+                    'html'=>$this->renderView('FrontendBundle:Default:sonidoNino.html.twig', array('componente'=>$componente)),
+                    'respuesta'=>'creado',
+                )));
+                return $response;
+            }
+        }
+        
+        $response = new JsonResponse(json_encode(array(
+            'form' => $this->renderView('FrontendBundle:Default:formComponente.html.twig', array(
+                'rutaAction' => $this->generateUrl('sonido_nino',array('id'=>$historia->getId())),
+                'form'=>$form->createView(),
+             )),
+            'respuesta' => 'nuevo',
+        )));
+    }
+    
+    /**
+     * @Route("/video/link/nino/{id}",name="video_link_nino")
+     * @Method({"GET","POST"})
+     */
+    public function getVideoLinkNino(Request $request, $id){
+        $em = $this->getDoctrine()->getManager();
+        $historia = $em->getRepository('HistoriasBundle:Historia')->find($id);
+        $componente = new Componente();
+        
+        $componente->setTipo(Componente::TIPO_LINK);
+        $componente->setTipoUsuario(Componente::TIPO_USUARIO_PAPA);
+        $componente->setHistoria($historia);
+        $componente->setPapa($this->getUser());
+        
+        $form = $this->createFormBuilder($componente)
+            ->add('componente','text',array('label'=>'Link (youtube)','attr'=>array('class'=>'form-control')))
+            ->getForm();
+        
+        if($request->isMethod('POST')){
+            $form->handleRequest($request);
+            if($form->isValid()){
+                $em->persist($componente);
+                $em->flush();
+                $response = new JsonResponse(json_encode(array(
+                    'html'=>$this->renderView('FrontendBundle:Default:videoNino.html.twig', array('componente'=>$componente)),
+                    'respuesta'=>'creado',
+                )));
+                return $response;
+            }
+        }
+        
+        $response = new JsonResponse(json_encode(array(
+            'form' => $this->renderView('FrontendBundle:Default:formComponente.html.twig', array(
+                'rutaAction' => $this->generateUrl('video_nino',array('id'=>$historia->getId())),
+                'form'=>$form->createView(),
+             )),
+            'respuesta' => 'nuevo',
+        )));
     }
 }
