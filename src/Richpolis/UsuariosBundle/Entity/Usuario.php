@@ -108,6 +108,13 @@ class Usuario implements UserInterface, \Serializable
      * @ORM\OneToMany(targetEntity="Richpolis\UsuariosBundle\Entity\Hijo", mappedBy="papa")
      */
     private $hijos;
+
+    /**
+     * Historias del usuario
+     *
+     * @ORM\OneToMany(targetEntity="Richpolis\HistoriasBundle\Entity\Historia", mappedBy="usuario")
+     */
+    private $historias;
     
     /**
      * @var \DateTime
@@ -637,5 +644,38 @@ class Usuario implements UserInterface, \Serializable
     public function getAbsolutePath()
     {
         return null === $this->imagen ? null : $this->getUploadRootDir().'/'.$this->imagen;
+    }
+
+    /**
+     * Add historias
+     *
+     * @param \Richpolis\HistoriasBundle\Entity\Historia $historias
+     * @return Usuario
+     */
+    public function addHistoria(\Richpolis\HistoriasBundle\Entity\Historia $historias)
+    {
+        $this->historias[] = $historias;
+
+        return $this;
+    }
+
+    /**
+     * Remove historias
+     *
+     * @param \Richpolis\HistoriasBundle\Entity\Historia $historias
+     */
+    public function removeHistoria(\Richpolis\HistoriasBundle\Entity\Historia $historias)
+    {
+        $this->historias->removeElement($historias);
+    }
+
+    /**
+     * Get historias
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getHistorias()
+    {
+        return $this->historias;
     }
 }

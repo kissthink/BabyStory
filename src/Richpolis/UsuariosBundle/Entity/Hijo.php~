@@ -44,6 +44,13 @@ class Hijo
      * @ORM\Column(name="usarApodo", type="boolean")
      */
     private $usarApodo;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="sexo", type="integer")
+     */
+    private $sexo;
 
     /**
      * @var \DateTime
@@ -89,6 +96,34 @@ class Hijo
      * @ORM\Column(name="updated_at", type="datetime", nullable=false)
      */
     private $updatedAt;
+    
+    
+    const INDEFINIDO = 0;
+    const NINO = 1;
+    const NINA = 2;
+    
+    static public $sSexo=array(
+        self::INDEFINIDO=>'',
+        self::NINO=>'Niño',
+        self::NINA=>'Niña',
+    );
+    
+    public function __construct() {
+        $this->sexo= self::INDEFINIDO;
+        $this->usarApodo = true;
+    }
+    
+    public function getStringSexo(){
+        return self::$sSexo[$this->getSexo()];
+    }
+
+    static function getArraySexo(){
+        return self::$sSexo;
+    }
+
+    static function getPreferedSexo(){
+        return array(self::INDEFINIDO);
+    }
 
     public function __toString() {
         if($this->usarApodo){

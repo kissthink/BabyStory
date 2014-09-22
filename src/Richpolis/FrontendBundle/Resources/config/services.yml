@@ -1,6 +1,3 @@
-parameters:
-
-
 services:
     login_listener:
         class: Richpolis\FrontendBundle\Listener\LoginListener
@@ -13,8 +10,8 @@ services:
         class: Richpolis\FrontendBundle\Twig\TranslateDateExtension
         tags:
             - { name: twig.extension }
-            
+
     richpolis_frontend.twig.string_month_extension:
         class: Richpolis\FrontendBundle\Twig\StringMonthExtension
         tags:
-            - { name: twig.extension }        
+            - { name: twig.extension }

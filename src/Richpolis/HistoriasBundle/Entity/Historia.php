@@ -61,6 +61,8 @@ class Historia
      * @ORM\OneToMany(targetEntity="Richpolis\HistoriasBundle\Entity\Componente", mappedBy="historia")
      */
     private $componentes;
+
+    
     
     /**
      * @var \DateTime
@@ -277,5 +279,28 @@ class Historia
     
     public function getWebLink(){
         return "/h/".$this->getClave();
+    }
+
+    /**
+     * Set clave
+     *
+     * @param string $clave
+     * @return Historia
+     */
+    public function setClave($clave)
+    {
+        $this->clave = $clave;
+
+        return $this;
+    }
+
+    /**
+     * Get clave
+     *
+     * @return string 
+     */
+    public function getClave()
+    {
+        return $this->clave;
     }
 }

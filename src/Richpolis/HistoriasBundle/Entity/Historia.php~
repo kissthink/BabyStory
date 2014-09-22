@@ -37,6 +37,13 @@ class Historia
      */
     private $fecha;
     
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="clave", type="string",length=150, nullable=true)
+     */
+    private $clave;
+    
     
     /**
      * @var \Richpolis\UsuariosBundle\Entity\Usuario
@@ -54,6 +61,8 @@ class Historia
      * @ORM\OneToMany(targetEntity="Richpolis\HistoriasBundle\Entity\Componente", mappedBy="historia")
      */
     private $componentes;
+
+    
     
     /**
      * @var \DateTime
@@ -69,6 +78,14 @@ class Historia
      */
     private $updatedAt;
     
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->componentes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->fecha = new \DateTime();
+    }
     
     public function __toString() {
         return "Historia " . $this->id;
@@ -129,13 +146,7 @@ class Historia
     {
         return $this->fecha;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->componentes = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+
 
     /**
      * Add componentes
@@ -241,5 +252,32 @@ class Historia
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param \Richpolis\UsuariosBundle\Entity\Usuario $usuario
+     * @return Historia
+     */
+    public function setUsuario(\Richpolis\UsuariosBundle\Entity\Usuario $usuario = null)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return \Richpolis\UsuariosBundle\Entity\Usuario 
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+    
+    public function getWebLink(){
+        return "/h/".$this->getClave();
     }
 }

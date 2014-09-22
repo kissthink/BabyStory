@@ -489,4 +489,27 @@ class Hijo
     {
         return $this->updatedAt;
     }
+
+    /**
+     * Set sexo
+     *
+     * @param integer $sexo
+     * @return Hijo
+     */
+    public function setSexo($sexo)
+    {
+        $this->sexo = $sexo;
+
+        return $this;
+    }
+
+    /**
+     * Get sexo
+     *
+     * @return integer 
+     */
+    public function getSexo()
+    {
+        return $this->sexo;
+    }
 }

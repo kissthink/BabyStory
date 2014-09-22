@@ -26,6 +26,15 @@ class DefaultController extends Controller
     {
         return array();
     }
+
+    /**
+     * @Route("/busqueda",name="buscar_historias")
+     * @Template()
+     */
+    public function buscarHistoriasAction()
+    {
+        return array();
+    }
     
     /**
      * @Route("/inicio",name="homepage")
@@ -46,11 +55,11 @@ class DefaultController extends Controller
                               ->getCountHistoriasEnYears($year,$this->getUser());
         
         $meses = $this->getHistoriasPorMesParser($historiasPorMes);
-        
+       
         $form = $this->createForm(new HistoriaFrontendType(), new Historia(),array(
             'action' => $this->generateUrl('crear_historia'),
             'method' => 'POST',
-            'id'=>'formCrearHistoria',
+            'attr'=>array('id'=>'formCrearHistoria'),
         ));
         
         return array(
@@ -72,7 +81,7 @@ class DefaultController extends Controller
         $form = $this->createForm(new HistoriaFrontendType(), new Historia(),array(
             'action' => $this->generateUrl('crear_historia'),
             'method' => 'POST',
-            'id'=>'formCrearHistoria',
+            'attr'=>array('id'=>'formCrearHistoria'),
         ));
         $isNew = true;
         if($request->isMethod('POST')){
@@ -93,7 +102,7 @@ class DefaultController extends Controller
                     $form = $this->createForm(new HistoriaFrontendType(), new Historia(),array(
                         'action' => $this->generateUrl('crear_historia'),
                         'method' => 'POST',
-                        'id'=>'formCrearHistoria',
+                        'attr'=>array('id'=>'formCrearHistoria'),
                     ));
                 }
             }
@@ -401,6 +410,7 @@ class DefaultController extends Controller
  
     private function getHistoriasPorMesParser($mesesHistorias){
         $meses = array(
+            0=>array('nombre'=>'Sin mes','historias'=>0),
             1=>array('nombre'=>'Enero','historias'=>0),
             2=>array('nombre'=>'Febrero','historias'=>0),
             3=>array('nombre'=>'Marzo','historias'=>0),

@@ -82,7 +82,7 @@ class Componente
     private $position;
 
 	
-	
+    
     
 
     /**
@@ -368,4 +368,6 @@ class Componente
     {
         return null === $this->imagen ? null : $this->getUploadRootDir().'/'.$this->imagen;
     }
+    
+    
 }

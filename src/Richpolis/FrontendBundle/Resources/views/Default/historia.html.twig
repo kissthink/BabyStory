@@ -1,5 +1,5 @@
 <div class="row historia" id="historia-{{historia.id}}1">
-    <p class="col-md-12 fecha">{{ historia.fecha | translate_date }}</p>
+    <p class="col-md-12 fecha">{{ historia.fecha | date('Y-m-d') }}</p>
     <p class="col-md-12 contenido text-center">
     <div class="row" style="margin-bottom: .5em;">
         <div class="col-xs-2 col-sm-2 col-md-2 text-center">

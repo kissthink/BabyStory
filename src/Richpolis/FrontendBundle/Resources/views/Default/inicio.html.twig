@@ -13,7 +13,7 @@
                             <!--img src="http://placehold.it/100x100"/-->
                             <img src="/images/logo.png" style="max-width: 100px;"/>
                             <figcaption>
-                                <span class="bullet-redondo {% (item.historias > 0?'con-historia':'sin-historia') %}"></span>
+                                <span class="bullet-redondo {{ (item.historias > 0)?'con-historia':'sin-historia' }}"></span>
                                 <br/>
                                 {{ item.nombre }} {{yearActual}}
                             </figcaption>
@@ -45,7 +45,7 @@
             {% include 'FrontendBundle:Default:historia.html.twig' with {'historia': historia } %}
         {% else %}    
         <div class="row historia">
-            <p class="col-md-12 fecha">{{ "now"| date('d-m-Y')| translate_date }}</p>
+            <p class="col-md-12 fecha">{{ "now"| date('d-m-Y') }}</p>
             <p class="col-md-12 contenido text-center">
                 <span class="glyphicon glyphicon-inbox" style="font-size: 6em; color: grey; opacity: .5;"></span>
                 <br/>
@@ -112,7 +112,7 @@
             }
         {% else %}
             function editarRegistro(){
-               location.href = "{{path('editar')}}";
+               location.href = "{{path('editar_usuario')}}";
             }  
         {% endif %}   
 
