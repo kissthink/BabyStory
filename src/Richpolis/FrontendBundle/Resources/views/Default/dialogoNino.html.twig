@@ -12,7 +12,7 @@
             {% if componente.hijo.imagen | length > 0 %}
                 <img src="{{componente.hijo.webPath | imagine_filter('imagen_usuario')}}" width="100" height="100"/>    
             {% else %}    
-                <img src="/images/sin-imagen-usuario.png"/>
+                <img src="{{asset('images/sin-imagen-usuario.png')}}"/>
             {% endif %}
         </figure>
     </div>

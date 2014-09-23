@@ -3,20 +3,20 @@
 {% block stylesheets %}
     {{ parent() }}
   
-  <link rel="stylesheet" href="/css/jquery.bxslider.css"/>
+  <link rel="stylesheet" href="{{asset('css/jquery.bxslider.css')}}"/>
 {% endblock %}
 
 {% block contenido %}
     <div class="row timeline">
         <!-- hay que multiplicar por la cantidad de historias 200px de ancho -->
         <ul class="lista-timeline slider" style="width: 1000px;">
-            {% for key,item in meses %}
+            {% for key,item in meses if key > 0 %}
             <li class="item">
                 <div class="contenedor">
-                    <a href="{{path('historias')}}?month={{key}}&year={{yearActual}}">
+                    <a href="{{path('homepage')}}?month={{key}}&year={{yearActual}}">
                         <figure class="nino">
                             <!--img src="http://placehold.it/100x100"/-->
-                            <img src="/images/logo.png" style="max-width: 100px;"/>
+                            <img src="{{asset('images/logo.png')}}" style="max-width: 100px;"/>
                             <figcaption>
                                 <span class="bullet-redondo {{ (item.historias > 0)?'con-historia':'sin-historia' }}"></span>
                                 <br/>
@@ -115,7 +115,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="js/vendor/jquery.bxslider.min.js"></script>
+    <script src="{{asset('js/vendor/jquery.bxslider.min.js')}}"></script>
     <script type="text/javascript">
         var tipoComponente = "";
 		var historiaActual = 0;

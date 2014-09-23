@@ -38,8 +38,8 @@
 {% block stylesheets %}
     {{ parent() }}
   
-  <link rel="stylesheet" href="/css/main.css">
-  <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+  <link rel="stylesheet" href="{{asset('css/main.css')}}">
+  <script src="{{asset('js/vendor/modernizr-2.6.2-respond-1.1.0.min.js')}}"></script>
 {% endblock %}
 
 {% block body %}
@@ -76,7 +76,7 @@
                 {% block logo %}    
                     <figure id="logo">
                         <a href="{{ path('homepage')}}">
-                            <img src="{{asset('/images/logo.png')}}" alt="Baby Story"/>
+                            <img src="{{asset('images/logo.png')}}" alt="Baby Story"/>
                         </a>
                     </figure>
                 {% endblock %}
@@ -104,5 +104,5 @@
 
 {% block javascripts %}
   {{ parent() }}  
-  <script src="js/main.js"></script>
+  <script src="{{asset('js/main.js')}}"></script>
 {% endblock %}    

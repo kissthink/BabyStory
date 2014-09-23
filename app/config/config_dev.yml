@@ -30,7 +30,7 @@ assetic:
 swiftmailer:
     transport: gmail
     username:  richpolis@gmail.com
-    password:  sf2Galilea
+    password:  xxxxxxxxxx
 
 stfalcon_tinymce:
         include_jquery: true
