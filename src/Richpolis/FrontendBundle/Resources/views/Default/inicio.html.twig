@@ -11,7 +11,7 @@
         <!-- hay que multiplicar por la cantidad de historias 200px de ancho -->
         <ul class="lista-timeline slider" style="width: 1000px;">
             {% for key,item in meses if key > 0 %}
-            <li class="item">
+            <li class="item" data-cuantas="{{item.historias}}">
                 <div class="contenedor">
                     <a href="{{path('homepage')}}?month={{key}}&year={{yearActual}}">
                         <figure class="nino">
