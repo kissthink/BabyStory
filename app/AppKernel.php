@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Liuggio\ExcelBundle\LiuggioExcelBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+            new Liip\ImagineBundle\LiipImagineBundle(),
 
             new Richpolis\UsuariosBundle\UsuariosBundle(),
             new Richpolis\HistoriasBundle\HistoriasBundle(),

@@ -13,9 +13,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * Usuario
  *
  * @ORM\Table(name="usuarios")
- * @UniqueEntity("email")
  * @ORM\Entity(repositoryClass="Richpolis\UsuariosBundle\Entity\UsuarioRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity("email")
  */
 class Usuario implements UserInterface, \Serializable 
 {
@@ -62,21 +62,21 @@ class Usuario implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="ciudad", type="string", length=255)
+     * @ORM\Column(name="ciudad", type="string", length=255,nullable=true)
      */
     private $ciudad;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="biografia", type="text")
+     * @ORM\Column(name="biografia", type="text",nullable=true)
      */
     private $biografia;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="serMadre", type="text")
+     * @ORM\Column(name="serMadre", type="text",nullable=true)
      */
     private $serMadre;
 
@@ -117,6 +117,13 @@ class Usuario implements UserInterface, \Serializable
     private $historias;
     
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
+    
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
@@ -144,6 +151,7 @@ class Usuario implements UserInterface, \Serializable
         $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
         $this->ninos = 0;
         $this->ninas = 0;
+        $this->isActive = true;
     }
     
     public function __toString() {
@@ -505,8 +513,64 @@ class Usuario implements UserInterface, \Serializable
     {
         return $this->updatedAt;
     }
-	
-	/*
+
+    /**
+     * Add historias
+     *
+     * @param \Richpolis\HistoriasBundle\Entity\Historia $historias
+     * @return Usuario
+     */
+    public function addHistoria(\Richpolis\HistoriasBundle\Entity\Historia $historias)
+    {
+        $this->historias[] = $historias;
+
+        return $this;
+    }
+
+    /**
+     * Remove historias
+     *
+     * @param \Richpolis\HistoriasBundle\Entity\Historia $historias
+     */
+    public function removeHistoria(\Richpolis\HistoriasBundle\Entity\Historia $historias)
+    {
+        $this->historias->removeElement($historias);
+    }
+
+    /**
+     * Get historias
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getHistorias()
+    {
+        return $this->historias;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     * @return Usuario
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean 
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }    
+    
+    /*
      * Timestable
      */
     
@@ -532,7 +596,7 @@ class Usuario implements UserInterface, \Serializable
     {
         $this->updatedAt = new \DateTime();
     }
-    
+
     /*** uploads ***/
     
     /**
@@ -556,7 +620,7 @@ class Usuario implements UserInterface, \Serializable
         } else {
             $this->imagen = 'initial';
         }
-        $directorio=$this->getUploadRootDir().'/';
+        $directorio=$this->getUploadRootDir();
         if(!file_exists($directorio)){
           mkdir($directorio, 0777);  
         }
@@ -646,36 +710,4 @@ class Usuario implements UserInterface, \Serializable
         return null === $this->imagen ? null : $this->getUploadRootDir().'/'.$this->imagen;
     }
 
-    /**
-     * Add historias
-     *
-     * @param \Richpolis\HistoriasBundle\Entity\Historia $historias
-     * @return Usuario
-     */
-    public function addHistoria(\Richpolis\HistoriasBundle\Entity\Historia $historias)
-    {
-        $this->historias[] = $historias;
-
-        return $this;
-    }
-
-    /**
-     * Remove historias
-     *
-     * @param \Richpolis\HistoriasBundle\Entity\Historia $historias
-     */
-    public function removeHistoria(\Richpolis\HistoriasBundle\Entity\Historia $historias)
-    {
-        $this->historias->removeElement($historias);
-    }
-
-    /**
-     * Get historias
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getHistorias()
-    {
-        return $this->historias;
-    }
 }

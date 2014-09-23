@@ -3,7 +3,7 @@
         <span>Mama</span>
         <figure class="dialogo-papa-imagen">
             {% if app.user.imagen | length > 0 %}
-                <img src="{{app.user.webPath}}" width="100" height="100"/>    
+                <img src="{{app.user.webPath | imagine_filter('imagen_usuario')}}" width="100" height="100"/>    
             {% else %}    
                 <img src="/images/sin-imagen-usuario.png"/>
             {% endif %}

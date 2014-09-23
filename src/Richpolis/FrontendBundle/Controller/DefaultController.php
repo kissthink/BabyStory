@@ -16,6 +16,7 @@ use Richpolis\HistoriasBundle\Form\HistoriaFrontendType;
 use Richpolis\HistoriasBundle\Entity\Historia;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Richpolis\HistoriasBundle\Entity\Componente;
+use Richpolis\FrontendBundle\Utils\Richsys as RpsStms;
 
 
 class DefaultController extends Controller
@@ -31,11 +32,37 @@ class DefaultController extends Controller
 
     /**
      * @Route("/busqueda",name="buscar_historias")
-     * @Template()
+     * @Template("FrontendBundle:Default:inicio.html.twig")
      */
-    public function buscarHistoriasAction()
+    public function buscarHistoriasAction(Request $request)
     {
-        return array();
+        $em = $this->getDoctrine()->getManager();
+        $fecha  = new \DateTime();
+        
+        $mes = $request->query->get('month',$fecha->format('m'));
+        $year = $request->query->get('year',$fecha->format('Y'));
+        
+        $historias = $em->getRepository('HistoriasBundle:Historia')
+                        ->findHistorias($request->query->get('buscarHistorias'),$this->getUser());
+        
+        $historiasPorMes = $em->getRepository('HistoriasBundle:Historia')
+                              ->getCountHistoriasEnYears($year,$this->getUser());
+        
+        $meses = $this->getHistoriasPorMesParser($historiasPorMes);
+       
+        $form = $this->createForm(new HistoriaFrontendType(), new Historia(),array(
+            'action' => $this->generateUrl('crear_historia'),
+            'method' => 'POST',
+            'attr'=>array('id'=>'formCrearHistoria'),
+            'usuario'=>$this->getUser(),
+        ));
+        
+        return array(
+            'yearActual'    =>  $year,
+            'meses'         =>  $meses,
+            'historias'     =>  $historias,
+            'form'          =>  $form->createView(),
+        );
     }
     
     /**
@@ -62,6 +89,7 @@ class DefaultController extends Controller
             'action' => $this->generateUrl('crear_historia'),
             'method' => 'POST',
             'attr'=>array('id'=>'formCrearHistoria'),
+            'usuario'=>$this->getUser(),
         ));
         
         return array(
@@ -80,17 +108,22 @@ class DefaultController extends Controller
     public function crearHistoriaAction(Request $request)
     {
         $historia = new Historia();
+        $historia->setUsuario($this->getUser());
+        $historia->setFecha(new \DateTime());
         $form = $this->createForm(new HistoriaFrontendType(), new Historia(),array(
             'action' => $this->generateUrl('crear_historia'),
             'method' => 'POST',
             'attr'=>array('id'=>'formCrearHistoria'),
+            'usuario'=>$this->getUser(),
         ));
         $isNew = true;
         if($request->isMethod('POST')){
-            $parametros = $request->all();
+            //$parametros = $request->request->all();
             $form->handleRequest($request);
             if($form->isValid()){
                 $em = $this->getDoctrine()->getManager();
+                $historia = $form->getData();
+                $historia->setUsuario($this->getUser());
                 $em->persist($historia);
                 $em->flush();
                 $historia->setClave(md5($historia->getId()));
@@ -127,13 +160,13 @@ class DefaultController extends Controller
     public function editarHistoriaAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
-		$historia = $em->getRepository('HistoriasBundle:Historia')->find($id);
-		if(!$historia){
-			return $this->redirect($this->generateUrl('homepage'));
-		}
-        
+        $historia = $em->getRepository('HistoriasBundle:Historia')->find($id);
+        if (!$historia) {
+            return $this->redirect($this->generateUrl('homepage'));
+        }
+
         return array(
-            'historia'  =>  $historia,
+            'historia' => $historia,
         );
     }
     
@@ -231,7 +264,7 @@ class DefaultController extends Controller
     /**
      * @Route("/editar",name="editar_usuario")
      * @Template("FrontendBundle:Default:registro.html.twig")
-     * @Method({"GET","PUT"})
+     * @Method({"GET","POST"})
      */
     public function editarAction(Request $request)
     {
@@ -243,11 +276,11 @@ class DefaultController extends Controller
         }
         $form = $this->createForm( new UsuarioFrontendType(), $usuario);
         $isNew = false;
-        if($request->isMethod('PUT')){
+        if($request->isMethod('POST')){
             //obtiene la contraseña
             $current_pass = $usuario->getPassword();
 			
-			$form->handleRequest($request);
+            $form->handleRequest($request);
 			
             if($form->isValid()){
                 
@@ -304,7 +337,7 @@ class DefaultController extends Controller
             $form->handleRequest($request);
             if($form->isValid()){
                 $em = $this->getDoctrine()->getManager();
-				$hijo->setPapa($this->getUser());
+                $hijo->setPapa($this->getUser());
                 if($isNew){
                     $em->persist($hijo);
                 }
@@ -465,8 +498,14 @@ class DefaultController extends Controller
         $componente->setHistoria($historia);
         $componente->setPapa($this->getUser());
         
+        $max = $em->getRepository('HistoriasBundle:Componente')->getMaxPosicion($historia->getId());
+        if($max == null){
+            $max=0;
+        }
+        $componente->setPosition($max+1);
+        
         $form = $this->createFormBuilder($componente)
-            ->add('componente', 'text',array('label'=>'Dialogo','attr'=>array('class'=>'form-control')))
+            ->add('componente', 'textarea',array('label'=>'Dialogo','attr'=>array('class'=>'form-control')))
             ->getForm();
         
         if($request->isMethod('POST')){
@@ -489,6 +528,7 @@ class DefaultController extends Controller
              )),
             'respuesta' => 'nuevo',
         )));
+        return $response;
     }
     
     /**
@@ -504,10 +544,17 @@ class DefaultController extends Controller
         $componente->setTipoUsuario(Componente::TIPO_USUARIO_HIJO);
         $componente->setHistoria($historia);
         $componente->setPapa($this->getUser());
+        $componente->setHijo($historia->getHijo());
+        
+        $max = $em->getRepository('HistoriasBundle:Componente')->getMaxPosicion($historia->getId());
+        if($max == null){
+            $max=0;
+        }
+        $componente->setPosition($max+1);
         
         $form = $this->createFormBuilder($componente)
             ->add('hijo', null,array('label'=>'Niño(a)','attr'=>array('class'=>'form-control')))
-            ->add('componente', 'text',array('label'=>'Dialogo','attr'=>array('class'=>'form-control')))
+            ->add('componente', 'textarea',array('label'=>'Dialogo','attr'=>array('class'=>'form-control')))
             ->getForm();
         
         if($request->isMethod('POST')){
@@ -530,6 +577,7 @@ class DefaultController extends Controller
              )),
             'respuesta' => 'nuevo',
         )));
+        return $response;
     }
     
     /**
@@ -546,6 +594,12 @@ class DefaultController extends Controller
         $componente->setHistoria($historia);
         $componente->setPapa($this->getUser());
         
+        $max = $em->getRepository('HistoriasBundle:Componente')->getMaxPosicion($historia->getId());
+        if($max == null){
+            $max=0;
+        }
+        $componente->setPosition($max+1);
+        
         $form = $this->createFormBuilder($componente)
             ->add('file', 'file',array('label'=>'Imagen','attr'=>array('class'=>'form-control')))
             ->add('componente', 'hidden')
@@ -556,11 +610,12 @@ class DefaultController extends Controller
             if($form->isValid()){
                 $em->persist($componente);
                 $em->flush();
-                $response = new JsonResponse(json_encode(array(
+                /*$response = new JsonResponse(json_encode(array(
                     'html'=>$this->renderView('FrontendBundle:Default:imagenNino.html.twig', array('componente'=>$componente)),
                     'respuesta'=>'creado',
                 )));
-                return $response;
+                return $response;*/
+                return $this->redirect($this->generateUrl('editar_historia',array('id'=>$historia->getId())));
             }
         }
         
@@ -571,6 +626,7 @@ class DefaultController extends Controller
              )),
             'respuesta' => 'nuevo',
         )));
+        return $response;
     }
     
     /**
@@ -587,6 +643,12 @@ class DefaultController extends Controller
         $componente->setHistoria($historia);
         $componente->setPapa($this->getUser());
         
+        $max = $em->getRepository('HistoriasBundle:Componente')->getMaxPosicion($historia->getId());
+        if($max == null){
+            $max=0;
+        }
+        $componente->setPosition($max+1);
+        
         $form = $this->createFormBuilder($componente)
             ->add('file', 'file',array('label'=>'Sonido (mp3)','attr'=>array('class'=>'form-control')))
             ->add('componente', 'hidden')
@@ -597,11 +659,12 @@ class DefaultController extends Controller
             if($form->isValid()){
                 $em->persist($componente);
                 $em->flush();
-                $response = new JsonResponse(json_encode(array(
+                /*$response = new JsonResponse(json_encode(array(
                     'html'=>$this->renderView('FrontendBundle:Default:sonidoNino.html.twig', array('componente'=>$componente)),
                     'respuesta'=>'creado',
                 )));
-                return $response;
+                return $response;*/
+                return $this->redirect($this->generateUrl('editar_historia',array('id'=>$historia->getId())));
             }
         }
         
@@ -612,6 +675,7 @@ class DefaultController extends Controller
              )),
             'respuesta' => 'nuevo',
         )));
+        return $response;
     }
     
     /**
@@ -628,6 +692,12 @@ class DefaultController extends Controller
         $componente->setHistoria($historia);
         $componente->setPapa($this->getUser());
         
+        $max = $em->getRepository('HistoriasBundle:Componente')->getMaxPosicion($historia->getId());
+        if($max == null){
+            $max=0;
+        }
+        $componente->setPosition($max+1);
+        
         $form = $this->createFormBuilder($componente)
             ->add('componente','text',array('label'=>'Link (youtube)','attr'=>array('class'=>'form-control')))
             ->getForm();
@@ -635,6 +705,9 @@ class DefaultController extends Controller
         if($request->isMethod('POST')){
             $form->handleRequest($request);
             if($form->isValid()){
+                $parametros = $request->request->all();
+                $video = RpsStms::getTitleAndImageVideoYoutube($parametros['form']['componente']);
+                $componente->setComponente($video['urlVideo']);
                 $em->persist($componente);
                 $em->flush();
                 $response = new JsonResponse(json_encode(array(
@@ -647,10 +720,11 @@ class DefaultController extends Controller
         
         $response = new JsonResponse(json_encode(array(
             'form' => $this->renderView('FrontendBundle:Default:formComponente.html.twig', array(
-                'rutaAction' => $this->generateUrl('video_nino',array('id'=>$historia->getId())),
+                'rutaAction' => $this->generateUrl('video_link_nino',array('id'=>$historia->getId())),
                 'form'=>$form->createView(),
              )),
             'respuesta' => 'nuevo',
         )));
+        return $response;
     }
 }

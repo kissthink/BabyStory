@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: services.yml }
 
 framework:
     #esi:             ~
@@ -75,7 +76,32 @@ knp_paginator:
     template:
         pagination: KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig     # sliding pagination controls template
         sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
-        
+
+liip_imagine:
+    resolvers:
+        default:
+            web_path: 
+                web_root:  %kernel.root_dir%/../web
+                cache_prefix:  media/cache
+    loaders:
+        default:
+            filesystem:
+                data_root:  %kernel.root_dir%/../web/
+    driver:               gd
+    cache:                default
+    data_loader:          default
+    controller:
+        filter_action:         liip_imagine.controller:filterAction
+        filter_runtime_action: liip_imagine.controller:filterRuntimeAction
+    filter_sets:
+        imagen_usuario:
+            filters:
+                thumbnail: { size: [100, 100], mode: outbound }
+        imagen_historia:
+            filters:
+                thumbnail: { size: [400, 300], mode: outbound }
+
+
 parameters:
     richpolis.uploads: %kernel.root_dir%/../web/uploads
     file_uploader.file_base_path: "%kernel.root_dir%/../web/uploads"

@@ -5,12 +5,13 @@ namespace Richpolis\HistoriasBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
+use Richpolis\FrontendBundle\Utils\Richsys as RpsStms;
 /**
  * Componente
  *
  * @ORM\Table(name="componentes")
  * @ORM\Entity(repositoryClass="Richpolis\HistoriasBundle\Entity\ComponenteRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Componente
 {
@@ -394,7 +395,11 @@ class Componente
      */
     public function getWebPath()
     {
-        return null === $this->componente ? null : $this->getUploadDir().'/'.$this->componente;
+        if($this->getTipo()==self::TIPO_LINK){
+            return RpsStms::getVideoIdYoutube($this->componente);
+        }else{
+            return null === $this->componente ? null : $this->getUploadDir().'/'.$this->componente;
+        }
     }
     
     public function getAbsolutePath()
@@ -415,7 +420,7 @@ class Componente
             case self::TIPO_LINK:
                 return 'FrontendBundle:Default:videoNino.html.twig';
             case self::TIPO_MUSICA:
-                return 'FrontendBundle:Default:musicaNino.html.twig';
+                return 'FrontendBundle:Default:sonidoNino.html.twig';
             default:
                 return 'FrontendBundle:Default:dialogoPapa.html.twig';
         } 

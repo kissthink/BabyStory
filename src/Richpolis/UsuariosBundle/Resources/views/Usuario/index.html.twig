@@ -37,6 +37,9 @@
                                 Biografia
                             </th>
                             <th class="text-center">
+                                Activo
+                            </th>
+                            <th class="text-center">
                                 Accion
                             </th>
                         </tr>
@@ -55,6 +58,11 @@
                             </td>
                             <td>
                                 {{ usuario.biografia }}
+                            </td>
+                            <td>
+                                {% if usuario.isActive %}
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                {% endif %}
                             </td>
                             <td>
                                 <a href="{{ url('usuarios_show', { 'id' : usuario.id }) }}" class="btn btn-success">Ver</a>

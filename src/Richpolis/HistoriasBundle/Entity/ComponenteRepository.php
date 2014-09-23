@@ -12,4 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class ComponenteRepository extends EntityRepository
 {
+    public function getMaxPosicion($historia){
+        $em=$this->getEntityManager();
+       
+        $query=$em->createQuery('
+            SELECT MAX(c.position) as value 
+            FROM HistoriasBundle:Componente c 
+            WHERE c.historia =:historia
+            ORDER BY c.position ASC
+        ')->setParameter('historia', $historia);
+        
+        $max=$query->getResult();
+        return $max[0]['value'];
+    }
 }

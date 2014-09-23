@@ -14,6 +14,7 @@ class TranslateDateExtension extends \Twig_Extension
     public function translateDateFilter($datetime)
     {
         $dateTime = \DateTime::createFromFormat('Y-m-d H:i:s', $datetime);
+        
         //$dateTime->setTimezone(new \DateTimeZone('America/Mexico_City'));
         $dia=$dateTime->format('l');
         $mes=$dateTime->format('F');

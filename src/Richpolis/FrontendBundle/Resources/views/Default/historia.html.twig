@@ -1,5 +1,5 @@
 <div class="row historia" id="historia-{{historia.id}}1">
-    <p class="col-md-12 fecha">{{ historia.fecha | date('Y-m-d') }}</p>
+    <p class="col-md-12 fecha">{{ historia.fecha | date('Y-m-d H:i:s') | translate_date }}</p>
     <p class="col-md-12 contenido text-center">
     <div class="row" style="margin-bottom: .5em;">
         <div class="col-xs-2 col-sm-2 col-md-2 text-center">
@@ -19,14 +19,14 @@
                         {% set imagenItem = '' %}
                         {% set videoItem = '' %}
                         {% set sonidoItem = '' %}
-                        {% for componente in historia.compomentes %}
-                            {% if imagenItem|length == 0  and componente.tipo == constant('Richpolis\FrontendBundle\Utils\Richsys::TIPO_ARCHIVO_IMAGEN')  %}
+                        {% for componente in historia.componentes %}
+                            {% if imagenItem|length == 0  and componente.tipo == constant('Richpolis\\HistoriasBundle\\Entity\\Componente::TIPO_IMAGEN')  %}
                                 {% set imagenItem = componente.webPath %}
                                 <span class="glyphicon glyphicon-picture"></span>
-                            {% elseif videoItem|length == 0  and componente.tipo == constant('Richpolis\FrontendBundle\Utils\Richsys::TIPO_ARCHIVO_LINK') %}
+                            {% elseif videoItem|length == 0  and componente.tipo == constant('Richpolis\\HistoriasBundle\\Entity\\Componente::TIPO_LINK') %}
                                 {% set videoItem  = componente.webPath %}
                                 <span class="glyphicon glyphicon-facetime-video"></span>
-                            {% elseif sonidoItem|length == 0  and componente.tipo == constant('Richpolis\FrontendBundle\Utils\Richsys::TIPO_ARCHIVO_MUSICA') %}
+                            {% elseif sonidoItem|length == 0  and componente.tipo == constant('Richpolis\\HistoriasBundle\\Entity\\Componente::TIPO_MUSICA') %}
                                 {% set sonidoItem  = componente.webPath %}
                                 <span class="glyphicon glyphicon-music"></span>
                             {% endif %}    
@@ -67,7 +67,7 @@
         </figure>
     </div>
     <div class="row comentarios">
-        <div class="comentario row">
+        <!--div class="comentario row">
             <div class="col-xs-4 col-md-2 imagen">
                 <figure class="img-responsive">
                     <img  src="http://placehold.it/100x100" alt="">
@@ -79,33 +79,8 @@
             <div class="col-xs-4 col-md-2 contenido">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
             </div>
-        </div>
-        <div class="comentario row">
-            <div class="col-xs-4 col-md-2 imagen">
-                <figure class="img-responsive">
-                    <img  src="http://placehold.it/100x100" alt="">
-                </figure>
-            </div>
-            <div class="col-xs-4 col-md-2 nombre">
-                Nombre
-            </div>
-            <div class="col-xs-4 col-md-2 contenido">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-            </div>
-        </div>
-        <div class="comentario row">
-            <div class="col-xs-4 col-md-2 imagen">
-                <figure class="img-responsive">
-                    <img  src="http://placehold.it/100x100" alt="">
-                </figure>
-            </div>
-            <div class="col-xs-4 col-md-2 nombre">
-                Nombre
-            </div>
-            <div class="col-xs-4 col-md-2 contenido">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-            </div>
-        </div>
+        </div-->
+       
     </div>
 </p>
 </div>

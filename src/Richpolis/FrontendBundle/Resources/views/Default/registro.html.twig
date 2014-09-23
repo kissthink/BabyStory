@@ -7,10 +7,10 @@
                 {{titulo}}
             </h2>
             {{form_errors(form)}}
-            <form class="form-registro" role="form" action="{% if isNew == true %} {{path('registro')}} {% else %} {{path('editar_usuario')}} {% endif %}" method="{{ (isNew == true)?'post':'put' }}" enctype="multipart/form-data">
+            <form class="form-registro" role="form" action="{% if isNew == true %}{{path('registro')}}{% else %}{{path('editar_usuario')}}{% endif %}" method="post" enctype="multipart/form-data">
                 <figure id="imagen-usuario">
                     {% if usuario.imagen | length > 0 %}
-                    <img src="{{usuario.webPath}}" width="81" height="81"/>    
+                    <img src="{{usuario.webPath | imagine_filter('imagen_usuario')}}" width="81" height="81"/>    
                     {% else %}    
                     <img src="/images/sin-imagen-usuario.png"/>
                     {% endif %}
@@ -153,8 +153,10 @@
                 </div>
                 {% endif %}    
                 {{form_rest(form)}}                
-                <button class="btn btn-block btn-lg btn-danger" type="submit">Registro</button>
+                <button class="btn btn-block btn-lg btn-danger" type="submit">{{(isNew)?'Registro':'Actualizar'}}</button>
+             <p>&nbsp;</p> 
             </form>
+                
         </div>
     </div>    
 

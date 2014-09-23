@@ -1,5 +1,10 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+  
+  <link rel="stylesheet" href="/css/jquery.bxslider.css"/>
+{% endblock %}
 
 {% block contenido %}
     <div class="row timeline">
@@ -26,7 +31,7 @@
     </div>    
     <div class="row well well-sm text-center">
         <div class="col-xs-12 col-md-12">
-            <form class="narvar-form form-buscador" action="{{path('buscar_historias')}}" role="search" style="margin: 0 auto;">
+            <form class="narvar-form form-buscador" action="{{path('buscar_historias')}}" method="get" role="search" style="margin: 0 auto;">
                 <div class="input-group">
                     <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
                     <input type="text" id="buscarHistorias" name="buscarHistorias" class="form-control" placeholder="Buscar historias"/>
@@ -45,7 +50,7 @@
             {% include 'FrontendBundle:Default:historia.html.twig' with {'historia': historia } %}
         {% else %}    
         <div class="row historia">
-            <p class="col-md-12 fecha">{{ "now"| date('d-m-Y') }}</p>
+            <p class="col-md-12 fecha">{{ "now" | date('Y-m-d H:i:s') | translate_date }}</p>
             <p class="col-md-12 contenido text-center">
                 <span class="glyphicon glyphicon-inbox" style="font-size: 6em; color: grey; opacity: .5;"></span>
                 <br/>

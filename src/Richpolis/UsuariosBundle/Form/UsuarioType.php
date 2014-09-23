@@ -57,9 +57,18 @@ class UsuarioType extends AbstractType
                 'placeholder'=>'Ser madre',
                 'data-bind'=>'value: sermadre'
              )))
-            ->add('rol')    
+            ->add('rol',null,array('label'=>'Permisos','attr'=>array(
+                'class'=>'form-control',
+                'placeholder'=>'Permisos',
+                'data-bind'=>'value: permisos'
+             )))   
             ->add('salt','hidden')
             ->add('imagen','hidden')
+            ->add('isActive',null,array('label'=>'Activo?','attr'=>array(
+                'class'=>'checkbox-inline',
+                'placeholder'=>'Es activo',
+                'data-bind'=>'value: isActive'
+             )))
         ;
     }
     

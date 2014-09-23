@@ -28,7 +28,7 @@ class LoginListener
     public function onKernelResponse(FilterResponseEvent $event)
     {
         if (null != $this->usuario){
-            if($this->usuario->getActive()) {
+            if($this->usuario->getIsActive()) {
                 if($this->contexto->isGranted('ROLE_ADMIN')){
                     $irA = $this->router->generate('usuarios');
                 }else{

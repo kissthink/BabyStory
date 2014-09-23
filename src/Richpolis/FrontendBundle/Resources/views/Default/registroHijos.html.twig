@@ -10,7 +10,7 @@
             <form id="formRegistroHijos" class="form-registro"  role="form" action="{% if isNew == true %} {{path('registro_hijos')}} {% else %} {{path('editar_hijos',{'id': hijo.id })}} {% endif %}" method="post" enctype="multipart/form-data">
                 <figure id="imagen-usuario">
                     {% if hijo.imagen | length > 0 %}
-                    <img src="{{hijo.webPath}}" width="81" height="81"/>    
+                    <img src="{{hijo.webPath | imagine_filter('imagen_usuario')}}" width="81" height="81"/>    
                     {% else %}    
                     <img src="/images/sin-imagen-usuario.png"/>
                     {% endif %}
@@ -18,32 +18,30 @@
                         seleccionar imagen de perfil
                     </figcaption>
                 </figure>
-                </div>
                 <div class="form-group">
-                {{ form_row(form.file)}}
-                {{ form_row(form.file)}}
+                {{ form_errors(form.file)}}
+                {{ form_widget(form.file)}}
                 </div>    
                 <p>&nbsp;</p>
                 <div class="form-group">
                 {{ form_errors(form.nombre)}}
-                {{ form_row(form.nombre)}}
+                {{ form_widget(form.nombre)}}
                 </div>
                 <div class="form-group">
                 {{ form_errors(form.apodo)}}
-                {{ form_row(form.apodo)}}
+                {{ form_widget(form.apodo)}}
                 </div>
                 <div class="form-group">
-                {{ form_errors(form.usarApodo)}}
                 {{ form_row(form.usarApodo)}}
                 </div>
                 <br/>
                 <div class="form-group">
                 {{ form_errors(form.fechaNacimiento)}}
-                {{ form_row(form.fechaNacimiento)}}
+                {{ form_widget(form.fechaNacimiento)}}
                 </div>
                 <div class="form-group">
                 {{ form_errors(form.biografia)}}
-                {{ form_row(form.biografia)}}
+                {{ form_widget(form.biografia)}}
                 </div>
                <p>&nbsp;</p>
                 {{form_rest(form)}}                

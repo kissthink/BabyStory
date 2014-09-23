@@ -13,27 +13,51 @@ use Richpolis\UsuariosBundle\Entity\Usuario;
  */
 class HistoriaRepository extends EntityRepository
 {
-    public function queryFindHistorias($buscar = "")
+    
+    
+    public function queryFindHistorias($buscar = "",$usuario=null)
     {
         $em = $this->getEntityManager();
         if(strlen($buscar)==0){
-            $consulta = $em->createQuery('SELECT h '
-                . 'FROM HistoriasBundle:Historia h '
-                . 'ORDER BY h.fecha ASC');
+            if($usuario == null){
+                $consulta = $em->createQuery('SELECT h '
+                    . 'FROM HistoriasBundle:Historia h '
+                    . 'ORDER BY h.fecha ASC');
+            }else{
+                $consulta = $em->createQuery("SELECT h "
+                    . "FROM HistoriasBundle:Historia h "
+                    . "WHERE h.usuario=:usuario  "    
+                    . "ORDER BY h.historia ASC");
+                $consulta->setParameters(array(
+                    'usuario' => $usuario->getId(),
+                ));
+            }
         }else{
-            $consulta = $em->createQuery("SELECT h "
-                . "FROM HistoriasBundle:Historia h "
-                . "WHERE h.historia LIKE :historia  "
-                . "ORDER BY h.historia ASC");
-            $consulta->setParameters(array(
-                'historia' => "%".$buscar."%",
-            ));
+            if($usuario == null){
+                $consulta = $em->createQuery("SELECT h "
+                    . "FROM HistoriasBundle:Historia h "
+                    . "WHERE h.historia LIKE :historia  "    
+                    . "ORDER BY h.historia ASC");
+                $consulta->setParameters(array(
+                    'historia' => "%".$buscar."%",
+                ));
+            }else{
+                $consulta = $em->createQuery("SELECT h "
+                    . "FROM HistoriasBundle:Historia h "   
+                    . "WHERE h.historia LIKE :historia  "
+                    . "AND h.usuario=:usuario  "    
+                    . "ORDER BY h.historia ASC");
+                $consulta->setParameters(array(
+                    'historia' => "%".$buscar."%",
+                    'usuario' => $usuario->getId(),
+                ));
+            }
         }
         return $consulta;
     }
     
-    public function findHistorias($buscar = ""){
-        return $this->queryFindHistorias($buscar)->getResult();
+    public function findHistorias($buscar = "",$usuario=null){
+        return $this->queryFindHistorias($buscar,$usuario)->getResult();
     }
     
     public function getCountHistoriasEnYears($year, Usuario $usuario)

@@ -28,13 +28,14 @@ class Hijo
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $nombre;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="apodo", type="string", length=255)
+     * @ORM\Column(name="apodo", type="string", length=255,nullable=true)
      */
     private $apodo;
 
@@ -62,7 +63,7 @@ class Hijo
     /**
      * @var string
      *
-     * @ORM\Column(name="biografia", type="text")
+     * @ORM\Column(name="biografia", type="text",nullable=true)
      */
     private $biografia;
 
@@ -211,6 +212,17 @@ class Hijo
     public function getUsarApodo()
     {
         return $this->usarApodo;
+    }
+    
+    /**
+     * @Assert\True(message = "Ingresar el apodo.")
+     */
+    public function isUsarApodoValid()
+    {
+        if($this->getUsarApodo()){
+            return strlen(trim($this->getApodo()))>0;
+        }
+        return true;
     }
 
     /**

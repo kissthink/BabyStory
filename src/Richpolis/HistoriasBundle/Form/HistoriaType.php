@@ -22,23 +22,11 @@ class HistoriaType extends AbstractType
                 'placeholder'=>'Usuario',
                 'data-bind'=>'value: usuario'
              )))
-            ->add('hijo','entity',array(
-                'class'=> 'UsuariosBundle:Hijo',
-                'label'=>'Padre',
-                'required'=>false,
-                'property'=>'nivelCategoria',
-                'query_builder' => function(EntityRepository $er) {
-                    return $er->createQueryBuilder('u')
-                        ->where('u.nivel=:nivel')
-                        ->orderBy('u.position', 'ASC')
-                        ->setParameter('nivel',0);
-                },
-                'attr'=>array(
-                    'class'=>'form-control placeholder',
-                    'placeholder'=>'Parent',
-                    'data-bind'=>'value: parent',
-                    )
-                ))    
+            ->add('hijo',null,array('label'=>'Hijo(a)','attr'=>array(
+                'class'=>'validate[required] form-control placeholder',
+                'placeholder'=>'Hijo(a)',
+                'data-bind'=>'value: hijo(a)'
+             )))    
             ->add('historia',null,array('label'=>'Historia','attr'=>array(
                 'class'=>'validate[required] form-control placeholder',
                 'placeholder'=>'Historia',

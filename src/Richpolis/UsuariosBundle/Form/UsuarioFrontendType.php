@@ -73,6 +73,7 @@ class UsuarioFrontendType extends AbstractType
              )))  
             ->add('salt','hidden')
             ->add('imagen','hidden')
+            ->add('isActive','hidden')
         ;
     }
     

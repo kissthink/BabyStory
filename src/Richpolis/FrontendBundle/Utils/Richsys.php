@@ -2,7 +2,6 @@
 
 namespace Richpolis\FrontendBundle\Utils;
 
-use Buzz\Browser;
 
 class Richsys
 {

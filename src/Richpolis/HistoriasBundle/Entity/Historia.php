@@ -313,4 +313,27 @@ class Historia
         return $this->clave;
     }
     
+
+    /**
+     * Set hijo
+     *
+     * @param \Richpolis\UsuariosBundle\Entity\Hijo $hijo
+     * @return Historia
+     */
+    public function setHijo(\Richpolis\UsuariosBundle\Entity\Hijo $hijo = null)
+    {
+        $this->hijo = $hijo;
+
+        return $this;
+    }
+
+    /**
+     * Get hijo
+     *
+     * @return \Richpolis\UsuariosBundle\Entity\Hijo 
+     */
+    public function getHijo()
+    {
+        return $this->hijo;
+    }
 }
