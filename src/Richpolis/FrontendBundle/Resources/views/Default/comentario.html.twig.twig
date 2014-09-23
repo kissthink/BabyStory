@@ -1,0 +1,19 @@
+<div class="comentario row">
+    <div class="col-xs-4 col-md-2 imagen">
+        <figure class="img-responsive">
+            {% if comentario.usuario.imagen | length > 0 %}
+                <img src="{{comentario.usuario.webPath | imagine_filter('imagen_usuario')}}" width="100" height="100"/>    
+            {% else %}    
+                <img src="/images/sin-imagen-usuario.png"/>
+            {% endif %}
+        </figure>
+    </div>
+    <div class="col-xs-4 col-md-2 nombre">
+        {{comentario.usuario}}
+        <br/>
+        Calificacion: {{comentario.calificacion}}
+    </div>
+    <div class="col-xs-4 col-md-2 contenido">
+        {{comentario.comentario}} 
+    </div>
+</div>

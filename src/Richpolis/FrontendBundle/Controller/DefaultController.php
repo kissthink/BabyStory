@@ -14,6 +14,7 @@ use Richpolis\UsuariosBundle\Form\UsuarioFrontendType;
 use Richpolis\UsuariosBundle\Form\HijoFrontendType;
 use Richpolis\HistoriasBundle\Form\HistoriaFrontendType;
 use Richpolis\HistoriasBundle\Entity\Historia;
+use Richpolis\HistoriasBundle\Entity\Comentario;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Richpolis\HistoriasBundle\Entity\Componente;
 use Richpolis\FrontendBundle\Utils\Richsys as RpsStms;
@@ -721,6 +722,46 @@ class DefaultController extends Controller
         $response = new JsonResponse(json_encode(array(
             'form' => $this->renderView('FrontendBundle:Default:formComponente.html.twig', array(
                 'rutaAction' => $this->generateUrl('video_link_nino',array('id'=>$historia->getId())),
+                'form'=>$form->createView(),
+             )),
+            'respuesta' => 'nuevo',
+        )));
+        return $response;
+    }
+    
+    /**
+     * @Route("/agregar/comentario/{id}",name="comentario_historia")
+     * @Method({"GET","POST"})
+     */
+    public function agregarComentarioHistoria(Request $request, $id){
+        $em = $this->getDoctrine()->getManager();
+        $historia = $em->getRepository('HistoriasBundle:Historia')->find($id);
+        $comentario = new Comentario();
+        
+        $form = $this->createFormBuilder($comentario)
+            ->add('comentario','text',array('label'=>'Comentario','attr'=>array('class'=>'form-control')))
+            ->add('calificacion',null,array('label'=>'Calificacion','attr'=>array('class'=>'form-control')))    
+            ->getForm();
+        
+        if($request->isMethod('POST')){
+            $form->handleRequest($request);
+            if($form->isValid()){
+                $comentario = $form->getData();
+                $comentario->setHistoria($historia);
+                $comentario->setUsuario($this->getUser());
+                $em->persist($comentario);
+                $em->flush();
+                $response = new JsonResponse(json_encode(array(
+                    'html'=>$this->renderView('FrontendBundle:Default:comentario.html.twig', array('comentario'=>$comentario)),
+                    'respuesta'=>'creado',
+                )));
+                return $response;
+            }
+        }
+        
+        $response = new JsonResponse(json_encode(array(
+            'form' => $this->renderView('FrontendBundle:Default:formComponente.html.twig', array(
+                'rutaAction' => $this->generateUrl('comentario_historia',array('id'=>$historia->getId())),
                 'form'=>$form->createView(),
              )),
             'respuesta' => 'nuevo',

@@ -72,6 +72,13 @@ class Historia
      */
     private $componentes;
     
+    /**
+     * Comentarios de la historia
+     *
+     * @ORM\OneToMany(targetEntity="Richpolis\HistoriasBundle\Entity\Comentario", mappedBy="historia")
+     */
+    private $comentarios;
+    
     
     /**
      * @var \DateTime
@@ -335,5 +342,38 @@ class Historia
     public function getHijo()
     {
         return $this->hijo;
+    }
+
+    /**
+     * Add comentarios
+     *
+     * @param \Richpolis\HistoriasBundle\Entity\Comentario $comentarios
+     * @return Historia
+     */
+    public function addComentario(\Richpolis\HistoriasBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios[] = $comentarios;
+
+        return $this;
+    }
+
+    /**
+     * Remove comentarios
+     *
+     * @param \Richpolis\HistoriasBundle\Entity\Comentario $comentarios
+     */
+    public function removeComentario(\Richpolis\HistoriasBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios->removeElement($comentarios);
+    }
+
+    /**
+     * Get comentarios
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComentarios()
+    {
+        return $this->comentarios;
     }
 }

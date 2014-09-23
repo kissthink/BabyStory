@@ -79,7 +79,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="labelCrearHistoria" onclick="javascript:crearHistoria();">Crear historia</h4>
+        <h4 class="modal-title" id="labelCrearHistoria">Crear historia</h4>
       </div>
       <div class="modal-body">
         {{ form(form) }}
@@ -92,13 +92,33 @@
   </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="modalFormulario" tabindex="-1" role="dialog" aria-labelledby="labelFormulario" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="labelFormulario"></h4>
+      </div>
+      <div class="modal-body" id="modalBodyFormulario">
+          
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" onclick="guardar();">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>        
+        
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
     <script src="js/vendor/jquery.bxslider.min.js"></script>
     <script type="text/javascript">
-        function onReady(){
+        var tipoComponente = "";
+        $(document).on("ready",function(){
             $('.slider').bxSlider({
                 pager: true,
                 controls: true,
@@ -108,8 +128,64 @@
                 slideWidth: 100,
                 slideMargin: 4,
                 autoHover: true
-          });
+            });
+           
+        });
+        
+        function agregarComenario(historia){
+            mostrarFormulario("Agregar dialogo papa/mama");
+            var url = $("#historia-"+historia).data('comentario');
+            getFormulario(url);
+            tipoComponente = "comentario";
         }
+        
+        function mostrarFormulario(titulo){
+            $("#modalFormulario").modal("show");
+            $("#labelFormulario").html(titulo);
+            $loader = $("<img>");
+            $loader.attr({'src': '/images/loader.GIF','id': 'loader'});
+            $loader.css({'maxWidth': '80px'});
+            $("#modalBodyFormulario").html($loader);
+        }
+        
+        function guardar(){
+            var $form = $("#modalBodyFormulario form");
+            var data = $form.serialize();
+            $.ajax({
+                url: $form.attr('action'),
+                type: 'POST',
+                data: data,
+                dataType: 'json',
+            }).done(function(data, textStatus,jqXHR){
+                debugger;
+                data = JSON.parse(data);
+                if(data.respuesta == 'nuevo'){
+                    $("#modalBodyFormulario").html(data.form);
+                    $("#modalBodyFormulario form").attr({'action': data.rutaAction});
+                }else if(data.respuesta == 'creado'){
+                    $(".comentarios").append(data.html);
+                    $("#modalFormulario").modal("hide");
+                }
+            }).fail(function(data){
+                console.log(data);
+            });
+        }
+        
+        function getFormulario(url){
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    dataType: 'json',
+                }).done(function(data, textStatus,jqXHR){
+                    debugger;
+                    data = JSON.parse(data);
+                    if(data.respuesta == 'nuevo'){
+                        $("#modalBodyFormulario").html(data.form);
+                        $("#modalBodyFormulario form").attr({'action': data.rutaAction});
+                    }
+                });
+        }
+
         
         {% if app.user.hijos | length > 0 %}    
             function crearHistoria(){
@@ -126,7 +202,5 @@
                 $(".form-buscador").submit();
             }
         }
-
-$(document).on("ready",onReady);
     </script>
 {% endblock %}    

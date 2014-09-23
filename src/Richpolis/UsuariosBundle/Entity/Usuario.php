@@ -116,6 +116,14 @@ class Usuario implements UserInterface, \Serializable
      */
     private $historias;
     
+    
+    /**
+     * Comentarios del usuario
+     *
+     * @ORM\OneToMany(targetEntity="Richpolis\HistoriasBundle\Entity\Comentario", mappedBy="usuario")
+     */
+    private $comentarios;
+    
     /**
      * @var boolean
      *
@@ -710,4 +718,37 @@ class Usuario implements UserInterface, \Serializable
         return null === $this->imagen ? null : $this->getUploadRootDir().'/'.$this->imagen;
     }
 
+
+    /**
+     * Add comentarios
+     *
+     * @param \Richpolis\HistoriasBundle\Entity\Comentario $comentarios
+     * @return Usuario
+     */
+    public function addComentario(\Richpolis\HistoriasBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios[] = $comentarios;
+
+        return $this;
+    }
+
+    /**
+     * Remove comentarios
+     *
+     * @param \Richpolis\HistoriasBundle\Entity\Comentario $comentarios
+     */
+    public function removeComentario(\Richpolis\HistoriasBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios->removeElement($comentarios);
+    }
+
+    /**
+     * Get comentarios
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComentarios()
+    {
+        return $this->comentarios;
+    }
 }

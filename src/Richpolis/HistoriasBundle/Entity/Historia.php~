@@ -72,6 +72,13 @@ class Historia
      */
     private $componentes;
     
+    /**
+     * Comentarios de la historia
+     *
+     * @ORM\OneToMany(targetEntity="Richpolis\HistoriasBundle\Entity\Comentario", mappedBy="historia")
+     */
+    private $comentarios;
+    
     
     /**
      * @var \DateTime
