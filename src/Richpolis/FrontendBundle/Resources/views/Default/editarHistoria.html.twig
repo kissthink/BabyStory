@@ -57,12 +57,15 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-6 col-sm-3 col-md-4">
+                    <p class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+						<button class="btn btn-success" onclick="listo();">Listo</button>
+					</p>
+					<!--div class="col-xs-6 col-sm-3 col-md-4">
                         <button class="btn btn-success" onclick="guardarHistoria();">Guardar Historia</button>
-                    </div>
-                    <div class="col-xs-6 col-sm-3 col-sm-offset-6 col-md-4 col-md-offset-4">
+                    </div-->
+                    <!--div class="col-xs-6 col-sm-3 col-sm-offset-6 col-md-4 col-md-offset-4">
                         <button class="btn btn-success" onclick="cancelarHistoria();">Cancelar</button>
-                    </div>
+                    </div-->
                 </div>
             </div>
             <p> &nbsp;</p>
@@ -183,6 +186,10 @@
                     }
                 });
         }
+		
+		function listo(){
+			location.href = '{{path('homepage')}}';
+		}
 
     </script>
 {% endblock %}    

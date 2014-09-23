@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Richpolis\HistoriasBundle\Entity\Comentario;
 use Richpolis\HistoriasBundle\Form\ComentarioType;
 
+
 /**
  * Comentario controller.
  *
@@ -25,15 +26,22 @@ class ComentarioController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('HistoriasBundle:Comentario')->findAll();
-
-        return array(
-            'entities' => $entities,
+        $buscar = $request->get('buscar','');
+        if(strlen($buscar)>0){
+                $options = array('filterParam'=>'buscar','filterValue'=>$buscar);
+        }else{
+                $options = array();
+        }
+        $query = $em->getRepository('HistoriasBundle:Comentario')->queryFindComentarios($buscar);
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+                $query, $this->get('request')->query->get('page', 1),10, $options 
         );
+
+        return compact('pagination');
     }
     /**
      * Creates a new Comentario entity.

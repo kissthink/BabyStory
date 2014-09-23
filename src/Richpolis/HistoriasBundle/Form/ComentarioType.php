@@ -15,12 +15,16 @@ class ComentarioType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('comentario',null,array('label'=>'Historia','attr'=>array(
+            ->add('comentario',null,array('label'=>'Comentario','attr'=>array(
                 'class'=>'validate[required] form-control placeholder',
-                'placeholder'=>'Historia',
-                'data-bind'=>'value: historia'
+                'placeholder'=>'Comentario',
+                'data-bind'=>'value: comentario'
              )))
-            ->add('calificacion')
+            ->add('calificacion',null,array('label'=>'Calificacion','attr'=>array(
+                'class'=>'form-control',
+                'placeholder'=>'Calificacion',
+                'data-bind'=>'value: calificacion'
+             )))
             ->add('usuario',null,array('label'=>'Usuario','attr'=>array(
                 'class'=>'validate[required] form-control placeholder',
                 'placeholder'=>'Usuario',

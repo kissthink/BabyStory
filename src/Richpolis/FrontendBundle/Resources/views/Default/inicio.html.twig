@@ -118,6 +118,7 @@
     <script src="js/vendor/jquery.bxslider.min.js"></script>
     <script type="text/javascript">
         var tipoComponente = "";
+		var historiaActual = 0;
         $(document).on("ready",function(){
             $('.slider').bxSlider({
                 pager: true,
@@ -137,6 +138,7 @@
             var url = $("#historia-"+historia).data('comentario');
             getFormulario(url);
             tipoComponente = "comentario";
+			historiaActual = historia;
         }
         
         function mostrarFormulario(titulo){
@@ -163,7 +165,7 @@
                     $("#modalBodyFormulario").html(data.form);
                     $("#modalBodyFormulario form").attr({'action': data.rutaAction});
                 }else if(data.respuesta == 'creado'){
-                    $(".comentarios").append(data.html);
+                    $("#historia-"+historiaActual).find(".comentarios").append(data.html);
                     $("#modalFormulario").modal("hide");
                 }
             }).fail(function(data){
