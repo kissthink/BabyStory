@@ -2,7 +2,7 @@
 
 {% set urlAbsolutaFoto = 'http://'
                              ~ app.request.server.get('SERVER_NAME')
-                             ~ asset('images/logo.png') %}
+                             ~ asset('images/logo.png')|imagine_filter('imagen_usuario') %}
 
 {% block redes_sociales %}
     <meta property="og:url" content="{{url('compartir_historia',{'clave':historia.clave})}}" />
@@ -44,17 +44,17 @@
 		<ul class="list-inline">
             <li>
             <a target="_blank" href="javascript:window.location.href=('http://www.facebook.com/share.php?u='+dir2+'&t='+tit2+'')"> 
-                <span class="redes-sociales facebook">&nbsp;</span>
+                <span style="width: 50px;" class="redes-sociales facebook">&nbsp;</span>
             </a>
             </li>
             <li>
             <a target="_blank" href="javascript:window.location.href=('http://twitter.com/?status='+tit2+'%20'+dir+'')">
-                <span class="redes-sociales twitter">&nbsp;</span>
+                <span style="width: 50px;" class="redes-sociales twitter">&nbsp;</span>
             </a>
             </li>
             <li>
             <a target="_blank" href="javascript:window.location.href='https://plus.google.com/share?url='+encodeURIComponent(location);void0;">
-                <span class="redes-sociales googleplus">&nbsp;</span>
+                <span style="width: 50px;" class="redes-sociales googleplus">&nbsp;</span>
             </a>
             </li>
         </ul>

@@ -55,12 +55,12 @@
     <div class="row imagen-nino text-center">
         <figure class="col-xs-12">
             {% if imagenItem|length > 0  %}
-                <img src="{{imagenItem}}" style="max-width: 400px;" alt=""/>
+                <img src="/apps/babystory/web{{imagenItem}}" style="max-width: 400px;" alt=""/>
             {% elseif videoItem|length > 0  %}
                 <iframe src ="http://www.youtube.com/embed/{{videoItem}}?rel=1&autoplay=0" width="400px" height="350px" frameborder="no"></iframe>
             {% elseif sonidoItem|length > 0  %}
                 <audio controls>
-                    <source src="{{sonidoItem}}" type="audio/mpeg">
+                    <source src="/apps/babystory/web{{sonidoItem}}" type="audio/mpeg">
                     Your browser does not support the audio tag.
                 </audio>
             {% endif %}

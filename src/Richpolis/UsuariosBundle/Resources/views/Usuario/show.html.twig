@@ -25,7 +25,7 @@
             <tr>
                 <td>{{ entity.biografia }}</td>
                 <td colspan="2">{{ entity.serMadre }}</td>
-                <td><img src="{{ entity.webPath }}" style="max-width: 120px;" /></td>
+                <td><img src="/apps/babystory/web{{ entity.webPath }}" style="max-width: 120px;" /></td>
             </tr>
         </tbody>
     </table>
@@ -45,7 +45,7 @@
                 <td>{{hijo.nombre}}</td>
                 <td>{{hijo.apodo}}</td>
                 <td>{{hijo.biografia}}</td>
-                <td><img src="{{ hijo.webPath }}" style="max-width: 120px;" /></td>
+                <td><img src="/apps/babystory/web{{ hijo.webPath }}" style="max-width: 120px;" /></td>
             </tr>
          {% endfor %}   
      </tbody>   
