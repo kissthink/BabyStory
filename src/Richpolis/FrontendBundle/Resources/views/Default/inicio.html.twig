@@ -118,7 +118,7 @@
     <script src="{{asset('js/vendor/jquery.bxslider.min.js')}}"></script>
     <script type="text/javascript">
         var tipoComponente = "";
-		var historiaActual = 0;
+	var historiaActual = 0;
         $(document).on("ready",function(){
             $('.slider').bxSlider({
                 pager: true,
@@ -204,5 +204,10 @@
                 $(".form-buscador").submit();
             }
         }
+        
+        function compartir(url){
+            location.href = url;
+        }
+        
     </script>
 {% endblock %}    

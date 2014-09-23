@@ -30,6 +30,24 @@ class DefaultController extends Controller
     {
         return array();
     }
+    
+    /**
+     * @Route("/h/{clave}",name="compartir_historia")
+     * @Template("FrontendBundle:Default:compartirHistoria.html.twig")
+     */
+    public function compartirHistoriaAction(Request $request,$clave)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $historia = $em->getRepository('HistoriasBundle:Historia')
+                       ->findOneBy(array('clave'=>$clave));
+        if(!$historia){
+            return $this->redirect($this->generateUrl('login'));
+        }
+        
+        return array(
+            'historia'    =>  $historia,
+        );
+    }
 
     /**
      * @Route("/busqueda",name="buscar_historias")

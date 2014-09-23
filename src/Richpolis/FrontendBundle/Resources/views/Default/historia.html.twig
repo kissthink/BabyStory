@@ -40,7 +40,7 @@
                         </p>
                     </div>
                     <div class="col-xs-3 col-sm-2 col-md-1 controles text-center">
-                        <a href="#" onclick="javascript:compartir('historia-{{historia.id}}')">
+                        <a href="#" onclick="javascript:compartir('{{path('compartir_historia',{'clave': historia.clave})}}')">
                             <span class="glyphicon glyphicon-share-alt"></span>
                         </a>
                         <br/>
