@@ -52,7 +52,11 @@
                     {% block usuario %}
                         <div class="usuario btn-group">
                             <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+                                {% if app.user.imagen | length > 0 %}
+                                    <img src="/apps/babystory/web{{app.user.thumbnailWebPath}}" class="imagen-user"/>
+                                {% else %}    
                                 <span class="glyphicon glyphicon-user"></span>
+                                {% endif %}
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">

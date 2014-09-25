@@ -343,4 +343,37 @@ class Historia
     {
         return $this->hijo;
     }
+
+    /**
+     * Add comentarios
+     *
+     * @param \Richpolis\HistoriasBundle\Entity\Comentario $comentarios
+     * @return Historia
+     */
+    public function addComentario(\Richpolis\HistoriasBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios[] = $comentarios;
+
+        return $this;
+    }
+
+    /**
+     * Remove comentarios
+     *
+     * @param \Richpolis\HistoriasBundle\Entity\Comentario $comentarios
+     */
+    public function removeComentario(\Richpolis\HistoriasBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios->removeElement($comentarios);
+    }
+
+    /**
+     * Get comentarios
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComentarios()
+    {
+        return $this->comentarios;
+    }
 }

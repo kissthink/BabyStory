@@ -79,6 +79,13 @@ class Usuario implements UserInterface, \Serializable
      * @ORM\Column(name="serMadre", type="text",nullable=true)
      */
     private $serMadre;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="sexo", type="integer")
+     */
+    private $sexo;
 
     /**
      * @var string
@@ -86,6 +93,13 @@ class Usuario implements UserInterface, \Serializable
      * @ORM\Column(name="imagen", type="string", length=255, nullable=true)
      */
     private $imagen;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="link", type="string", length=255, nullable=true)
+     */
+    private $link;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -137,6 +151,8 @@ class Usuario implements UserInterface, \Serializable
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     private $createdAt;
+    
+    
 
     /**
      * @var \DateTime
@@ -149,6 +165,16 @@ class Usuario implements UserInterface, \Serializable
     
     public $ninas;
     
+    const INDEFINIDO = 0;
+    const PAPA = 1;
+    const MAMA = 2;
+    
+    static public $sSexo=array(
+        self::INDEFINIDO=>'Es papá o mamá?',
+        self::PAPA=>'Papá',
+        self::MAMA=>'Mamá',
+    );
+    
     /**
      * Constructor
      */
@@ -160,6 +186,19 @@ class Usuario implements UserInterface, \Serializable
         $this->ninos = 0;
         $this->ninas = 0;
         $this->isActive = true;
+        $this->sexo= self::INDEFINIDO;
+    }
+    
+    public function getStringSexo(){
+        return self::$sSexo[$this->getSexo()];
+    }
+
+    static function getArraySexo(){
+        return self::$sSexo;
+    }
+
+    static function getPreferedSexo(){
+        return array(self::INDEFINIDO);
     }
     
     public function __toString() {
@@ -578,6 +617,62 @@ class Usuario implements UserInterface, \Serializable
         return $this->isActive;
     }    
     
+    /**
+     * Add comentarios
+     *
+     * @param \Richpolis\HistoriasBundle\Entity\Comentario $comentarios
+     * @return Usuario
+     */
+    public function addComentario(\Richpolis\HistoriasBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios[] = $comentarios;
+
+        return $this;
+    }
+
+    /**
+     * Remove comentarios
+     *
+     * @param \Richpolis\HistoriasBundle\Entity\Comentario $comentarios
+     */
+    public function removeComentario(\Richpolis\HistoriasBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios->removeElement($comentarios);
+    }
+
+    /**
+     * Get comentarios
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComentarios()
+    {
+        return $this->comentarios;
+    }
+
+    /**
+     * Set sexo
+     *
+     * @param integer $sexo
+     * @return Usuario
+     */
+    public function setSexo($sexo)
+    {
+        $this->sexo = $sexo;
+
+        return $this;
+    }
+
+    /**
+     * Get sexo
+     *
+     * @return integer 
+     */
+    public function getSexo()
+    {
+        return $this->sexo;
+    }
+    
     /*
      * Timestable
      */
@@ -604,14 +699,14 @@ class Usuario implements UserInterface, \Serializable
     {
         $this->updatedAt = new \DateTime();
     }
-
+    
     /*** uploads ***/
     
     /**
-     * @Assert\File(maxSize="6000000")
+     * @Assert\File(maxSize="2M",maxSizeMessage="El archivo es demasiado grande. El tamaño máximo permitido es {{ limit }}")
      */
-    private $file;
-
+    public $file;
+    
     /**
      * Sets file.
      *
@@ -628,12 +723,8 @@ class Usuario implements UserInterface, \Serializable
         } else {
             $this->imagen = 'initial';
         }
-        $directorio=$this->getUploadRootDir();
-        if(!file_exists($directorio)){
-          mkdir($directorio, 0777);  
-        }
     }
-
+    
     /**
      * Get file.
      *
@@ -679,7 +770,55 @@ class Usuario implements UserInterface, \Serializable
             // clear the temp image path
             $this->temp = null;
         }
+        
+        $this->crearThumbnail();
+        
         $this->file = null;
+    }
+    
+    /*
+     * Crea el thumbnail y lo guarda en un carpeta dentro del webPath thumbnails
+     * 
+     * @return void
+     */
+    public function crearThumbnail($width=100,$height=100,$path=""){
+        $imagine    = new \Imagine\Gd\Imagine();
+        $collage    = $imagine->create(new \Imagine\Image\Box(100, 100));
+        $mode       = \Imagine\Image\ImageInterface::THUMBNAIL_INSET;
+        $image      = $imagine->open($this->getAbsolutePath());
+        $sizeImage  = $image->getSize();
+        if(strlen($path)==0){
+            $path = $this->getAbosluteThumbnailPath();
+        }
+        if($height == null){
+            $height = $sizeImage->getHeight();
+            if($height>100){
+                $height = 100;
+            }
+        }
+        if($width == null){
+            $width = $sizeImage->getWidth();
+            if($width>100){
+                $width = 100;
+            }
+        }
+        $size   =new \Imagine\Image\Box($width,$height);
+        $image->thumbnail($size,$mode)->save($path);
+        $image  = $imagine->open($path);
+        $size = $image->getSize();
+        if((100 - $size->getWidth())>1){
+            $width = ceil((100 - $size->getWidth())/2);
+        }else{
+            $width = 0;
+        }
+        if((100 - $size->getHeight())>1){
+            $height = ceil((100 - $size->getHeight())/2);
+        }else{
+            $height =0;
+        }    
+        $centrado = new \Imagine\Image\Point($width, $height);
+        $collage->paste($image,$centrado);
+        $collage->save($path);        
     }
 
     /**
@@ -690,6 +829,11 @@ class Usuario implements UserInterface, \Serializable
       if ($file = $this->getAbsolutePath()) {
         if(file_exists($file)){
             unlink($file);
+        }
+      }
+      if($thumbnail=$this->getAbosluteThumbnailPath()){
+         if(file_exists($thumbnail)){
+            unlink($thumbnail);
         }
       }
     }
@@ -704,18 +848,28 @@ class Usuario implements UserInterface, \Serializable
         return __DIR__.'/../../../../web'.$this->getUploadDir();
     }
     
-    
-    /**
-     * Rutas de archivos 
-     */
     public function getWebPath()
     {
         return null === $this->imagen ? null : $this->getUploadDir().'/'.$this->imagen;
+    }
+    
+    public function getThumbnailWebPath()
+    {
+        if(!file_exists($this->getAbosluteThumbnailPath())){
+            if(file_exists($this->getAbsolutePath())){
+                $this->crearThumbnail();
+            }
+        }
+        return null === $this->imagen ? null : $this->getUploadDir().'/thumbnails/'.$this->imagen;
+        
     }
     
     public function getAbsolutePath()
     {
         return null === $this->imagen ? null : $this->getUploadRootDir().'/'.$this->imagen;
     }
-
+    
+    public function getAbosluteThumbnailPath(){
+        return null === $this->imagen ? null : $this->getUploadRootDir().'/thumbnails/'.$this->imagen;
+    }
 }

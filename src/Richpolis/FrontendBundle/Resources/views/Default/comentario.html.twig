@@ -2,7 +2,7 @@
     <div class="col-xs-4 col-md-2 imagen">
         <figure class="img-responsive">
             {% if comentario.usuario.imagen | length > 0 %}
-                <img src="/apps/babystory/web{{comentario.usuario.webPath | imagine_filter('imagen_usuario')}}" width="100" height="100"/>    
+                <img src="/apps/babystory/web{{comentario.usuario.thumbnailWebPath}}" width="100" height="100"/>    
             {% else %}    
                 <img src="{{asset('images/sin-imagen-usuario.png')}}"/>
             {% endif %}

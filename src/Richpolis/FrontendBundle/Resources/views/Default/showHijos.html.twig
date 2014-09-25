@@ -8,70 +8,58 @@
     <div class="row">
         <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
             <h2 class="form-registro-encabezado text-center">
-                {{titulo}}
+                     <a href="{{path('show_hijos',{'es':es})}}?indice={{anterior}}">
+                     <span class="glyphicon glyphicon-arrow-left controlAtras"></span>
+                     </a>
+                     {{hijo.stringSexo}}
+                     <a href="{{path('show_hijos',{'es':es})}}?indice={{siguiente}}">
+                     <span class="glyphicon glyphicon-arrow-right controlSiguiente"></span>
+                     </a>
             </h2>
-            {{form_errors(form)}}
-            <form id="formRegistroHijos" class="form-registro"  role="form" action="{% if isNew == true %} {{path('registro_hijos')}} {% else %} {{path('editar_hijos',{'id': hijo.id })}} {% endif %}" method="post" {{ form_enctype(form) }}>
+            <div id="formRegistroHijos">
                 <figure id="imagen-usuario">
                     {% if hijo.imagen | length > 0 %}
                     <img src="/apps/babystory/web{{hijo.thumbnailWebPath}}" width="81" height="81"/>    
                     {% else %}    
                     <img src="{{asset('images/sin-imagen-usuario.png')}}"/>
                     {% endif %}
-                    <figcaption>
-                        seleccionar imagen de perfil
-                    </figcaption>
                 </figure>
                 <div class="form-group">
-                {{ form_errors(form.file)}}
-                {{ form_widget(form.file)}}
-                </div>    
-                <p>&nbsp;</p>
-                <div class="form-group">
-                {{ form_errors(form.nombre)}}
-                {{ form_widget(form.nombre)}}
+                    <input type="text" class="form-control" value="{{hijo.nombre}}" readonly="readonly"/>
                 </div>
                 <div class="form-group">
-                {{ form_errors(form.apodo)}}
-                {{ form_widget(form.apodo)}}
+                <input type="text" class="form-control" value="{{hijo.apodo}}" readonly="readonly"/>
                 </div>
                 <div class="form-group">
-                {{ form_row(form.usarApodo)}}
+                 <input type="text" class="form-control" value="{{'Usar apodo: ' ~ ((hijo.usarApodo)?'Si':'No') }}" readonly="readonly"/>
                 </div>
                 <br/>
                 <div class="form-group">
-                {{ form_errors(form.fechaNacimiento)}}    
-                    <div class="input-append date" id="inputFechaNacimiento" data-date-format="yyyy-mm-dd">
-                        {{ form_widget(form.fechaNacimiento)}}
-                        <span class="add-on"><i class="icon-th"></i></span>
-                    </div>    
+                <input type="text" class="form-control" value="{{hijo.fechaNacimiento | date('d-M-Y')}}" readonly="readonly"/>    
                 </div>
                 <div class="form-group">
-                {{ form_errors(form.biografia)}}
-                {{ form_widget(form.biografia)}}
+                <input type="text" class="form-control" value="{{ hijo.biografia }}" readonly="readonly"/>
                 </div>
                <p>&nbsp;</p>
-                {{form_rest(form)}}                
-            </form>
+            </div>
                 <div class="row controles">
                     <div class="col-xs-2 col-sm-2 col-md-2"></div>
                     <div class="col-xs-8 col-sm-8 col-md-8 text-center">
-                        <a href="#" onclick="javascript:saveChild();">
-                            <span class="glyphicon glyphicon-floppy-disk"></span>
+                        <a href="javascript:void(0);">
+                            <span class="glyphicon glyphicon-floppy-disk" style="color:gray;"></span>
                         </a>
-                        <span class="glyphicon glyphicon-pencil"  style="color:gray;"></span>
-                        {% if isNew == true %}
-                        <span class="glyphicon glyphicon-trash" style="color:gray;"></span>
-                        {% else %}
-                        <a href="#" onclick="javascript:deleteChild()">
+                        <a href="{{path('editar_hijos',{'id': hijo.id})}}">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                        <a href="#" onclick="javascript:deleteChild('{{path('eliminar_hijos',{'id': hijo.id })}}')">
                             <span class="glyphicon glyphicon-trash"></span>
                         </a>    
-                        {% endif %}
                     </div>
                     <div class="col-xs-2 col-sm-2 col-md-2"></div>
                 </div>
                 <p class="contenedor-loader">&nbsp;</p>    
         </div>
+                          
     </div>    
 
 {% endblock %}
@@ -79,18 +67,18 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
+       
         function saveChild(){
             $("#formRegistroHijos").submit();
         }
-        {% if isNew == false %}
-        function deleteChild(){
-            if(confirm('Confirmar para eliminar registro de "{{ hijo }}"?')){
+        function deleteChild(url){
+            if(confirm('Confirmar para eliminar registro ?')){
                 $loader = $("<img>");
                 $loader.attr({'src': '{{asset('images/loader.GIF')}}','id': 'loader'});
                 $loader.css({'maxWidth': '80px'});
                 $(".contenedor-loader").html($loader);
                 $.ajax({
-                    url: '{{path('eliminar_hijos',{'id': hijo.id })}}',
+                    url: url,
                     type: 'DELETE',
                     dataType: 'json',
                 }).done(function(data, textStatus,jqXHR){
@@ -106,6 +94,5 @@
                 });
             }
         }
-        {% endif %}
     </script>
 {% endblock %}    

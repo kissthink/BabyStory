@@ -68,9 +68,10 @@ class HistoriaRepository extends EntityRepository
         $emConfig->addCustomDatetimeFunction('MONTH', 'DoctrineExtensions\Query\Mysql\Month');
         $emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
             $consulta = $em->createQuery(
-                "SELECT DISTINCT MONTH(h.fecha) as mes, COUNT(h.id) as cuantas "
+                "SELECT a.imagen as imagen, MONTH(h.fecha) as mes "
                 . "FROM HistoriasBundle:Historia h "
-                . "JOIN h.usuario u "    
+                . "JOIN h.usuario u "
+                . "JOIN h.hijo a "    
                 . "WHERE YEAR(h.fecha) =:year "
                 . "AND u.id=:usuario "    
                 . "ORDER BY mes ASC");

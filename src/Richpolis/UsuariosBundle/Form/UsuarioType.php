@@ -5,6 +5,7 @@ namespace Richpolis\UsuariosBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Richpolis\UsuariosBundle\Entity\Usuario;
 
 class UsuarioType extends AbstractType
 {
@@ -47,6 +48,17 @@ class UsuarioType extends AbstractType
                 'placeholder'=>'Ciudad',
                 'data-bind'=>'value: ciudad'
              )))
+            ->add('sexo','choice',array(
+                'label'=>'Es',
+                'empty_value'=>false,
+                'read_only'=> true,
+                'choices'=>  Usuario::getArraySexo(),
+                'preferred_choices'=>  Usuario::getPreferedSexo(),
+                'attr'=>array(
+                    'class'=>'validate[required] form-control placeholder',
+                    'placeholder'=>'Es',
+                    'data-bind'=>'value: es'
+                )))    
             ->add('biografia',null,array('label'=>'Biografia','attr'=>array(
                 'class'=>'validate[required] form-control placeholder',
                 'placeholder'=>'Biografia',
@@ -64,6 +76,7 @@ class UsuarioType extends AbstractType
              )))   
             ->add('salt','hidden')
             ->add('imagen','hidden')
+            ->add('link','hidden')    
             ->add('isActive',null,array('label'=>'Activo?','attr'=>array(
                 'class'=>'checkbox-inline',
                 'placeholder'=>'Es activo',

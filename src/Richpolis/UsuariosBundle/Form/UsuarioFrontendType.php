@@ -5,6 +5,7 @@ namespace Richpolis\UsuariosBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Richpolis\UsuariosBundle\Entity\Usuario;
 
 class UsuarioFrontendType extends AbstractType
 {
@@ -14,6 +15,7 @@ class UsuarioFrontendType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+                
         $builder
             ->add('username','text',array('label'=>'Usuario','attr'=>array(
                 'class'=>'validate[required] form-control placeholder',
@@ -47,14 +49,25 @@ class UsuarioFrontendType extends AbstractType
                 'placeholder'=>'Ciudad',
                 'data-bind'=>'value: ciudad'
              )))
+            ->add('sexo','choice',array(
+                'label'=>'Es',
+                'empty_value'=>false,
+                'read_only'=> true,
+                'choices'=>  Usuario::getArraySexo(),
+                'preferred_choices'=>  Usuario::getPreferedSexo(),
+                'attr'=>array(
+                    'class'=>'validate[required] form-control placeholder',
+                    'placeholder'=>'Es',
+                    'data-bind'=>'value: es'
+                )))    
             ->add('biografia',null,array('label'=>'Biografia','attr'=>array(
                 'class'=>'validate[required] form-control placeholder',
                 'placeholder'=>'Biografia',
                 'data-bind'=>'value: biografia'
              )))
-            ->add('serMadre',null,array('label'=>'Ser madre','attr'=>array(
+            ->add('serMadre',null,array('label'=>'Ser padre/madre','attr'=>array(
                 'class'=>'validate[required] form-control placeholder',
-                'placeholder'=>'Ser madre',
+                'placeholder'=>'Ser padre/madre',
                 'data-bind'=>'value: sermadre'
              )))
             ->add('ninos','text',array('label'=>'Niños',
@@ -74,6 +87,7 @@ class UsuarioFrontendType extends AbstractType
             ->add('salt','hidden')
             ->add('imagen','hidden')
             ->add('isActive','hidden')
+            ->add('link','hidden')    
         ;
     }
     

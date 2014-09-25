@@ -7,10 +7,10 @@
                 {{titulo}}
             </h2>
             {{form_errors(form)}}
-            <form class="form-registro" role="form" action="{% if isNew == true %}{{path('registro')}}{% else %}{{path('editar_usuario')}}{% endif %}" method="post" enctype="multipart/form-data">
+            <form class="form-registro" role="form" action="{% if isNew == true %}{{path('registro')}}{% else %}{{path('editar_usuario')}}{% endif %}" method="post" {{ form_enctype(form) }}>
                 <figure id="imagen-usuario">
                     {% if usuario.imagen | length > 0 %}
-                    <img src="{{usuario.webPath | imagine_filter('imagen_usuario')}}" width="81" height="81"/>    
+                    <img src="/apps/babystory/web{{usuario.thumbnailWebPath }}" width="81" height="81"/>    
                     {% else %}    
                     <img src="{{asset('images/sin-imagen-usuario.png')}}"/>
                     {% endif %}
@@ -34,6 +34,10 @@
                 <div class="form-group">
                 {{ form_errors(form.email)}}
                 {{ form_widget(form.email)}}
+                </div>
+                 <div class="form-group">
+                {{ form_errors(form.sexo)}}
+                {{ form_widget(form.sexo)}}
                 </div>
                 <div class="form-group">
                 {{ form_errors(form.ciudad)}}
@@ -121,12 +125,14 @@
                         <div class="col-xs-3 col-sm-2 col-md-2">
                             <p>Niños</p>
                         </div>
-                                
-                        <!--div class="col-xs-3 col-sm-2 col-md-1">
-                            <a href="{{path('editar_hijos')}}?nino=1">
+                        <div class="col-xs-3 col-sm-2 col-md-1">
+                            {% if ninos > 0 %}
+                            {% set ninoSexo = constant('Richpolis\\UsuariosBundle\\Entity\\Hijo::NINO') %}     
+                            <a href="{{path('show_hijos',{'es': ninoSexo })}}">
                                 <img class="flecha" src="{{asset('images/fecha.png')}}"/>
                             </a>
-                        </div-->
+                            {% endif %}
+                        </div>
                     </div>
                     <br/>
                     <div class="row">
@@ -144,11 +150,14 @@
                         <div class="col-xs-3 col-sm-2 col-md-2">
                             <p>Niñas</p>
                         </div>
-                        <!--div class="col-xs-3 col-sm-2 col-md-1">
-                            <a href="{{path('editar_hijos')}}?nina=1">
+                        <div class="col-xs-3 col-sm-2 col-md-1">
+                            {% if ninas > 0 %}
+                            {% set ninaSexo = constant('Richpolis\\UsuariosBundle\\Entity\\Hijo::NINA') %}    
+                            <a href="{{path('show_hijos',{'es': ninaSexo })}}">
                                 <img class="flecha" src="{{asset('images/fecha.png')}}"/>
                             </a>
-                        </div-->
+                            {% endif %}
+                        </div>
                     </div>    
                 </div>
                 {% endif %}    
@@ -187,7 +196,7 @@
         location.href = '{{path('registro_hijos')}}?es={{constant('Richpolis\\UsuariosBundle\\Entity\\Hijo::NINO')}}';
     }
     function addNina(){
-        location.href = '{{path('registro_hijos')}}?es={{constant('Richpolis\\UsuariosBundle\\Entity\\Hijo::NINO')}}';
+        location.href = '{{path('registro_hijos')}}?es={{constant('Richpolis\\UsuariosBundle\\Entity\\Hijo::NINA')}}';
     }
     </script>
 {% endblock %}    

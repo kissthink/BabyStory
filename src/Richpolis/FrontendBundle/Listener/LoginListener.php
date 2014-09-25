@@ -13,8 +13,9 @@ class LoginListener
 {
     private $contexto, $router, $usuario = null;
  
-    public function __construct(SecurityContext $context, Router $router)
+    public function __construct($container, SecurityContext $context, Router $router)
     {
+        $this->container = $container;
         $this->contexto = $context;
         $this->router   = $router;
     }
@@ -29,11 +30,13 @@ class LoginListener
     {
         if (null != $this->usuario){
             if($this->usuario->getIsActive()) {
-                if($this->contexto->isGranted('ROLE_ADMIN')){
-                    $irA = $this->router->generate('usuarios');
-                }else{
+                $session = $this->container->get('session');
+                $irA = $session->get('redirigir',$this->router->generate('homepage'));
+                /*if($this->contexto->isGranted('ROLE_ADMIN')){
                     $irA = $this->router->generate('homepage');
-                }
+                }else{*/
+                    //$irA = $this->router->generate('homepage');
+                //}
             }else{
                 $irA = $this->router->generate('logout');
             }

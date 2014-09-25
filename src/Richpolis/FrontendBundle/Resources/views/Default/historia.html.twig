@@ -6,7 +6,7 @@
             <span>{{historia.usuario.username}}</span>
             <figure class="dialogo-nino-imagen">
                 {% if historia.usuario.imagen | length > 0 %}
-                <img src="{{ historia.usuario.webPath }}" style="max-width: 100px;" alt="">
+                <img src="/apps/babystory/web{{ historia.usuario.thumbnailWebPath }}" style="max-width: 100px;" alt="">
                 {% else %}
                 <img src="{{ asset('images/logo.png') }}" style="max-width: 100px;" alt="">
                 {% endif %}    

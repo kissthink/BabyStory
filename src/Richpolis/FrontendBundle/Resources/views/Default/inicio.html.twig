@@ -16,7 +16,7 @@
                     <a href="{{path('homepage')}}?month={{key}}&year={{yearActual}}">
                         <figure class="nino">
                             <!--img src="http://placehold.it/100x100"/-->
-                            <img src="{{asset('images/logo.png')}}" style="max-width: 100px;"/>
+                            <img src="{{asset(item.imagen)}}" style="max-width: 100px;"/>
                             <figcaption>
                                 <span class="bullet-redondo {{ (item.historias > 0)?'con-historia':'sin-historia' }}"></span>
                                 <br/>
@@ -138,14 +138,14 @@
             var url = $("#historia-"+historia).data('comentario');
             getFormulario(url);
             tipoComponente = "comentario";
-			historiaActual = historia;
+            historiaActual = historia;
         }
         
         function mostrarFormulario(titulo){
             $("#modalFormulario").modal("show");
             $("#labelFormulario").html(titulo);
             $loader = $("<img>");
-            $loader.attr({'src': '/images/loader.GIF','id': 'loader'});
+            $loader.attr({'src': '{{asset('images/loader.GIF')}}','id': 'loader'});
             $loader.css({'maxWidth': '80px'});
             $("#modalBodyFormulario").html($loader);
         }

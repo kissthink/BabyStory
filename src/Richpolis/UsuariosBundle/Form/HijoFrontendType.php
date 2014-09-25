@@ -36,7 +36,8 @@ class HijoFrontendType extends AbstractType
                 'data-bind'=>'value: usarApodo'
              )))
             ->add('sexo','hidden')       
-            ->add('fechaNacimiento',null,array('label'=>'Fecha nacimiento'))
+            ->add('fechaNacimiento','date',array('label'=>'Fecha nacimiento','widget' => 'single_text',
+                'format' => 'yyyy-MM-dd','attr'=>array('class'=>'form-control')))
             ->add('biografia',null,array('label'=>'Biografia','attr'=>array(
                 'class'=>'validate[required] form-control placeholder',
                 'placeholder'=>'Biografia',

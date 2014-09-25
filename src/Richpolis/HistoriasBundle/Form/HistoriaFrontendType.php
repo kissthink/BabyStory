@@ -16,31 +16,22 @@ class HistoriaFrontendType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->usuario = $options['usuario'];
+        $usuario = $options['usuario'];
         
         $builder
             ->add('hijo','entity',array(
                 'class'=> 'UsuariosBundle:Hijo',
                 'label'=>'Niño(a)',
                 'required'=>true,
-                'query_builder' => function(EntityRepository $er) {
-                    return $er->createQueryBuilder('h')
-                        ->where('h.papa=:papa')
-                        ->orderBy('h.sexo', 'ASC')
-                        ->addOrderBy('h.nombre','ASC')    
-                        ->setParameter('papa',$this->usuario->getId());
-                },
+                'choices' => $usuario->getHijos(),
                 'attr'=>array(
                     'class'=>'form-control placeholder',
                     'placeholder'=>'Hijo',
                     'data-bind'=>'value: hijo',
                     )
                 ))    
-            ->add('fecha',null,array('label'=>'Fecha historia','attr'=>array(
-                'class'=>'validate[required] form-control placeholder',
-                'placeholder'=>'fecha',
-                'data-bind'=>'value: fecha'
-            )))
+            ->add('fecha','date',array('label'=>'Fecha','widget' => 'single_text',
+                'format' => 'yyyy-MM-dd','attr'=>array('class'=>'form-control')))
             ->add('historia',null,array('label'=>'Historia','attr'=>array(
                 'class'=>'validate[required] form-control placeholder',
                 'placeholder'=>'Historia',

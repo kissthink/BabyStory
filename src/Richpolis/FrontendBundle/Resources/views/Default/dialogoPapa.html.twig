@@ -1,9 +1,15 @@
 <div class="row dialogo diagolo-papa">
     <div class="col-xs-2 col-sm-2 col-md-2 text-center">
-        <span>Mama</span>
+        <span>
+            {% if componente.papa.sexo > 0 %}
+            {{ componente.papa.stringSexo }}
+            {% else %}
+            {{ componente.papa }}
+            {% endif %}    
+        </span>
         <figure class="dialogo-papa-imagen">
-            {% if app.user.imagen | length > 0 %}
-                <img src="{{app.user.webPath | imagine_filter('imagen_usuario')}}" width="100" height="100"/>    
+            {% if componente.papa.imagen | length > 0 %}
+                <img src="/apps/babystory/web{{componente.papa.thumbnailWebPath}}" style="max-width: 100px;"/>    
             {% else %}    
                 <img src="{{asset('images/sin-imagen-usuario.png')}}"/>
             {% endif %}

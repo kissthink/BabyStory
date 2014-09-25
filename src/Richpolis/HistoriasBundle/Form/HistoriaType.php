@@ -32,7 +32,8 @@ class HistoriaType extends AbstractType
                 'placeholder'=>'Historia',
                 'data-bind'=>'value: historia'
              )))
-            ->add('fecha',null,array('label'=>'Fecha historia'))
+            ->add('fecha','date',array('label'=>'Fecha historia','widget' => 'single_text',
+                'format' => 'yyyy-MM-dd','attr'=>array('class'=>'form-control')))
         ;
     }
     

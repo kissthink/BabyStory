@@ -10,11 +10,14 @@
             <th>
                 Email
             </th>
-             <th>
+            <th>
+                Es
+            </th>
+            <th>
                 Biografia
             </th>
              <th>
-                Ser madre
+                Ser padre/madre
             </th>
             <th>
                 Alta
@@ -38,6 +41,13 @@
                 </td>
                 <td>
                     {{ usuario.email }}
+                </td>
+                <td>
+                    {% if usuario.sexo > 0 %}
+                        {{ usuario.stringSexo | raw }}
+                    {% else %}
+                        Indefinido
+                    {% endif %}    
                 </td>
                 <td>
                     {{ usuario.biografia }}

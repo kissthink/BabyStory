@@ -17,7 +17,13 @@
                 <td>{{entity.nombre}}</td>
                 <td>{{entity.apodo}}</td>
                 <td>{{entity.biografia}}</td>
-                <td><img src="/apps/babystory/web{{ entity.webPath }}" style="max-width: 120px;" /></td>
+                <td>
+                    {% if entity.imagen | length > 0 %}
+                    <img src="/apps/babystory/web{{entity.thumbnailWebPath}}" />    
+                    {% else %}    
+                    <img src="{{asset('images/sin-imagen-usuario.png')}}"/>
+                    {% endif %}
+                </td>
             </tr>
      </tbody>   
     </table>      
@@ -37,14 +43,22 @@
                 <td>{{ entity.papa.ciudad }}</td>
             </tr>
             <tr>
+                <th>Es</th>
                 <th>Biografia</th>
-                <th colspan="2">Sermadre</th>
+                <th>Ser {{entity.papa.stringSexo}}</th>
                 <th>Imagen</th>
             </tr>
             <tr>
+                <td>{{ entity.papa.stringSexo }}</td>
                 <td>{{ entity.papa.biografia }}</td>
-                <td colspan="2">{{ entity.papa.serMadre }}</td>
-                <td><img src="/apps/babystory/web{{ entity.papa.webPath }}" style="max-width: 120px;" /></td>
+                <td>{{ entity.papa.serMadre }}</td>
+                <td>
+                    {% if entity.papa.imagen | length > 0 %}
+                    <img src="/apps/babystory/web{{entity.papa.thumbnailWebPath}}" />    
+                    {% else %}    
+                    <img src="{{asset('images/sin-imagen-usuario.png')}}"/>
+                    {% endif %}
+                </td>
             </tr>
         </tbody>
     </table>

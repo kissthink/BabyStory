@@ -14,7 +14,13 @@
                         </p>
                         <div class="row">
                             <div class="col-xs-6 col-sm-6 col-md-6 text-center">
-                                <h3>Mama</h3>
+                                <h3>
+                                    {% if historia.usuario.sexo > 0 %}
+                                        {{historia.usuario.stringSexo}}
+                                    {% else %}
+                                        {{historia.usuario}}
+                                    {% endif %}    
+                                </h3>
                                 <div class="controles">
                                     <a id="addDialogMother" href="#" data-url="{{path('dialogo_papa',{ 'id': historia.id })}}">
                                         <span class="glyphicon glyphicon-comment"></span>
@@ -43,7 +49,7 @@
                         <div class="row">
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">Historia</label>
-                                <div class="col-sm-10">
+                                <div class="col-sm-10 resumenHistoria">
                                     {{ historia.historia }}
                                 </div>
                             </div>
@@ -140,7 +146,7 @@
             $("#modalFormulario").modal("show");
             $("#labelFormulario").html(titulo);
             $loader = $("<img>");
-            $loader.attr({'src': '/images/loader.GIF','id': 'loader'});
+            $loader.attr({'src': '{{asset('images/loader.GIF')}}','id': 'loader'});
             $loader.css({'maxWidth': '80px'});
             $("#modalBodyFormulario").html($loader);
         }

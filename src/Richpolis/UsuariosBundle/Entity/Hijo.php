@@ -105,7 +105,7 @@ class Hijo
     const NINA = 2;
     
     static public $sSexo=array(
-        self::INDEFINIDO=>'',
+        self::INDEFINIDO=>'Es niño o niña?',
         self::NINO=>'Niño',
         self::NINA=>'Niña',
     );
@@ -113,6 +113,7 @@ class Hijo
     public function __construct() {
         $this->sexo= self::INDEFINIDO;
         $this->usarApodo = true;
+        $this->fechaNacimiento = new \DateTime();
     }
     
     public function getStringSexo(){
@@ -317,146 +318,6 @@ class Hijo
         return $this->papa;
     }
     
-    /*
-     * Timestable
-     */
-    
-    /**
-     ** @ORM\PrePersist
-     */
-    public function setCreatedAtValue()
-    {
-        if(!$this->getCreatedAt())
-        {
-          $this->createdAt = new \DateTime();
-        }
-        if(!$this->getUpdatedAt())
-        {
-          $this->updatedAt = new \DateTime();
-        }
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function setUpdatedAtValue()
-    {
-        $this->updatedAt = new \DateTime();
-    }
-    
-    /*** uploads ***/
-    
-    /**
-     * @Assert\File(maxSize="6000000")
-     */
-    private $file;
-
-    /**
-     * Sets file.
-     *
-     * @param UploadedFile $file
-     */
-    public function setFile(UploadedFile $file = null)
-    {
-        $this->file = $file;
-        // check if we have an old image path
-        if (isset($this->imagen)) {
-            // store the old name to delete after the update
-            $this->temp = $this->imagen;
-            $this->imagen = null;
-        } else {
-            $this->imagen = 'initial';
-        }
-        $directorio=$this->getUploadRootDir();
-        if(!file_exists($directorio)){
-          mkdir($directorio, 0777);  
-        }
-    }
-
-    /**
-     * Get file.
-     *
-     * @return UploadedFile
-     */
-    public function getFile()
-    {
-        return $this->file;
-    }
-    
-    /**
-    * @ORM\PrePersist
-    * @ORM\PreUpdate
-    */
-    public function preUpload()
-    {
-      if (null !== $this->getFile()) {
-            // do whatever you want to generate a unique name
-            $filename = sha1(uniqid(mt_rand(), true));
-            $this->imagen = $filename.'.'.$this->getFile()->guessExtension();
-        }
-    }
-
-    /**
-    * @ORM\PostPersist
-    * @ORM\PostUpdate
-    */
-    public function upload()
-    {
-      if (null === $this->getFile()) {
-            return;
-        }
-
-        // if there is an error when moving the file, an exception will
-        // be automatically thrown by move(). This will properly prevent
-        // the entity from being persisted to the database on error
-        $this->getFile()->move($this->getUploadRootDir(), $this->imagen);
-
-        // check if we have an old image
-        if (isset($this->temp)) {
-            // delete the old image
-            unlink($this->getUploadRootDir().'/'.$this->temp);
-            // clear the temp image path
-            $this->temp = null;
-        }
-        $this->file = null;
-    }
-
-    /**
-    * @ORM\PostRemove
-    */
-    public function removeUpload()
-    {
-      if ($file = $this->getAbsolutePath()) {
-        if(file_exists($file)){
-            unlink($file);
-        }
-      }
-    }
-    
-    protected function getUploadDir()
-    {
-        return '/uploads/hijos';
-    }
-
-    protected function getUploadRootDir()
-    {
-        return __DIR__.'/../../../../web'.$this->getUploadDir();
-    }
-    
-    
-    /**
-     * Rutas de archivos 
-     */
-    public function getWebPath()
-    {
-        return null === $this->imagen ? null : $this->getUploadDir().'/'.$this->imagen;
-    }
-    
-    public function getAbsolutePath()
-    {
-        return null === $this->imagen ? null : $this->getUploadRootDir().'/'.$this->imagen;
-    }
-
     /**
      * Set createdAt
      *
@@ -525,4 +386,207 @@ class Hijo
     {
         return $this->sexo;
     }
+    
+    /*
+     * Timestable
+     */
+    
+    /**
+     ** @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        if(!$this->getCreatedAt())
+        {
+          $this->createdAt = new \DateTime();
+        }
+        if(!$this->getUpdatedAt())
+        {
+          $this->updatedAt = new \DateTime();
+        }
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTime();
+    }
+    
+    /*** uploads ***/
+    
+    /**
+     * @Assert\File(maxSize="2M",maxSizeMessage="El archivo es demasiado grande. El tamaño máximo permitido es {{ limit }}")
+     */
+    public $file;
+    
+    /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+        // check if we have an old image path
+        if (isset($this->imagen)) {
+            // store the old name to delete after the update
+            $this->temp = $this->imagen;
+            $this->imagen = null;
+        } else {
+            $this->imagen = 'initial';
+        }
+    }
+    
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+    
+    /**
+    * @ORM\PrePersist
+    * @ORM\PreUpdate
+    */
+    public function preUpload()
+    {
+      if (null !== $this->getFile()) {
+            // do whatever you want to generate a unique name
+            $filename = sha1(uniqid(mt_rand(), true));
+            $this->imagen = $filename.'.'.$this->getFile()->guessExtension();
+        }
+    }
+
+    /**
+    * @ORM\PostPersist
+    * @ORM\PostUpdate
+    */
+    public function upload()
+    {
+      if (null === $this->getFile()) {
+            return;
+        }
+
+        // if there is an error when moving the file, an exception will
+        // be automatically thrown by move(). This will properly prevent
+        // the entity from being persisted to the database on error
+        $this->getFile()->move($this->getUploadRootDir(), $this->imagen);
+
+        // check if we have an old image
+        if (isset($this->temp)) {
+            // delete the old image
+            if(file_exists($this->getUploadRootDir().'/'.$this->temp)){
+                unlink($this->getUploadRootDir().'/'.$this->temp);
+            }
+            $this->temp = null;
+        }
+        
+        $this->crearThumbnail();
+        
+        $this->file = null;
+    }
+    
+    /*
+     * Crea el thumbnail y lo guarda en un carpeta dentro del webPath thumbnails
+     * 
+     * @return void
+     */
+    public function crearThumbnail($width=100,$height=100,$path=""){
+        $imagine    = new \Imagine\Gd\Imagine();
+        $collage    = $imagine->create(new \Imagine\Image\Box(100, 100));
+        $mode       = \Imagine\Image\ImageInterface::THUMBNAIL_INSET;
+        $image      = $imagine->open($this->getAbsolutePath());
+        $sizeImage  = $image->getSize();
+        if(strlen($path)==0){
+            $path = $this->getAbosluteThumbnailPath();
+        }
+        if($height == null){
+            $height = $sizeImage->getHeight();
+            if($height>100){
+                $height = 100;
+            }
+        }
+        if($width == null){
+            $width = $sizeImage->getWidth();
+            if($width>100){
+                $width = 100;
+            }
+        }
+        $size   =new \Imagine\Image\Box($width,$height);
+        $image->thumbnail($size,$mode)->save($path);
+        $image  = $imagine->open($path);
+        $size = $image->getSize();
+        if((100 - $size->getWidth())>1){
+            $width = ceil((100 - $size->getWidth())/2);
+        }else{
+            $width = 0;
+        }
+        if((100 - $size->getHeight())>1){
+            $height = ceil((100 - $size->getHeight())/2);
+        }else{
+            $height =0;
+        }    
+        $centrado = new \Imagine\Image\Point($width, $height);
+        $collage->paste($image,$centrado);
+        $collage->save($path);        
+    }
+
+    /**
+    * @ORM\PostRemove
+    */
+    public function removeUpload()
+    {
+      if ($file = $this->getAbsolutePath()) {
+        if(file_exists($file)){
+            unlink($file);
+        }
+      }
+      if($thumbnail=$this->getAbosluteThumbnailPath()){
+         if(file_exists($thumbnail)){
+            unlink($thumbnail);
+        }
+      }
+    }
+    
+    protected function getUploadDir()
+    {
+        return '/uploads/hijos';
+    }
+
+    protected function getUploadRootDir()
+    {
+        return __DIR__.'/../../../../web'.$this->getUploadDir();
+    }
+    
+    public function getWebPath()
+    {
+        return null === $this->imagen ? null : $this->getUploadDir().'/'.$this->imagen;
+    }
+    
+    public function getThumbnailWebPath()
+    {
+        if(!file_exists($this->getAbosluteThumbnailPath())){
+            if(file_exists($this->getAbsolutePath())){
+                $this->crearThumbnail();
+            }
+        }
+        return null === $this->imagen ? null : $this->getUploadDir().'/thumbnails/'.$this->imagen;
+        
+    }
+    
+    public function getAbsolutePath()
+    {
+        return null === $this->imagen ? null : $this->getUploadRootDir().'/'.$this->imagen;
+    }
+    
+    public function getAbosluteThumbnailPath(){
+        return null === $this->imagen ? null : $this->getUploadRootDir().'/thumbnails/'.$this->imagen;
+    }
+
+    
 }

@@ -67,6 +67,8 @@ class DefaultController extends Controller
         $historiasPorMes = $em->getRepository('HistoriasBundle:Historia')
                               ->getCountHistoriasEnYears($year,$this->getUser());
         
+        
+        
         $meses = $this->getHistoriasPorMesParser($historiasPorMes);
        
         $form = $this->createForm(new HistoriaFrontendType(), new Historia(),array(
@@ -102,8 +104,12 @@ class DefaultController extends Controller
         $historiasPorMes = $em->getRepository('HistoriasBundle:Historia')
                               ->getCountHistoriasEnYears($year,$this->getUser());
         
+        //var_dump($historiasPorMes); die;
+        
         $meses = $this->getHistoriasPorMesParser($historiasPorMes);
-       
+      
+        //var_dump($meses); die;
+        
         $form = $this->createForm(new HistoriaFrontendType(), new Historia(),array(
             'action' => $this->generateUrl('crear_historia'),
             'method' => 'POST',
@@ -171,7 +177,7 @@ class DefaultController extends Controller
         );
     }
 	
-	/**
+    /**
      * @Route("/editar/historia/{id}",name="editar_historia")
      * @Template()
      * @Method({"GET","POST"})
@@ -187,6 +193,28 @@ class DefaultController extends Controller
         return array(
             'historia' => $historia,
         );
+    }
+    
+    /**
+     * @Route("/eliminar/historia/{id}",name="eliminar_historia")
+     * @Method({"DELETE"})
+     */
+    public function eliminarHistoriaAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $historia = $em->getRepository('HistoriasBundle:Historia')->find($id);
+        if (!$historia) {
+            return new JsonResponse(json_encode(array('accion'=>'bat','mensaje'=>'El registro no existe')));
+        }
+        
+        foreach($historia->getComponentes() as $componente){
+            $em->remove($componente);
+            $em->flush();
+        }
+        $em->remove($historia);
+        $em->flush();
+        
+        return new JsonResponse(json_encode(array('accion'=>'ok','mensaje'=>'El registro fue eliminado')));
     }
     
     /**
@@ -371,7 +399,7 @@ class DefaultController extends Controller
         }
         
         if($isNew){
-            $titulo = ($es <= Hijo::NINO?'Registro niño':'Reistro niña');
+            $titulo = ($es <= Hijo::NINO?'Registro niño':'Registro niña');
         }else{
             $titulo = ($hijo->getSexo() <= Hijo::NINO?'Editar registro niño':'Editar registro niña');
         }
@@ -384,6 +412,74 @@ class DefaultController extends Controller
         );
     }
     
+    /**
+     * @Route("/show/hijos/{es}",name="show_hijos",requirements={"es": "\d+"})
+     * @Template()
+     * @Method({"GET"})
+     */
+    public function showHijosAction(Request $request,$es)
+    {
+        $contNinos = 0;
+        $indice = $request->query->get('indice',1);
+        $hijo = null;
+        foreach($this->getUser()->getHijos() as $child){
+            if($child->getSexo()== $es){
+                $contNinos++;
+                if($contNinos == $indice){
+                    $hijo = $child;
+                }
+            }
+        }
+        
+        if($indice < $contNinos ){
+            $siguiente = $indice + 1;
+        }else{
+            $siguiente = $contNinos;
+        }
+        
+        if( $indice > 1 ){
+            $anterior = $indice - 1;
+        }else{
+            $anterior = 1;
+        }
+        
+        return array(
+            'es'  => $es,
+            'hijo' => $hijo,
+            'anterior'=> $anterior,
+            'siguiente'=> $siguiente,
+            'contNinos'=>$contNinos,
+        );
+    }
+    
+    /**
+     * @Route("/eliminar/hijos/{id}",name="eliminar_hijos",requirements={"id": "\d+"})
+     * @Method({"DELETE"})
+     */
+    public function eliminarHijosAction(Request $request,$id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $hijo = $em->getRepository('UsuariosBundle:Hijo')->find($id);
+        $usuario = $this->getUser();
+        
+        if(!$hijo){
+            return new JsonResponse(json_encode(array('accion'=>'bat','mensaje'=>'El registro no existe')));
+        }
+        $historias = $em->getRepository('HistoriasBundle:Historia')->findBy(array('hijo'=>$hijo));
+        foreach($historias as $historia){
+            foreach($historia->getComponentes() as $componente){
+                $em->remove($componente);
+                $em->flush();
+            }
+            $em->remove($historia);
+            $em->flush();
+        }
+   
+        $em->remove($hijo);
+        $em->flush();
+        return new JsonResponse(json_encode(array('accion'=>'ok','mensaje'=>'El registro fue eliminado')));
+    }
+    
 	
     /**
      * @Route("/login", name="login")
@@ -394,6 +490,8 @@ class DefaultController extends Controller
     {
         $request = $this->getRequest();
         $session = $request->getSession();
+        
+        $session->set('redirigir', $request->query->get('return',$this->generateUrl('homepage')));
 
         // obtiene el error de inicio de sesión si lo hay
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
@@ -481,23 +579,27 @@ class DefaultController extends Controller
  
     private function getHistoriasPorMesParser($mesesHistorias){
         $meses = array(
-            0=>array('nombre'=>'Sin mes','historias'=>0),
-            1=>array('nombre'=>'Enero','historias'=>0),
-            2=>array('nombre'=>'Febrero','historias'=>0),
-            3=>array('nombre'=>'Marzo','historias'=>0),
-            4=>array('nombre'=>'Abril','historias'=>0),
-            5=>array('nombre'=>'Mayo','historias'=>0),
-            6=>array('nombre'=>'Junio','historias'=>0),
-            7=>array('nombre'=>'Julio','historias'=>0),
-            8=>array('nombre'=>'Agosto','historias'=>0),
-            9=>array('nombre'=>'Septiembre','historias'=>0),
-            10=>array('nombre'=>'Octubre','historias'=>0),
-            11=>array('nombre'=>'Noviembre','historias'=>0),
-            12=>array('nombre'=>'Diciembre','historias'=>0),
+            0=>array('nombre'=>'Sin mes','historias'=>0,'imagen'=>'images/imagen_default.png'),
+            1=>array('nombre'=>'Enero','historias'=>0,'imagen'=>'images/imagen_default.png'),
+            2=>array('nombre'=>'Febrero','historias'=>0,'imagen'=>'images/imagen_default.png'),
+            3=>array('nombre'=>'Marzo','historias'=>0,'imagen'=>'images/imagen_default.png'),
+            4=>array('nombre'=>'Abril','historias'=>0,'imagen'=>'images/imagen_default.png'),
+            5=>array('nombre'=>'Mayo','historias'=>0,'imagen'=>'images/imagen_default.png'),
+            6=>array('nombre'=>'Junio','historias'=>0,'imagen'=>'images/imagen_default.png'),
+            7=>array('nombre'=>'Julio','historias'=>0,'imagen'=>'images/imagen_default.png'),
+            8=>array('nombre'=>'Agosto','historias'=>0,'imagen'=>'images/imagen_default.png'),
+            9=>array('nombre'=>'Septiembre','historias'=>0,'imagen'=>'images/imagen_default.png'),
+            10=>array('nombre'=>'Octubre','historias'=>0,'imagen'=>'images/imagen_default.png'),
+            11=>array('nombre'=>'Noviembre','historias'=>0,'imagen'=>'images/imagen_default.png'),
+            12=>array('nombre'=>'Diciembre','historias'=>0,'imagen'=>'images/imagen_default.png'),
         );
         
-        foreach($mesesHistorias as $key => $registro){
-            $meses[$key]['historias']=$registro['cuantas'];
+        foreach($mesesHistorias as $registro){
+            $key = $registro['mes'];
+            $meses[$key]['historias']++;
+            if(strlen($registro['imagen'])>0){
+                $meses[$key]['imagen']='uploads/hijos/thumbnails/'.$registro['imagen'];
+            }
         }
         
         return $meses;
@@ -572,7 +674,17 @@ class DefaultController extends Controller
         $componente->setPosition($max+1);
         
         $form = $this->createFormBuilder($componente)
-            ->add('hijo', null,array('label'=>'Niño(a)','attr'=>array('class'=>'form-control')))
+            ->add('hijo','entity',array(
+                'class'=> 'UsuariosBundle:Hijo',
+                'label'=>'Niño(a)',
+                'required'=>true,
+                'choices' => $this->getUser()->getHijos(),
+                'attr'=>array(
+                    'class'=>'form-control placeholder',
+                    'placeholder'=>'Hijo',
+                    'data-bind'=>'value: hijo',
+                    )
+                ))
             ->add('componente', 'textarea',array('label'=>'Dialogo','attr'=>array('class'=>'form-control')))
             ->getForm();
         

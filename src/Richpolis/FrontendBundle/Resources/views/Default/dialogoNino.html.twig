@@ -10,7 +10,7 @@
         <span>{{ componente.hijo }}</span>
         <figure class="dialogo-nino-imagen">
             {% if componente.hijo.imagen | length > 0 %}
-                <img src="{{componente.hijo.webPath | imagine_filter('imagen_usuario')}}" width="100" height="100"/>    
+                <img src="/apps/babystory/web{{componente.hijo.thumbnailWebPath}}" style="max-width: 100px;"/>    
             {% else %}    
                 <img src="{{asset('images/sin-imagen-usuario.png')}}"/>
             {% endif %}

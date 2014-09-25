@@ -38,4 +38,16 @@ class HijoRepository extends EntityRepository
     public function findHijos($buscar = ""){
         return $this->queryFindHijos($buscar)->getResult();
     }
+    
+    public function queryHijosForUser(\Symfony\Component\Security\Core\SecurityContext $context)
+    {
+        $em = $this->getEntityManager();
+        $usuario = $context->getToken()->getUser();
+        $consulta = $em-createQueryBuilder('h')
+                        ->where('h.papa=:papa')
+                        ->orderBy('h.sexo', 'ASC')
+                        ->addOrderBy('h.nombre','ASC')    
+                        ->setParameter('papa',$usuario->getId());
+        return $consulta;
+    }
 }
