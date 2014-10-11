@@ -42,9 +42,9 @@
     <div class="row text-center">
         <p class="text-left padding-izquierdo col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 ">O puedes logearte con:</p>
         <p class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-            <a href="#" onclick="loginFacebook()"/><span class="redes-sociales facebook">&nbsp;</span></a>
-            <a href="#" ><span class="redes-sociales twitter">&nbsp;</span></a>
-            <a href="#" ><span class="redes-sociales googleplus">&nbsp;</span></a>
+            <a href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}" alt="Sign in with Facebook"><span class="redes-sociales facebook">&nbsp;</span></a>
+            <a href="{{ path('hwi_oauth_service_redirect', {'service': 'twitter' }) }}" alt="Sign in with Twitter"><span class="redes-sociales twitter">&nbsp;</span></a>
+            <a href="{{ path('hwi_oauth_service_redirect', {'service': 'google' }) }}" alt="Sign in with Google"><span class="redes-sociales googleplus">&nbsp;</span></a>
         </p>
         <br/>
         <p class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 ">
@@ -63,56 +63,4 @@
         },2000);
     });
 </script>
-
-<!-- CARGA DE SIMPLE FACEBOOK GRAPH -->
-<script src="{{asset('js/simpleFacebookGraph.js')}}"></script>
-
-<!-- SCRIPTS PROPIOS QUE USA ESTA PÁGINA -->
-<script>
-
-// Cuando la pagina carga miramos si ya hay un usuario identificado.
-fb.ready(function(){ 
-  if (fb.logged)
-  {
-    // Cambiamos el link de identificarse por el nombre y la foto del usuario.
-    html = "<p>Hola " + fb.user.name + "</p>";
-    html += '<p><img src="' + fb.user.picture + '"/></p>';
-    html += '<p><a href="#" onclick="fb.logout(); return false;">Salir</a></p>';
-    document.getElementById("conectar_facebook").innerHTML = html;
-  }
-});
-
-
-// Funcion para logarse con Facebook.
-function loginFacebook() {
-  fb.login(function(){ 
-    if (fb.logged) {
-      console.log(fb.user);
-      // Cambiamos el link de identificarse por el nombre y la foto del usuario.
-      html = "<p>Hola " + fb.user.name + "</p>";
-      html += "<p><img src='" + fb.user.picture + "'/></p>";
-      document.getElementById("conectar_facebook").innerHTML = html;
-    } else {
-      alert("No se pudo identificar al usuario");
-    }
-  })
-};
-
-// Funcion para publicar un mensaje en tu muro
-var publish = function () {
-    fb.publish({
-      message : "Estoy probando un script para que la gente publique desde mi/s web/s en Facebook",
-      picture : "http://blog.ikhuerta.com/wp-content/themes/ikhuerta3/images/ikhuerta.jpg",
-      link : "http://blog.ikhuerta.com/simple-facebook-graph-javascript-sdk",
-      name : "Simple Facebook Graph Javascript SDK",
-      description : "Facebook Graph es una nueva forma de conectar tu web Facebook. Con este script es muy fácil conseguirlo :)"
-    },function(published){ 
-      if (published)
-       alert("publicado!");
-      else
-       alert("No publicado :(, seguramente porque no estas identificado o no diste permisos");
-    });  
-}
-</script>
-
 {% endblock %}    

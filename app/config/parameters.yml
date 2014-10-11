@@ -2,13 +2,20 @@
 parameters:
     database_driver: pdo_mysql
     database_host: localhost
-    database_port: null
+    database_port: 8889
     database_name: babystory
-    database_user: richpolis
-    database_password: D3m3s1s1
+    database_user: root
+    database_password: root
     mailer_transport: smtp
     mailer_host: localhost
     mailer_user: null
     mailer_password: null
     locale: es
     secret: ThisTokenIsNotSoSecretChangeIt
+    
+    facebook_app_id: 1477777435830756
+    facebook_app_secret: 2d9d0e3d4e1b45c3b19361a12e8b2ef9
+    twitter_app_id: dBjfwgTLKfeFtuGwZkaK76Jf5
+    twitter_app_secret: Xb6eppwG33s2hhTm38X5YALegmB3vWb78HbuNZslFh0YM8jSTh
+    google_app_id: 95651142769-i0uhpo3b1145nfj1phirb6l4rf3lc6v8.apps.googleusercontent.com
+    google_app_secret: 0x7GfVM2Awp_OusI-__mSf_0
