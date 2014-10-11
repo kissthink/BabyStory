@@ -7,7 +7,7 @@ services:
     my_user_provider:
         class: "%my_user_provider.class%"
         #this is the place where the properties are passed to the UserProvider - see config.yml
-        arguments: [@doctrine,my_user.class,{facebook: facebook_id, twitter: twitter_id, google: google_id }]
+        arguments: [@doctrine,%my_user.class%,{facebook: facebook_id, twitter: twitter_id, google: google_id }]
         
     twig.extension.text:
         class: Twig_Extensions_Extension_Text

@@ -15,9 +15,10 @@ security:
             entity: { class: Richpolis\UsuariosBundle\Entity\Usuario, property: username }
 
     firewalls:
-      dev:
-        pattern:  ^/(_(profiler|wdt)|css|images|js)/
-        security: false
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+ 
         main:
             pattern: ^/
             form_login:
@@ -26,13 +27,14 @@ security:
                 check_path: /login_check
             oauth:
                 resource_owners:
-                    facebook:   "/login/check-facebook"
-                    twitter:    "/login/check-twitter"
-                    google:     "/login/check-google"
-                login_path:    /connect
-                failure_path:  /connect
+                    facebook:           "/login/check-facebook"
+                    twitter:            "/login/check-twitter"
+                    google:             "/login/check-google"
+                login_path:        /connect
+                failure_path:      /connect
+ 
                 oauth_user_provider:
-                    #this is my custom user provider, will manage the
+                    #this is my custom user provider, created from FOSUBUserProvider - will manage the
                     #automatic user registration on your site, with data from the provider (facebook. google, etc.)
                     service: my_user_provider
             logout:       true
@@ -41,6 +43,7 @@ security:
         login:
             pattern:  ^/login$
             security: false
+ 
             remember_me:
                 key: "%secret%"
                 lifetime: 31536000 # 365 days in seconds
