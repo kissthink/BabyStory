@@ -915,4 +915,142 @@ class Usuario implements UserInterface, \Serializable
     {
         return $this->link;
     }
+
+    /**
+     * Set facebook_id
+     *
+     * @param string $facebookId
+     * @return Usuario
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebook_id = $facebookId;
+
+        return $this;
+    }
+
+    /**
+     * Get facebook_id
+     *
+     * @return string 
+     */
+    public function getFacebookId()
+    {
+        return $this->facebook_id;
+    }
+
+    /**
+     * Set facebook_access_token
+     *
+     * @param string $facebookAccessToken
+     * @return Usuario
+     */
+    public function setFacebookAccessToken($facebookAccessToken)
+    {
+        $this->facebook_access_token = $facebookAccessToken;
+
+        return $this;
+    }
+
+    /**
+     * Get facebook_access_token
+     *
+     * @return string 
+     */
+    public function getFacebookAccessToken()
+    {
+        return $this->facebook_access_token;
+    }
+
+    /**
+     * Set google_id
+     *
+     * @param string $googleId
+     * @return Usuario
+     */
+    public function setGoogleId($googleId)
+    {
+        $this->google_id = $googleId;
+
+        return $this;
+    }
+
+    /**
+     * Get google_id
+     *
+     * @return string 
+     */
+    public function getGoogleId()
+    {
+        return $this->google_id;
+    }
+
+    /**
+     * Set google_access_token
+     *
+     * @param string $googleAccessToken
+     * @return Usuario
+     */
+    public function setGoogleAccessToken($googleAccessToken)
+    {
+        $this->google_access_token = $googleAccessToken;
+
+        return $this;
+    }
+
+    /**
+     * Get google_access_token
+     *
+     * @return string 
+     */
+    public function getGoogleAccessToken()
+    {
+        return $this->google_access_token;
+    }
+
+    /**
+     * Set twitter_id
+     *
+     * @param string $twitterId
+     * @return Usuario
+     */
+    public function setTwitterId($twitterId)
+    {
+        $this->twitter_id = $twitterId;
+
+        return $this;
+    }
+
+    /**
+     * Get twitter_id
+     *
+     * @return string 
+     */
+    public function getTwitterId()
+    {
+        return $this->twitter_id;
+    }
+
+    /**
+     * Set twitter_access_token
+     *
+     * @param string $twitterAccessToken
+     * @return Usuario
+     */
+    public function setTwitterAccessToken($twitterAccessToken)
+    {
+        $this->twitter_access_token = $twitterAccessToken;
+
+        return $this;
+    }
+
+    /**
+     * Get twitter_access_token
+     *
+     * @return string 
+     */
+    public function getTwitterAccessToken()
+    {
+        return $this->twitter_access_token;
+    }
 }

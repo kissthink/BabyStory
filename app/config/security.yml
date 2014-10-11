@@ -30,8 +30,8 @@ security:
                     facebook:           "/login/check-facebook"
                     twitter:            "/login/check-twitter"
                     google:             "/login/check-google"
-                login_path:        /connect
-                failure_path:      /connect
+                login_path:        /login
+                failure_path:      /login
  
                 oauth_user_provider:
                     #this is my custom user provider, created from FOSUBUserProvider - will manage the

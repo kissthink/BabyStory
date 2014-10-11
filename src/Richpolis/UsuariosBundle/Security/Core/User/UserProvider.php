@@ -61,6 +61,7 @@ class UserProvider extends BaseClass
             $user->setEmail($username);
             $user->setPassword($username);
             $user->setIsActive(true);
+			$user->addRol($this->getRoleUsuario());
             $this->em->persist($user);
             $this->em->flush();
             return $user;
@@ -77,6 +78,37 @@ class UserProvider extends BaseClass
  
         return $user;
     }
+	
+	/**
+     * Gets the property for the response.
+     *
+     * @param UserResponseInterface $response
+     *
+     * @return string
+     *
+     * @throws \RuntimeException
+     */
+    protected function getProperty(UserResponseInterface $response)
+    {
+        $resourceOwnerName = $response->getResourceOwner()->getName();
+
+        if (!isset($this->properties[$resourceOwnerName])) {
+            throw new \RuntimeException(sprintf("No property defined for entity for resource owner '%s'.", $resourceOwnerName));
+        }
+
+        return $this->properties[$resourceOwnerName];
+    }
+	
+	protected function getRoleUsuario(){
+		$roleUsuario = $this->em->getRepository('UsuariosBundle:Roles')->findOneBy(array('nombre'=>'ROLE_USUARIO'));
+		if(null == $roleUsuario){
+			$roleUsuario = new \Richpolis\UsuariosBundle\Entity\Roles();
+			$roleUsuario->setNombre('ROLE_USUARIO');
+			$this->em->persist($roleUsuario);
+			$this->em->flush();
+		}
+		return $roleUsuario;
+	}
  
 }
 
