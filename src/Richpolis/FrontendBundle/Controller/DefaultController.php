@@ -173,7 +173,7 @@ class DefaultController extends Controller
         return array(
             'form'      =>  $form->createView(),
             'historia'  =>  $historia,
-            'isNew'     =>  true,
+            'isNew'     =>  $isNew,
         );
     }
 	
@@ -189,9 +189,29 @@ class DefaultController extends Controller
         if (!$historia) {
             return $this->redirect($this->generateUrl('homepage'));
         }
-
+        $form = $this->createForm(new HistoriaFrontendType(), $historia,array(
+            'action' => $this->generateUrl('editar_historia',array('id'=>$historia->getId())),
+            'method' => 'POST',
+            'attr'=>array('id'=>'formEditarHistoria'),
+            'usuario'=>$this->getUser(),
+        ));
+        $isNew = false;
+        if($request->isMethod('POST')){
+            $form->handleRequest($request);
+            if($form->isValid()){
+                $em->flush();
+                $form = $this->createForm(new HistoriaFrontendType(), $historia,array(
+                    'action' => $this->generateUrl('editar_historia',array('id'=>$historia->getId())),
+                    'method' => 'POST',
+                    'attr'=>array('id'=>'formEditarHistoria'),
+                    'usuario'=>$this->getUser(),
+                ));
+            }
+        }
         return array(
-            'historia' => $historia,
+            'form'      =>  $form->createView(),
+            'historia'  =>  $historia,
+            'isNew'     =>  $isNew,
         );
     }
     

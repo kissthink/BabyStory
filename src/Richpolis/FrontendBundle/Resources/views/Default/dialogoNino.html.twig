@@ -3,11 +3,14 @@
 {% endif %}    
 <div class="row dialogo dialogo-nino" id="componente-{{componente.id}}">
     <div class="col-xs-9 col-xs-offset-1 col-sm-9 col-sm-offset-1 col-md-9">
-        {% if compartir == false and componente.historia.usuario.id == app.user.id %}
-        <button onclick="if(confirm('Desea eliminar el dialogo?')){eliminarComponente({{componente.id}});}" class="btn btn-mini btn-danger">Eliminar</button>
-        {% endif %}
         <div class="comentarioNino row">
-            <p>
+            {% if compartir == false and componente.historia.usuario.id == app.user.id %}
+            <div class="col-xs-2 col-sm-2 col-md-2">   
+                <button onclick="if(confirm('Desea eliminar el dialogo?')){eliminarComponente({{componente.id}});}" class="btn btn-mini btn-danger" style="max-width: 100px;">Eliminar</button>
+            </div>
+            <div class="col-xs-10 col-sm-10 col-md-10"></div>
+            {% endif %}
+            <p class="col-xs-12 col-sm-12 col-md-12">
                 {{ componente.componente }}
             </p>
         </div>

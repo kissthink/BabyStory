@@ -44,9 +44,9 @@
                             <span class="glyphicon glyphicon-share-alt"></span>
                         </a>
                         <br/>
-                        <a href="#"  onclick="javascript:generarPdf('historia-{{historia.id}}')">
+                        <!--a href="#"  onclick="javascript:generarPdf('historia-{{historia.id}}')">
                             <span class="glyphicon glyphicon-arrow-down"></span>
-                        </a>
+                        </a-->
                     </div>
                 </div>
             </div>
@@ -66,16 +66,20 @@
             {% endif %}
         </figure>
     </div>
+    {% if historia.comentarios | length > 0 %}    
     <div class="row comentarios">
         {% for comentario in historia.comentarios %}
             {% include 'FrontendBundle:Default:comentario.html.twig' with { 'comentario': comentario } %}
         {% endfor %}
         
     </div>
+    {% endif %}    
     <div class="row">
+        {% if historia.usuario.id != app.user.id %}
         <p class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
             <button class="btn btn-danger" onclick="javascript:agregarComenario('{{historia.id}}')">Agregar comentario</button>
         </p>
+        {% endif %}
     </div>    
 </p>
 </div>

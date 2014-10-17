@@ -47,11 +47,22 @@
                 </div>
                 <p>&nbsp;</p>
                 <div class="row">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Historia</label>
-                        <div class="col-sm-10 resumenHistoria">
+                    <label class="col-xs-4 col-sm-3 col-sm-2 control-label">
+                            Historia
+                            <br/>
+                            {% if historia.hijo.imagen | length > 0 %}
+                                <img src="{{constant('Richpolis\\FrontendBundle\\Controller\\DefaultController::RUTA_WEB')}}{{historia.hijo.thumbnailWebPath}}" style="max-width: 100px;"/>    
+                            {% else %}    
+                                <img src="{{asset('images/sin-imagen-usuario.png')}}"/>
+                            {% endif %}    
+                    </label>
+                    <div class="col-xs-8 col-sm-9 col-sm-10  resumenHistoria">
+                            {% if historia.usuario.id == app.user.id %}
+                                <div class="col-xs-2 col-xs-offset-10 col-sm-2 col-sm-offset-10 col-md-2 col-md-offset-10"> 
+                                <button id="editarHistoria"   data-toggle="modal" data-target="#modalEditarHistoria" class="btn btn-mini btn-success" style="max-width: 100px;">Editar</button>
+                                </div>
+                            {% endif %}
                             {{ historia.historia }}
-                        </div>
                     </div>
                 </div>
                 <p>&nbsp;</p>
@@ -93,6 +104,25 @@
             </div>
         </div>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modalEditarHistoria" tabindex="-1" role="dialog" aria-labelledby="labelEditarHistoria" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="labelEditarHistoria">Editar historia</h4>
+          </div>
+          <div class="modal-body">
+            {{ form(form) }}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary" onclick="actualizarHistoria();">Actualizar historia</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 {% endblock %}
 
 {% block javascripts %}
@@ -212,7 +242,11 @@
                 }
             });
         }
-
+        
+        function actualizarHistoria(){
+            $("#formEditarHistoria").submit();
+        }
+            
         function listo() {
             location.href = '{{path('homepage')}}';
         }

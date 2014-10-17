@@ -19,11 +19,13 @@
         </figure>
     </div>
     <div class="col-xs-9 col-sm-9 col-md-9">
-        {% if compartir == false and  componente.historia.usuario.id == app.user.id %}
-        <button onclick="if(confirm('Desea eliminar el dialogo?')){eliminarComponente({{componente.id}});}" class="btn btn-mini btn-danger">Eliminar</button>
-        {% endif %}
         <div class="comentarioPapa row">
-            <p>
+            {% if compartir == false and  componente.historia.usuario.id == app.user.id %}
+                <div class="col-xs-2 col-xs-offset-10 col-sm-2 col-sm-offset-10 col-md-2 col-md-offset-10"> 
+                 <button onclick="if(confirm('Desea eliminar el dialogo?')){eliminarComponente({{componente.id}});}" class="btn btn-mini btn-danger" style="max-width: 100px;">Eliminar</button>
+                </div> 
+             {% endif %}
+            <p class="col-xs-12 col-sm-12 col-md-12">
                 {{componente.componente}}
             </p>
         </div>
