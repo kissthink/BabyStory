@@ -6,7 +6,7 @@
             <span>{{historia.usuario.username}}</span>
             <figure class="dialogo-nino-imagen">
                 {% if historia.usuario.imagen | length > 0 %}
-                <img src="/apps/babystory/web{{ historia.usuario.thumbnailWebPath }}" style="max-width: 100px;" alt="">
+                <img src="{{constant('Richpolis\\FrontendBundle\\Controller\\DefaultController::RUTA_WEB')}}{{ historia.usuario.thumbnailWebPath }}" style="max-width: 100px;" alt="">
                 {% else %}
                 <img src="{{ asset('images/logo.png') }}" style="max-width: 100px;" alt="">
                 {% endif %}    
@@ -55,12 +55,12 @@
     <div class="row imagen-nino text-center">
         <figure class="col-xs-12">
             {% if imagenItem|length > 0  %}
-                <img src="/apps/babystory/web{{imagenItem}}" style="max-width: 400px;" alt=""/>
+                <img src="{{constant('Richpolis\\FrontendBundle\\Controller\\DefaultController::RUTA_WEB')}}{{imagenItem}}" style="max-width: 400px;" alt=""/>
             {% elseif videoItem|length > 0  %}
                 <iframe src ="http://www.youtube.com/embed/{{videoItem}}?rel=1&autoplay=0" width="400px" height="350px" frameborder="no"></iframe>
             {% elseif sonidoItem|length > 0  %}
                 <audio controls>
-                    <source src="/apps/babystory/web{{sonidoItem}}" type="audio/mpeg">
+                    <source src="{{constant('Richpolis\\FrontendBundle\\Controller\\DefaultController::RUTA_WEB')}}{{sonidoItem}}" type="audio/mpeg">
                     Your browser does not support the audio tag.
                 </audio>
             {% endif %}

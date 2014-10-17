@@ -29,7 +29,7 @@
                 <td>{{ entity.serMadre }}</td>
                 <td>
                     {% if entity.imagen | length > 0 %}
-                    <img src="/apps/babystory/web{{entity.thumbnailWebPath}}" />    
+                    <img src="{{constant('Richpolis\\FrontendBundle\\Controller\\DefaultController::RUTA_WEB')}}{{entity.thumbnailWebPath}}" />    
                     {% else %}    
                     <img src="{{asset('images/sin-imagen-usuario.png')}}"/>
                     {% endif %}
@@ -55,7 +55,7 @@
                 <td>{{hijo.biografia}}</td>
                 <td>
                     {% if hijo.imagen | length > 0 %}
-                    <img src="/apps/babystory/web{{hijo.thumbnailWebPath}}" />    
+                    <img src="{{constant('Richpolis\\FrontendBundle\\Controller\\DefaultController::RUTA_WEB')}}{{hijo.thumbnailWebPath}}" />    
                     {% else %}    
                     <img src="{{asset('images/sin-imagen-usuario.png')}}"/>
                     {% endif %}

@@ -53,7 +53,7 @@
                         <div class="usuario btn-group">
                             <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
                                 {% if app.user.imagen | length > 0 %}
-                                    <img src="/apps/babystory/web{{app.user.thumbnailWebPath}}" class="imagen-user"/>
+                                    <img src="{{constant('Richpolis\\FrontendBundle\\Controller\\DefaultController::RUTA_WEB')}}{{app.user.thumbnailWebPath}}" class="imagen-user"/>
                                 {% else %}    
                                 <span class="glyphicon glyphicon-user"></span>
                                 {% endif %}

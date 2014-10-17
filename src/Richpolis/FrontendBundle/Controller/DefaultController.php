@@ -22,6 +22,8 @@ use Richpolis\FrontendBundle\Utils\Richsys as RpsStms;
 
 class DefaultController extends Controller
 {
+    const RUTA_WEB = '/apps/babystory/web';
+    
     /**
      * @Route("/",name="portada")
      * @Template()
@@ -66,8 +68,6 @@ class DefaultController extends Controller
         
         $historiasPorMes = $em->getRepository('HistoriasBundle:Historia')
                               ->getCountHistoriasEnYears($year,$this->getUser());
-        
-        
         
         $meses = $this->getHistoriasPorMesParser($historiasPorMes);
        
@@ -579,8 +579,7 @@ class DefaultController extends Controller
  
     private function getHistoriasPorMesParser($mesesHistorias){
         $meses = array(
-            0=>array('nombre'=>'Sin mes','historias'=>0,'imagen'=>'images/imagen_default.png'),
-            1=>array('nombre'=>'Enero','historias'=>0,'imagen'=>'images/imagen_default.png'),
+            /*1=>array('nombre'=>'Enero','historias'=>0,'imagen'=>'images/imagen_default.png'),
             2=>array('nombre'=>'Febrero','historias'=>0,'imagen'=>'images/imagen_default.png'),
             3=>array('nombre'=>'Marzo','historias'=>0,'imagen'=>'images/imagen_default.png'),
             4=>array('nombre'=>'Abril','historias'=>0,'imagen'=>'images/imagen_default.png'),
@@ -591,19 +590,46 @@ class DefaultController extends Controller
             9=>array('nombre'=>'Septiembre','historias'=>0,'imagen'=>'images/imagen_default.png'),
             10=>array('nombre'=>'Octubre','historias'=>0,'imagen'=>'images/imagen_default.png'),
             11=>array('nombre'=>'Noviembre','historias'=>0,'imagen'=>'images/imagen_default.png'),
-            12=>array('nombre'=>'Diciembre','historias'=>0,'imagen'=>'images/imagen_default.png'),
+            12=>array('nombre'=>'Diciembre','historias'=>0,'imagen'=>'images/imagen_default.png'),*/
         );
-        
         foreach($mesesHistorias as $registro){
-            $key = $registro['mes'];
-            $meses[$key]['historias']++;
-            if(strlen($registro['imagen'])>0){
-                $meses[$key]['imagen']='uploads/hijos/thumbnails/'.$registro['imagen'];
+            $mes = $registro['mes'];
+            $year = $registro['year'];
+            $string = $this->getNombreMes($mes);
+            $clave = ($string.$year);
+            if(!isset($meses[$clave])){
+                $meses[$clave]['nombre']=($string. ' ' . $year);
+                $meses[$clave]['mes']=$mes;
+                $meses[$clave]['year']=$year;
+                if(strlen($registro['imagen'])>0){
+                    $meses[$clave]['imagen']='uploads/hijos/thumbnails/'.$registro['imagen'];
+                }else{
+                    $meses[$clave]['imagen']='images/imagen_default.png';
+                }
             }
         }
         
         return $meses;
     }
+    
+    private function getNombreMes($mes){
+        switch($mes){
+            case 1: return 'Ene';
+            case 2: return 'Feb';
+            case 3: return 'Mar';
+            case 4: return 'Abr';
+            case 5: return 'May';
+            case 6: return 'Jun';
+            case 7: return 'Jul';
+            case 8: return 'Ago';
+            case 9: return 'Sep';
+            case 10: return 'Oct';
+            case 11: return 'Nov';
+            case 12: return 'Dic';
+                
+        }
+    }
+    
     
     /**
      * @Route("/dialogo/papa/{id}",name="dialogo_papa")
@@ -895,6 +921,39 @@ class DefaultController extends Controller
                 'form'=>$form->createView(),
              )),
             'respuesta' => 'nuevo',
+        )));
+        return $response;
+    }
+    
+    /**
+     * @Route("/eliminar/componente",name="eliminar_componente")
+     * @Method({"GET","POST"})
+     */
+    public function eliminarComponenteAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $componente = $em->getRepository('HistoriasBundle:Componente')->find($request->get('id',0));
+        
+        if(null == $componente){
+            $response = new JsonResponse(json_encode(array(
+                'respuesta' => 'bat',
+            )));
+            return $respuesta;
+        }
+        
+        if ($request->isMethod('POST')) {
+            
+            $historia = $componente->getHistoria();
+            $historia->getComponentes()->removeElement($componente);
+            $em->remove($componente);
+            $em->flush();
+            $response = new JsonResponse(json_encode(array(
+                'respuesta' => 'ok',
+            )));
+            return $response;
+        }
+
+        $response = new JsonResponse(json_encode(array(
+                'respuesta' => 'bat',
         )));
         return $response;
     }

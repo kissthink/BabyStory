@@ -10,7 +10,7 @@
             <form class="form-registro" role="form" action="{% if isNew == true %}{{path('registro')}}{% else %}{{path('editar_usuario')}}{% endif %}" method="post" {{ form_enctype(form) }}>
                 <figure id="imagen-usuario">
                     {% if usuario.imagen | length > 0 %}
-                    <img src="/apps/babystory/web{{usuario.thumbnailWebPath }}" width="81" height="81"/>    
+                    <img src="{{constant('Richpolis\\FrontendBundle\\Controller\\DefaultController::RUTA_WEB')}}{{usuario.thumbnailWebPath }}" width="81" height="81"/>    
                     {% else %}    
                     <img src="{{asset('images/sin-imagen-usuario.png')}}"/>
                     {% endif %}

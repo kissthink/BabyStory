@@ -1,7 +1,10 @@
-<div class="row sonido-nino">
+<div class="row sonido-nino"  id="componente-{{componente.id}}">
+    {% if componente.historia.usuario.id == app.user.id %}
+        <button onclick="eliminarComponente({{componente.id}})" class="btn btn-danger">Eliminar</button>
+        {% endif %}
     <div class="col-xs-12">
         <audio controls>
-            <source src="/apps/babystory/web{{componente.webPath}}" type="audio/mpeg">
+            <source src="{{constant('Richpolis\\FrontendBundle\\Controller\\DefaultController::RUTA_WEB')}}{{componente.webPath}}" type="audio/mpeg">
             Your browser does not support the audio tag.
         </audio>
     </div>

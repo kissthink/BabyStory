@@ -7,20 +7,21 @@
 {% endblock %}
 
 {% block contenido %}
+    {% if meses | length > 0 %}
     <div class="row timeline">
         <!-- hay que multiplicar por la cantidad de historias 200px de ancho -->
         <ul class="lista-timeline slider" style="width: 1000px;">
-            {% for key,item in meses if key > 0 %}
-            <li class="item" data-cuantas="{{item.historias}}">
+            {% for item in meses %}
+            <li class="item">
                 <div class="contenedor">
-                    <a href="{{path('homepage')}}?month={{key}}&year={{yearActual}}">
+                    <a href="{{path('homepage')}}?month={{item.mes}}&year={{item.year}}">
                         <figure class="nino">
                             <!--img src="http://placehold.it/100x100"/-->
                             <img src="{{asset(item.imagen)}}" style="max-width: 100px;"/>
                             <figcaption>
-                                <span class="bullet-redondo {{ (item.historias > 0)?'con-historia':'sin-historia' }}"></span>
+                                <!span class="bullet-redondo con-historia"></span-->
                                 <br/>
-                                {{ item.nombre }} {{yearActual}}
+                                {{ item.nombre }}
                             </figcaption>
                         </figure>
                     </a>    
@@ -28,7 +29,8 @@
             </li>
             {% endfor %}
         </ul>    
-    </div>    
+    </div>
+    {% endif %}    
     <div class="row well well-sm text-center">
         <div class="col-xs-12 col-md-12">
             <form class="narvar-form form-buscador" action="{{path('buscar_historias')}}" method="get" role="search" style="margin: 0 auto;">
@@ -120,6 +122,7 @@
         var tipoComponente = "";
 	var historiaActual = 0;
         $(document).on("ready",function(){
+            {% if meses | length > 0 %}
             $('.slider').bxSlider({
                 pager: true,
                 controls: true,
@@ -130,7 +133,7 @@
                 slideMargin: 4,
                 autoHover: true
             });
-           
+            {% endif %}
         });
         
         function agregarComenario(historia){

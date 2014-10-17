@@ -1,4 +1,4 @@
-<div class="row dialogo diagolo-papa">
+<div class="row dialogo diagolo-papa"  id="componente-{{componente.id}}">
     <div class="col-xs-2 col-sm-2 col-md-2 text-center">
         <span>
             {% if componente.papa.sexo > 0 %}
@@ -9,13 +9,16 @@
         </span>
         <figure class="dialogo-papa-imagen">
             {% if componente.papa.imagen | length > 0 %}
-                <img src="/apps/babystory/web{{componente.papa.thumbnailWebPath}}" style="max-width: 100px;"/>    
+                <img src="{{constant('Richpolis\\FrontendBundle\\Controller\\DefaultController::RUTA_WEB')}}{{componente.papa.thumbnailWebPath}}" style="max-width: 100px;"/>    
             {% else %}    
                 <img src="{{asset('images/sin-imagen-usuario.png')}}"/>
             {% endif %}
         </figure>
     </div>
     <div class="col-xs-9 col-sm-9 col-md-9">
+        {% if componente.historia.usuario.id == app.user.id %}
+        <button onclick="eliminarComponente({{componente.id}})" class="btn btn-danger">Eliminar</button>
+        {% endif %}
         <div class="comentarioPapa row">
             <p>
                 {{componente.componente}}

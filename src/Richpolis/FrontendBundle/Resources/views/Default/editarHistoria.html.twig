@@ -2,97 +2,97 @@
 
 
 {% block contenido %}
-            <p>
-                &nbsp;
-            </p>
-            <div class="row historias">
-                <div class="row historia" id="historia-{{historia.id}}">
-                    <p class="col-md-12 fecha">{{ historia.fecha| date('Y-m-d H:i:s') | translate_date }}</p>
-                    <div class="col-md-12 contenido contenido-historia text-center">
-                        <p>
-                            Acciones: 
-                        </p>
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6 text-center">
-                                <h3>
-                                    {% if historia.usuario.sexo > 0 %}
-                                        {{historia.usuario.stringSexo}}
-                                    {% else %}
-                                        {{historia.usuario}}
-                                    {% endif %}    
-                                </h3>
-                                <div class="controles">
-                                    <a id="addDialogMother" href="#" data-url="{{path('dialogo_papa',{ 'id': historia.id })}}">
-                                        <span class="glyphicon glyphicon-comment"></span>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6 text-center">
-                                <h3>Niño/Niña</h3>
-                                <div class="controles">
-                                    <a id="addDialogChild" href="#" data-url="{{path('dialogo_nino',{ 'id': historia.id })}}">
-                                        <span class="glyphicon glyphicon-comment"></span>
-                                    </a>
-                                    <a id="addImagenChild"  href="#" data-url="{{path('imagen_nino',{ 'id': historia.id })}}">
-                                        <span class="glyphicon glyphicon-picture"></span>
-                                    </a>
-                                    <a id="addVideoChild"  href="#" data-url="{{path('video_link_nino',{ 'id': historia.id })}}">
-                                        <span class="glyphicon glyphicon-facetime-video"></span>
-                                    </a>
-                                    <a id="addSonidoChild"  href="#" data-url="{{path('sonido_nino',{ 'id': historia.id })}}">
-                                        <span class="glyphicon glyphicon-music"></span>
-                                    </a>
-                                </div>
-                            </div>
+    <p>
+        &nbsp;
+    </p>
+    <div class="row historias">
+        <div class="row historia" id="historia-{{historia.id}}">
+            <p class="col-md-12 fecha">{{ historia.fecha| date('Y-m-d H:i:s') | translate_date }}</p>
+            <div class="col-md-12 contenido contenido-historia text-center">
+                <p>
+                    Acciones: 
+                </p>
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6 text-center">
+                        <h3>
+                            {% if historia.usuario.sexo > 0 %}
+                                {{historia.usuario.stringSexo}}
+                            {% else %}
+                                {{historia.usuario}}
+                            {% endif %}    
+                        </h3>
+                        <div class="controles">
+                            <a id="addDialogMother" href="#" data-url="{{path('dialogo_papa',{ 'id': historia.id })}}">
+                                <span class="glyphicon glyphicon-comment"></span>
+                            </a>
                         </div>
-                        <p>&nbsp;</p>
-                        <div class="row">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">Historia</label>
-                                <div class="col-sm-10 resumenHistoria">
-                                    {{ historia.historia }}
-                                </div>
-                            </div>
-                       </div>
-                        <p>&nbsp;</p>
-                        <div class="row contenidos">
-                            {% for componente in historia.componentes %}
-                                {% include componente.template with {'componente': componente } %}
-                            {% endfor %}    
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6 text-center">
+                        <h3>Niño/Niña</h3>
+                        <div class="controles">
+                            <a id="addDialogChild" href="#" data-url="{{path('dialogo_nino',{ 'id': historia.id })}}">
+                                <span class="glyphicon glyphicon-comment"></span>
+                            </a>
+                            <a id="addImagenChild"  href="#" data-url="{{path('imagen_nino',{ 'id': historia.id })}}">
+                                <span class="glyphicon glyphicon-picture"></span>
+                            </a>
+                            <a id="addVideoChild"  href="#" data-url="{{path('video_link_nino',{ 'id': historia.id })}}">
+                                <span class="glyphicon glyphicon-facetime-video"></span>
+                            </a>
+                            <a id="addSonidoChild"  href="#" data-url="{{path('sonido_nino',{ 'id': historia.id })}}">
+                                <span class="glyphicon glyphicon-music"></span>
+                            </a>
                         </div>
                     </div>
                 </div>
+                <p>&nbsp;</p>
                 <div class="row">
-                    <p class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-						<button class="btn btn-success" onclick="listo();">Listo</button>
-					</p>
-					<!--div class="col-xs-6 col-sm-3 col-md-4">
-                        <button class="btn btn-success" onclick="guardarHistoria();">Guardar Historia</button>
-                    </div-->
-                    <!--div class="col-xs-6 col-sm-3 col-sm-offset-6 col-md-4 col-md-offset-4">
-                        <button class="btn btn-success" onclick="cancelarHistoria();">Cancelar</button>
-                    </div-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Historia</label>
+                        <div class="col-sm-10 resumenHistoria">
+                            {{ historia.historia }}
+                        </div>
+                    </div>
+                </div>
+                <p>&nbsp;</p>
+                <div class="row contenidos">
+                    {% for componente in historia.componentes %}
+                        {% include componente.template with {'componente': componente } %}
+                    {% endfor %}    
                 </div>
             </div>
-            <p> &nbsp;</p>
-<!-- Modal -->
-<div class="modal fade" id="modalFormulario" tabindex="-1" role="dialog" aria-labelledby="labelFormulario" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="labelFormulario"></h4>
-      </div>
-      <div class="modal-body" id="modalBodyFormulario">
-          
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" onclick="guardar();">Guardar</button>
-      </div>
+        </div>
+        <div class="row">
+            <p class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                <button class="btn btn-success" onclick="listo();">Listo</button>
+            </p>
+            <!--div class="col-xs-6 col-sm-3 col-md-4">
+<button class="btn btn-success" onclick="guardarHistoria();">Guardar Historia</button>
+</div-->
+            <!--div class="col-xs-6 col-sm-3 col-sm-offset-6 col-md-4 col-md-offset-4">
+                <button class="btn btn-success" onclick="cancelarHistoria();">Cancelar</button>
+            </div-->
+        </div>
     </div>
-  </div>
-</div>
+    <p> &nbsp;</p>
+    <!-- Modal -->
+    <div class="modal fade" id="modalFormulario" tabindex="-1" role="dialog" aria-labelledby="labelFormulario" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="labelFormulario"></h4>
+                </div>
+                <div class="modal-body" id="modalBodyFormulario">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardar();">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
@@ -100,40 +100,40 @@
     <script type="text/javascript">
         var historia = {{ historia.id }};
         var tipoComponente = "";
-        $(document).on("ready",function(){
-            $("#addDialogMother").on('click',function(e){
+        $(document).on("ready", function () {
+            $("#addDialogMother").on('click', function (e) {
                 e.preventDefault();
                 mostrarFormulario("Agregar dialogo papa/mama");
                 var url = $(this).data("url");
                 getFormulario(url);
                 tipoComponente = "dialogo";
             });
-            
-            $("#addDialogChild").on('click',function(e){
+
+            $("#addDialogChild").on('click', function (e) {
                 e.preventDefault();
                 mostrarFormulario("Agregar dialogo niño");
                 var url = $(this).data("url");
                 getFormulario(url);
                 tipoComponente = "dialogo";
             });
-            
-            $("#addImagenChild").on('click',function(e){
+
+            $("#addImagenChild").on('click', function (e) {
                 e.preventDefault();
                 mostrarFormulario("Agregar imagen");
                 var url = $(this).data("url");
                 getFormulario(url);
                 tipoComponente = "archivo";
             });
-            
-            $("#addVideoChild").on('click',function(e){
+
+            $("#addVideoChild").on('click', function (e) {
                 e.preventDefault();
                 mostrarFormulario("Agregar video (youtube)");
                 var url = $(this).data("url");
                 getFormulario(url);
                 tipoComponente = "link";
             });
-            
-            $("#addSonidoChild").on('click',function(e){
+
+            $("#addSonidoChild").on('click', function (e) {
                 e.preventDefault();
                 mostrarFormulario("Agregar sonido (mp3)");
                 var url = $(this).data("url");
@@ -141,19 +141,19 @@
                 tipoComponente = "archivo";
             });
         });
-        
-        function mostrarFormulario(titulo){
+
+        function mostrarFormulario(titulo) {
             $("#modalFormulario").modal("show");
             $("#labelFormulario").html(titulo);
             $loader = $("<img>");
-            $loader.attr({'src': '{{asset('images/loader.GIF')}}','id': 'loader'});
+            $loader.attr({'src': '{{asset('images/loader.GIF')}}', 'id': 'loader'});
             $loader.css({'maxWidth': '80px'});
             $("#modalBodyFormulario").html($loader);
         }
-        
-        function guardar(){
+
+        function guardar() {
             var $form = $("#modalBodyFormulario form");
-            if(tipoComponente == "archivo"){
+            if (tipoComponente == "archivo") {
                 $form.submit();
                 return false;
             }
@@ -163,39 +163,59 @@
                 type: 'POST',
                 data: data,
                 dataType: 'json',
-            }).done(function(data, textStatus,jqXHR){
+            }).done(function (data, textStatus, jqXHR) {
                 debugger;
                 data = JSON.parse(data);
-                if(data.respuesta == 'nuevo'){
+                if (data.respuesta == 'nuevo') {
                     $("#modalBodyFormulario").html(data.form);
                     $("#modalBodyFormulario form").attr({'action': data.rutaAction});
-                }else if(data.respuesta == 'creado'){
+                } else if (data.respuesta == 'creado') {
                     $(".contenidos").append(data.html);
                     $("#modalFormulario").modal("hide");
                 }
-            }).fail(function(data){
+            }).fail(function (data) {
                 console.log(data);
             });
         }
         
-        function getFormulario(url){
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    dataType: 'json',
-                }).done(function(data, textStatus,jqXHR){
-                    debugger;
-                    data = JSON.parse(data);
-                    if(data.respuesta == 'nuevo'){
-                        $("#modalBodyFormulario").html(data.form);
-                        $("#modalBodyFormulario form").attr({'action': data.rutaAction});
-                    }
-                });
+        function eliminarComponete(id) {
+            $.ajax({
+                url: {{path('eliminar_componente')}},
+                type: 'POST',
+                data: {'id': id},
+                dataType: 'json',
+            }).done(function (data, textStatus, jqXHR) {
+                debugger;
+                data = JSON.parse(data);
+                if (data.respuesta == 'ok') {
+                    alert("Elemento eliminado")
+                    $("#componente-"+id).remove();
+                } else if (data.respuesta == 'bat') {
+                    alert("Error al tratar de eliminar");
+                }
+            }).fail(function (data) {
+                console.log(data);
+            });
         }
-		
-		function listo(){
-			location.href = '{{path('homepage')}}';
-		}
+
+        function getFormulario(url) {
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+            }).done(function (data, textStatus, jqXHR) {
+                debugger;
+                data = JSON.parse(data);
+                if (data.respuesta == 'nuevo') {
+                    $("#modalBodyFormulario").html(data.form);
+                    $("#modalBodyFormulario form").attr({'action': data.rutaAction});
+                }
+            });
+        }
+
+        function listo() {
+            location.href = '{{path('homepage')}}';
+        }
 
     </script>
 {% endblock %}    

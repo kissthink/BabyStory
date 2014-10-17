@@ -1,5 +1,8 @@
-<div class="row dialogo dialogo-nino">
+<div class="row dialogo dialogo-nino" id="componente-{{componente.id}}">
     <div class="col-xs-9 col-xs-offset-1 col-sm-9 col-sm-offset-1 col-md-9">
+        {% if componente.historia.usuario.id == app.user.id %}
+        <button onclick="eliminarComponente({{componente.id}})" class="btn btn-danger">Eliminar</button>
+        {% endif %}
         <div class="comentarioNino row">
             <p>
                 {{ componente.componente }}
@@ -10,7 +13,7 @@
         <span>{{ componente.hijo }}</span>
         <figure class="dialogo-nino-imagen">
             {% if componente.hijo.imagen | length > 0 %}
-                <img src="/apps/babystory/web{{componente.hijo.thumbnailWebPath}}" style="max-width: 100px;"/>    
+                <img src="{{constant('Richpolis\\FrontendBundle\\Controller\\DefaultController::RUTA_WEB')}}{{componente.hijo.thumbnailWebPath}}" style="max-width: 100px;"/>    
             {% else %}    
                 <img src="{{asset('images/sin-imagen-usuario.png')}}"/>
             {% endif %}

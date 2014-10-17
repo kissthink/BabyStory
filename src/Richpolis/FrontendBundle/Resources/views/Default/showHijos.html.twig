@@ -19,7 +19,7 @@
             <div id="formRegistroHijos">
                 <figure id="imagen-usuario">
                     {% if hijo.imagen | length > 0 %}
-                    <img src="/apps/babystory/web{{hijo.thumbnailWebPath}}" width="81" height="81"/>    
+                    <img src="{{constant('Richpolis\\FrontendBundle\\Controller\\DefaultController::RUTA_WEB')}}{{hijo.thumbnailWebPath}}" width="81" height="81"/>    
                     {% else %}    
                     <img src="{{asset('images/sin-imagen-usuario.png')}}"/>
                     {% endif %}

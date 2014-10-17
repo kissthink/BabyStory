@@ -69,7 +69,7 @@
                                 <span>{{historia.usuario.username}}</span>
                                 <figure class="dialogo-nino-imagen">
                                     {% if historia.usuario.imagen | length > 0 %}
-                                    <img src="/apps/babystory/web{{ historia.usuario.thumbnailWebPath }}" style="max-width: 100px;" alt="">
+                                    <img src="{{constant('Richpolis\\FrontendBundle\\Controller\\DefaultController::RUTA_WEB')}}{{ historia.usuario.thumbnailWebPath }}" style="max-width: 100px;" alt="">
                                     {% else %}
                                     <img src="{{ asset('images/logo.png') }}" style="max-width: 100px;" alt="">
                                     {% endif %}    
@@ -126,9 +126,9 @@
                     </div>
                     <div class="row">
                         {% if is_granted('ROLE_USUARIO')%}
-                        <p class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                        <!--p class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
                             <button class="btn btn-info" onclick="javascript:agregarComenario('{{historia.id}}')">Agregar comentario</button>
-                        </p>
+                        </p-->
                             {% if app.user.id == historia.usuario.id %}
                             <p class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
                                 <button class="btn btn-success" onclick="javascript:editar()">Editar historia</button>

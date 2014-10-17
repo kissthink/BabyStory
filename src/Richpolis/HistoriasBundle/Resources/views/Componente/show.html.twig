@@ -17,7 +17,7 @@
                 <td>{{entity.nombre}}</td>
                 <td>{{entity.apodo}}</td>
                 <td>{{entity.biografia}}</td>
-                <td><img src="/apps/babystory/web{{ entity.thumbnailWebPath }}" style="max-width: 120px;" /></td>
+                <td><img src="{{constant('Richpolis\\FrontendBundle\\Controller\\DefaultController::RUTA_WEB')}}{{ entity.thumbnailWebPath }}" style="max-width: 120px;" /></td>
             </tr>
      </tbody>   
     </table>      
@@ -44,7 +44,7 @@
             <tr>
                 <td>{{ entity.papa.biografia }}</td>
                 <td colspan="2">{{ entity.papa.serMadre }}</td>
-                <td><img src="/apps/babystory/web{{ entity.papa.thumbnailWebPath }}" style="max-width: 120px;" /></td>
+                <td><img src="{{constant('Richpolis\\FrontendBundle\\Controller\\DefaultController::RUTA_WEB')}}{{ entity.papa.thumbnailWebPath }}" style="max-width: 120px;" /></td>
             </tr>
         </tbody>
     </table>
