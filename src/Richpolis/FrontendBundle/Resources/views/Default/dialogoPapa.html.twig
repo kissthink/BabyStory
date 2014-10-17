@@ -20,7 +20,7 @@
     </div>
     <div class="col-xs-9 col-sm-9 col-md-9">
         {% if compartir == false and  componente.historia.usuario.id == app.user.id %}
-        <button onclick="eliminarComponente({{componente.id}})" class="btn btn-mini btn-danger">Eliminar</button>
+        <button onclick="if(confirm('Desea eliminar el dialogo?')){eliminarComponente({{componente.id}});}" class="btn btn-mini btn-danger">Eliminar</button>
         {% endif %}
         <div class="comentarioPapa row">
             <p>

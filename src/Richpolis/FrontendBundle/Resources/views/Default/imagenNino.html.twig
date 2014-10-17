@@ -3,7 +3,7 @@
 {% endif %}
 <div class="row imagen-nino"  id="componente-{{componente.id}}">
     {% if compartir==false and componente.historia.usuario.id == app.user.id %}
-        <button onclick="eliminarComponente({{componente.id}})" class="btn btn-mini btn-danger">Eliminar</button>
+        <button onclick="if(confirm('Desea eliminar el imagen?')){eliminarComponente({{componente.id}});}" class="btn btn-mini btn-danger">Eliminar</button>
     {% endif %}
     <figure class="col-xs-12">
         <img src="{{ componente.webPath | imagine_filter('imagen_historia') }}" style="max-width: 400px;" alt=""/>

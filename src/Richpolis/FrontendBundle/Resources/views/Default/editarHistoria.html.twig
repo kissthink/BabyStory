@@ -178,9 +178,9 @@
             });
         }
         
-        function eliminarComponete(id) {
+        function eliminarComponente(id) {
             $.ajax({
-                url: {{path('eliminar_componente')}},
+                url: '{{path('eliminar_componente')}}',
                 type: 'POST',
                 data: {'id': id},
                 dataType: 'json',
