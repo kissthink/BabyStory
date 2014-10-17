@@ -1,5 +1,8 @@
+{% if compartir is not defined %}
+    {% set compartir = false %}
+{% endif %}
 <div class="row imagen-nino"  id="componente-{{componente.id}}">
-    {% if componente.historia.usuario.id == app.user.id %}
+    {% if compartir==false and componente.historia.usuario.id == app.user.id %}
         <button onclick="eliminarComponente({{componente.id}})" class="btn btn-danger">Eliminar</button>
         {% endif %}
     <div class="col-xs-12">

@@ -1,6 +1,9 @@
+{% if compartir is not defined %}
+    {% set compartir = false %}
+{% endif %}
 <div class="row imagen-nino"  id="componente-{{componente.id}}">
-    {% if componente.historia.usuario.id == app.user.id %}
-        <button onclick="eliminarComponente({{componente.id}})" class="btn btn-danger">Eliminar</button>
+    {% if compartir==false and componente.historia.usuario.id == app.user.id %}
+        <button onclick="eliminarComponente({{componente.id}})" class="btn btn-mini btn-danger">Eliminar</button>
     {% endif %}
     <figure class="col-xs-12">
         <img src="{{ componente.webPath | imagine_filter('imagen_historia') }}" style="max-width: 400px;" alt=""/>
